@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'apps.links',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -57,7 +59,7 @@ ROOT_URLCONF = 'lighthouse.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -78,8 +80,12 @@ WSGI_APPLICATION = 'lighthouse.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv('LIGHTHOUSE_DB', 'lighthouse'),
+        'USER': os.getenv('LIGHTHOUSE_DB_USER', 'lighthouse'),
+        'PASSWORD': os.getenv('LIGHTHOUSE_DB_PASSWORD', ''),
+        'HOST': os.getenv('LIGHTHOUSE_DB_HOST', ''),
+        'PORT': os.getenv('LIGHTHOUSE_DB_PORT', ''),
     }
 }
 
