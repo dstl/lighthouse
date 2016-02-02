@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from apps.links.views import LinkCreate, LinkDetail
 
 urlpatterns = [
@@ -32,3 +33,4 @@ urlpatterns = [
             name='link-create',
     ),
 ]
+urlpatterns += staticfiles_urlpatterns()
