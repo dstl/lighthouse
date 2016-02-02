@@ -16,6 +16,19 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
+from apps.links.views import LinkCreate, LinkDetail
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+
+    url(
+        r'^link/(?P<pk>\d+)$',
+            LinkDetail.as_view(),
+            name='link-detail',
+    ),
+    url(
+        r'^link/new$',
+            LinkCreate.as_view(),
+            name='link-create',
+    ),
 ]
