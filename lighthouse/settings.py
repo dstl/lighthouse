@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'apps.links',
+    'apps.govuk_template',
 ]
 
 MIDDLEWARE_CLASSES = [
