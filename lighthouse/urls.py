@@ -17,11 +17,16 @@ from django.conf.urls import url
 from django.contrib import admin
 
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from apps.links.views import LinkCreate, LinkDetail
+from apps.links.views import LinkCreate, LinkDetail, LinkList
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
+    url(
+        r'^$',
+            LinkList.as_view(),
+            name='link-list',
+    ),
     url(
         r'^link/(?P<pk>\d+)$',
             LinkDetail.as_view(),

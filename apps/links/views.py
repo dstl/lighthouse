@@ -1,4 +1,4 @@
-from django.views.generic import CreateView, DetailView
+from django.views.generic import CreateView, DetailView, ListView
 
 from .models import Link
 
@@ -10,3 +10,8 @@ class LinkDetail(DetailView):
 class LinkCreate(CreateView):
     model = Link
     fields = ['name', 'description', 'destination']
+
+
+class LinkList(ListView):
+    model = Link
+    paginate_by = 5
