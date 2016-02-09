@@ -18,12 +18,28 @@ from django.contrib import admin
 
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from apps.links.views import LinkCreate, LinkDetail, LinkList
+from apps.users.views import UserCreate, UserDetail, UserList
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
     url(
         r'^$',
+        UserList.as_view(),
+        name='user-list',
+    ),
+    url(
+        r'^user/(?P<pk>\d+)$',
+        UserDetail.as_view(),
+        name='user-detail',
+    ),
+    url(
+        r'^user/new$',
+        UserCreate.as_view(),
+        name='user-create',
+    ),
+    url(
+        r'^links$',
         LinkList.as_view(),
         name='link-list',
     ),
