@@ -24,18 +24,18 @@ urlpatterns = [
 
     url(
         r'^$',
-            LinkList.as_view(),
-            name='link-list',
+        LinkList.as_view(),
+        name='link-list',
     ),
     url(
         r'^link/(?P<pk>\d+)$',
-            LinkDetail.as_view(),
-            name='link-detail',
+        LinkDetail.as_view(),
+        name='link-detail',
     ),
     url(
         r'^link/new$',
-            LinkCreate.as_view(),
-            name='link-create',
+        LinkCreate.as_view(),
+        name='link-create',
     ),
 ]
 urlpatterns += staticfiles_urlpatterns()
