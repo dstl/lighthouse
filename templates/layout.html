@@ -1,7 +1,12 @@
 {% extends "base.htm" %}
+{% load staticfiles %}
 
 {% block page_title %}
   Lighthouse
+{% endblock %}
+
+{% block head %}
+<link href="{% static 'stylesheets/lighthouse.css' %}" media="screen" rel="stylesheet" type="text/css" />
 {% endblock %}
 
 {% block cookie_message %}
@@ -16,3 +21,10 @@
 {% endblock %}
 
 {% block homepage_url %}/{% endblock %}
+
+{% block content %}
+<div id="content">
+	{% block grid_content %}
+	{% endblock %}
+</div>
+{% endblock %}
