@@ -9,6 +9,7 @@ class LinkDetail(DetailView):
 
 class LinkCreate(CreateView):
     model = Link
+    # The fields will map to the form data names to use in the `name` fields.
     fields = ['name', 'description', 'destination']
 
 

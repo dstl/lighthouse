@@ -3,7 +3,9 @@
 {% block grid_content %}
 <form method="post" action="">
   {% csrf_token %}
-  {{ form }}
+  <label for="{{ form.name.id_for_label }}">Name:</label><input id="{{ form.name.id_for_label }}" maxlength="256" name="name" type="text">
+  <label for="{{ form.description.id_for_label }}">Description:</label><textarea cols="40" id="{{ form.description.id_for_label }}" name="description" rows="10"></textarea>
+  <label for="{{ form.destination.id_for_label }}">Destination:</label><input id="{{ form.destination.id_for_label }}" maxlength="2000" name="destination" type="url">
   <button>Save bookmark</button>
 </form>
 
