@@ -18,9 +18,7 @@ class LinkEdit(UpdateView):
     fields = ['name', 'description', 'destination']
 
     def get_context_data(self, **kwargs):
-
         context = super(LinkEdit, self).get_context_data(**kwargs)
-
         return context
 
 
