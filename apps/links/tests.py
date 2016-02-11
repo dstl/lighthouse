@@ -3,8 +3,6 @@ from .models import Link
 
 from django_webtest import WebTest
 
-import pdb
-
 
 class LinkTest(WebTest):
     def test_create_link(self):
@@ -28,8 +26,6 @@ class LinkTest(WebTest):
 
         form = self.app.get(
             reverse('link-edit', kwargs={'pk': existing_link.pk})).form
-
-        # pdb.set_trace()
 
         self.assertEquals(form['name'].value, 'Wikimapia')
         self.assertEquals(form['description'].value,
