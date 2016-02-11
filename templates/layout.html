@@ -1,16 +1,12 @@
 {% extends "base.htm" %}
+{% load staticfiles %}
 
 {% block page_title %}
   Lighthouse
 {% endblock %}
 
 {% block head %}
-<style type="text/css">
-	#content {
-		width:960px;
-		margin:0 auto;
-	}
-</style>
+<link href="{% static 'stylesheets/lighthouse.css' %}" media="screen" rel="stylesheet" type="text/css" />
 {% endblock %}
 
 {% block cookie_message %}
