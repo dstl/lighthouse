@@ -11,8 +11,7 @@ class LinkTest(WebTest):
         form = self.app.get(reverse('link-create')).form
 
         self.assertEquals(form['name'].value, '')
-        self.assertEquals(form['description'].value,
-                          '')
+        self.assertEquals(form['description'].value, '')
         self.assertEquals(form['destination'].value, '')
 
         form['name'] = 'Google'
