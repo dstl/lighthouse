@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'apps.login',
     'apps.links',
     'apps.users',
     'apps.govuk_template',
@@ -132,3 +133,5 @@ TEST_RUNNER = 'rainbowtests.test.runner.RainbowDiscoverRunner'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
 ]
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'

@@ -19,9 +19,12 @@ from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from apps.links.views import LinkCreate, LinkDetail, LinkList, LinkEdit
 from apps.users.views import UserCreate, UserDetail, UserList
+from apps.login.views import LoginView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+
+    url(r'^login$', LoginView.as_view(), name="login-view"),
 
     url(
         r'^users$',
