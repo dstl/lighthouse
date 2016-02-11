@@ -127,3 +127,7 @@ STATIC_URL = '/static/'
 # Enable pretty and useful colourful tests
 
 TEST_RUNNER = 'rainbowtests.test.runner.RainbowDiscoverRunner'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static")
+]
