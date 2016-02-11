@@ -24,7 +24,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
     url(
-        r'^$',
+        r'^users$',
         UserList.as_view(),
         name='user-list',
     ),
