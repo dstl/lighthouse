@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'apps.links',
+    'apps.users',
     'apps.govuk_template',
 ]
 
