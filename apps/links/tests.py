@@ -9,4 +9,4 @@ class LinkTest(WebTest):
         form['name'] = 'Google'
         form['destination'] = 'https://google.com'
         response = form.submit().follow()
-        self.assertIn('<h1>Google</h1>', response.body)
+        response.mustcontain('<h1>Google</h1>')
