@@ -9,6 +9,12 @@ import pdb
 class LinkTest(WebTest):
     def test_create_link(self):
         form = self.app.get(reverse('link-create')).form
+
+        self.assertEquals(form['name'].value, '')
+        self.assertEquals(form['description'].value,
+                          '')
+        self.assertEquals(form['destination'].value, '')
+
         form['name'] = 'Google'
         form['destination'] = 'https://google.com'
         response = form.submit().follow()
