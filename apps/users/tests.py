@@ -20,6 +20,17 @@ class UserTest(WebTest):
         self.assertEquals(user.phone, '0 123 4567 890')
         self.assertEquals(user.email, 'jane.smith@smithmail.com')
 
+    def test_create_minimal_user(self):
+        form = self.app.get(reverse('user-create')).form
+        form['fullName'] = 'Jane Smith'
+
+        response = form.submit().follow()
+        user = response.context['user']
+
+        self.assertEquals(user.fullName, 'Jane Smith')
+        self.assertEquals(user.phone, '')
+        self.assertEquals(user.email, '')
+
     def test_create_a_user_fail(self):
         form = self.app.get(reverse('user-create')).form
         form['fullName'] = ''
