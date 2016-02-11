@@ -1,30 +1,28 @@
 {% extends "layout.html" %}
 
-{% block content %}
-<div id="content">
-  <div class="grid-row">
-    <div class="column-two-thirds">
+{% block grid_content %}
+<div class="grid-row">
+  <div class="column-two-thirds">
+    <ol>
+      {% for link in object_list %}
+        <li><a href='{% url "link-detail" link.pk %}'>{{link.name}}</a></li>
+        <p>{{link.description}}</p>
+      {% endfor %}
+    </ol>
+
+    <hr>
+
+    {% if paginator.num_pages > 1 %}
       <ol>
-        {% for link in object_list %}
-          <li><a href='{% url "link-detail" link.pk %}'>{{link.name}}</a></li>
-          <p>{{link.description}}</p>
+        {% for page in paginator.page_range %}
+          {% if page == page_obj.number %}
+            <li><em>{{page}}</em></li>
+          {% else %}
+            <li><a href='?page={{page}}'>{{page}}</a></li>
+          {% endif %}
         {% endfor %}
       </ol>
-
-      <hr>
-
-      {% if paginator.num_pages > 1 %}
-        <ol>
-          {% for page in paginator.page_range %}
-            {% if page == page_obj.number %}
-              <li><em>{{page}}</em></li>
-            {% else %}
-              <li><a href='?page={{page}}'>{{page}}</a></li>
-            {% endif %}
-          {% endfor %}
-        </ol>
-      {% endif %}
-    </div>
+    {% endif %}
   </div>
 </div>
 {% endblock %}
