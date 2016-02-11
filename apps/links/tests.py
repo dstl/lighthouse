@@ -14,7 +14,7 @@ class LinkTest(WebTest):
         response = form.submit().follow()
         response.mustcontain('<h1>Google</h1>')
 
-    def test_edit_link(self):
+    def test_edit_link_render(self):
         existing_link = Link(
             name='Wikimapia',
             description='A great mapping application',

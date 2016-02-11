@@ -1,0 +1,27 @@
+{% extends "base.htm" %}
+
+{% block content %}
+
+  <ol>
+    {% for user in object_list %}
+      <li><a href='{% url "user-detail" user.pk %}'>{{user.fullName}}</a></li>
+      <p>{{user.phone}}</p>
+      <p>{{user.email}}</p>
+    {% endfor %}
+  </ol>
+
+  <hr>
+
+  {% if paginator.num_pages > 1 %}
+    <ol>
+      {% for page in paginator.page_range %}
+        {% if page == page_obj.number %}
+          <li><em>{{page}}</em></li>
+        {% else %}
+          <li><a href='?page={{page}}'>{{page}}</a></li>
+        {% endif %}
+      {% endfor %}
+    </ol>
+  {% endif %}
+
+{% endblock %}
