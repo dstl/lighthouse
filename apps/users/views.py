@@ -1,4 +1,4 @@
-from django.views.generic import CreateView, DetailView, ListView
+from django.views.generic import CreateView, DetailView, ListView, TemplateView
 
 from .models import User
 
@@ -15,3 +15,11 @@ class UserCreate(CreateView):
 class UserList(ListView):
     model = User
     paginate_by = 5
+
+
+class WhoAmI(TemplateView):
+    template_name = 'user_page.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(WhoAmI, self).get_context_data(**kwargs)
+        return context

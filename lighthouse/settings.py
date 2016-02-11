@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'apps.home',
     'apps.login',
     'apps.links',
     'apps.users',
@@ -68,6 +69,7 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
+                'django.core.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'apps.govuk_template.variables.globals',
@@ -135,3 +137,7 @@ STATICFILES_DIRS = [
 ]
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+
+AUTHENTICATION_BACKENDS = [
+    'apps.login.super_basic_auth_backend.SuperBasicAuth'
+]

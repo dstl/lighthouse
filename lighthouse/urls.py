@@ -18,14 +18,19 @@ from django.contrib import admin
 
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from apps.links.views import LinkCreate, LinkDetail, LinkList, LinkEdit
-from apps.users.views import UserCreate, UserDetail, UserList
-from apps.login.views import LoginView
+from apps.users.views import UserCreate, UserDetail, UserList, WhoAmI
+from apps.login.views import LoginView, LoginUser, Logout
+from apps.home.views import Home
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
     url(r'^login$', LoginView.as_view(), name="login-view"),
+    url(r'^login/(?P<pk>\d+)$', LoginUser.as_view(), name="login-user"),
+    url(r'^logout$', Logout.as_view(), name="logout"),
 
+    url(r'^$', Home.as_view(), name="home"),
+    url(r'^whoami$', WhoAmI.as_view(), name="whoami"),
     url(
         r'^users$',
         UserList.as_view(),
