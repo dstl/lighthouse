@@ -49,14 +49,14 @@ urlpatterns = [
         name='link-detail',
     ),
     url(
+        r'^link/(?P<pk>\d+)/edit$',
+        LinkEdit.as_view(),
+        name='link-edit',
+    ),
+    url(
         r'^link/new$',
         LinkCreate.as_view(),
         name='link-create',
-    ),
-    url(
-        r'^link/edit/(?P<pk>\d+)$',
-        LinkEdit.as_view(),
-        name='link-edit',
     ),
 ]
 urlpatterns += staticfiles_urlpatterns()
