@@ -1,10 +1,24 @@
 from django.core.urlresolvers import reverse
-from .models import Link
+from ..models import Link
+from apps.users.models import User
 
 from django_webtest import WebTest
 
 
 class LinkTest(WebTest):
+    def setUp(self):
+        logged_in_user = User(
+            fullName='Fake Fakerly',
+            phone='555-2187',
+            email='fake@dstl.gov.uk')
+        logged_in_user.save()
+
+        response = self.app.get(reverse('login-view'))
+
+        response = response.click('Fake Fakerly').follow()
+
+        self.assertEquals(response.html.h1.text, 'Fake Fakerly')
+
     def test_create_link(self):
         form = self.app.get(reverse('link-create')).form
 
