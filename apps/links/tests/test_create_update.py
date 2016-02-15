@@ -1,10 +1,24 @@
 from django.core.urlresolvers import reverse
-from .models import Link
+from apps.links.models import Link
+from apps.users.models import User
 
 from django_webtest import WebTest
 
 
 class LinkTest(WebTest):
+    def setUp(self):
+        self.logged_in_user = User(
+            fullName='Fake Fakerly',
+            phone='555-2187',
+            email='fake@dstl.gov.uk')
+        self.logged_in_user.save()
+
+        response = self.app.get(reverse('login-view'))
+
+        response = response.click('Fake Fakerly').follow()
+
+        self.assertEquals(response.html.h1.text, 'Fake Fakerly')
+
     def test_create_link(self):
         form = self.app.get(reverse('link-create')).form
 
@@ -17,11 +31,17 @@ class LinkTest(WebTest):
         response = form.submit().follow()
         response.mustcontain('<h1>Google</h1>')
 
+        self.assertEquals(
+            response.html.find(id='link_owner').text,
+            'Fake Fakerly'
+        )
+
     def test_edit_link_render(self):
         existing_link = Link(
             name='Wikimapia',
             description='A great mapping application',
-            destination='https://wikimapia.org')
+            destination='https://wikimapia.org',
+            owner=self.logged_in_user)
         existing_link.save()
 
         form = self.app.get(
@@ -36,7 +56,8 @@ class LinkTest(WebTest):
         existing_link = Link(
             name='Wikimapia',
             description='A great mapping application',
-            destination='https://wikimapia.org')
+            destination='https://wikimapia.org',
+            owner=self.logged_in_user)
         existing_link.save()
 
         form = self.app.get(

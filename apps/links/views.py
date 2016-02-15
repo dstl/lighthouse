@@ -12,6 +12,11 @@ class LinkCreate(CreateView):
     # The fields will map to the form data names to use in the `name` fields.
     fields = ['name', 'description', 'destination']
 
+    # Using form_valid may not be the 'correct' way to do this
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super(LinkCreate, self).form_valid(form)
+
 
 class LinkEdit(UpdateView):
     model = Link
