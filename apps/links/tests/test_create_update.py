@@ -31,6 +31,11 @@ class LinkTest(WebTest):
         response = form.submit().follow()
         response.mustcontain('<h1>Google</h1>')
 
+        self.assertEquals(
+            response.html.find(id='link_owner').text,
+            'Fake Fakerly'
+        )
+
     def test_edit_link_render(self):
         existing_link = Link(
             name='Wikimapia',
