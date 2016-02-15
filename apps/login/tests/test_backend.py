@@ -16,6 +16,6 @@ class AuthBackendTest(TestCase):
         u1.save()
 
         auth = SuperBasicAuth()
-        user = auth.authenticate(user_id=1)
+        user = auth.authenticate(user_id=u1.id)
 
         self.assertEquals(user, u1)
