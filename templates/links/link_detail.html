@@ -7,4 +7,10 @@
 <p>{{link.description}}</p>
 <p><a href='{{link.destination}}'>Go there</a></p>
 
+<ul>
+{% for category in link.categories.all %}
+	<li class="link-category">{{category|capfirst}}</li>
+{% endfor %}
+</ul>
+
 {% endblock %}

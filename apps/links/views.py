@@ -10,7 +10,7 @@ class LinkDetail(DetailView):
 class LinkCreate(CreateView):
     model = Link
     # The fields will map to the form data names to use in the `name` fields.
-    fields = ['name', 'description', 'destination']
+    fields = ['name', 'description', 'destination', 'categories']
 
     # Using form_valid may not be the 'correct' way to do this
     def form_valid(self, form):
@@ -20,7 +20,7 @@ class LinkCreate(CreateView):
 
 class LinkEdit(UpdateView):
     model = Link
-    fields = ['name', 'description', 'destination']
+    fields = ['name', 'description', 'destination', 'categories']
 
     def get_context_data(self, **kwargs):
         context = super(LinkEdit, self).get_context_data(**kwargs)
