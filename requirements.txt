@@ -7,3 +7,4 @@ waitress==0.8.10                    # ZPL
 WebOb==1.5.1                        # MIT
 WebTest==2.0.20                     # MIT
 wheel==0.24.0                       # MIT
+django-taggit==0.18.0               # BSD

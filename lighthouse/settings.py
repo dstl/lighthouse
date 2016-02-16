@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'apps.links',
     'apps.users',
     'apps.govuk_template',
+
+    'taggit'
 ]
 
 MIDDLEWARE_CLASSES = [

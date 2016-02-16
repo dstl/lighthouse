@@ -1,6 +1,7 @@
 from django.core.urlresolvers import reverse
 from django.db import models
 from apps.users.models import User
+from taggit.managers import TaggableManager
 
 
 class Link(models.Model):
@@ -11,6 +12,7 @@ class Link(models.Model):
         User,
         on_delete=models.PROTECT
     )
+    categories = TaggableManager()
 
     def get_absolute_url(self):
         return reverse('link-detail', kwargs={'pk': self.pk})
