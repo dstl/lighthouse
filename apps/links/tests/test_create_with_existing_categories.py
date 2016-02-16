@@ -54,3 +54,34 @@ class CategorisedLinksWithCategoriesTest(WebTest):
 
         self.assertEquals(len(category_label_values), 2)
         self.assertEquals(len(category_input_values), 2)
+
+    def test_create_link_with_existing_categories_submit(self):
+        form = self.app.get(reverse('link-create')).form
+
+        form['name'] = 'Google Maps'
+        form['destination'] = 'https://google.com'
+        # form['categories'] = 'mapping, geospatial'
+
+        self.assertFalse(form.get('categories', index=0).checked)  # Social
+        self.assertFalse(form.get('categories', index=1).checked)  # Imagery
+        self.assertEquals(form.get('categories', index=2).value, '')
+
+        form.get('categories', index=1).checked = True  # Imagery
+
+        response = form.submit().follow()
+
+        response.mustcontain('<h1>Google Maps</h1>')
+
+        self.assertEquals(
+            response.html.find(id='link_owner').text,
+            'Fake Fakerly'
+        )
+
+        # To find all the categories. then map to get `text`
+        categories = [element.text for element in response.html.findAll(
+            None, {"class": "link-category"})
+        ]
+
+        assert "Imagery" in categories
+
+        self.assertEquals(len(categories), 1)

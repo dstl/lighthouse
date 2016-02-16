@@ -8,7 +8,7 @@
   <label for="{{ form.categories.id_for_label }}">Categories:</label>
   {% for category in existing_categories %}
   <label class="link-category-label" for="{{ form.categories.id_for_label }}_{{ category }}">{{ category|capfirst }}</label>
-  <input class="link-category-checkbox" id="{{ form.categories.id_for_label }}_{{ category }}" type="checkbox" value="{{ category }}" />
+  <input class="link-category-checkbox" id="{{ form.categories.id_for_label }}_{{ category }}" type="checkbox" value="{{ category }}" name="categories" />
   {% endfor %}
   <input id="{{ form.categories.id_for_label }}" value="" maxlength="256" name="categories" type="text">
   <label for="{{ form.destination.id_for_label }}">Destination:</label><input id="{{ form.destination.id_for_label }}" value="{{ form.destination.value|default_if_none:"" }}" maxlength="2000" name="destination" type="url">

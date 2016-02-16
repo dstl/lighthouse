@@ -22,6 +22,18 @@ class LinkCreate(CreateView):
     # Using form_valid may not be the 'correct' way to do this
     def form_valid(self, form):
         form.instance.owner = self.request.user
+
+        cleaned_categories_list = [
+            category.strip(' ,') for
+            category in
+            form.data.getlist('categories') if (category.strip(' ,'))
+        ]
+        if (len(cleaned_categories_list) > 0):
+            if (form.is_valid()):
+                form.save()
+                for category in cleaned_categories_list:
+                    form.instance.categories.add(category)
+                form.save()
         return super(LinkCreate, self).form_valid(form)
 
 
