@@ -10,7 +10,8 @@ class Link(models.Model):
     destination = models.URLField(max_length=2000, unique=True)
     owner = models.ForeignKey(
         User,
-        on_delete=models.PROTECT
+        on_delete=models.PROTECT,
+        blank=True
     )
     categories = TaggableManager()
 
