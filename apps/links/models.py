@@ -10,10 +10,9 @@ class Link(models.Model):
     destination = models.URLField(max_length=2000, unique=True)
     owner = models.ForeignKey(
         User,
-        on_delete=models.PROTECT,
-        blank=True
+        on_delete=models.PROTECT
     )
-    categories = TaggableManager()
+    categories = TaggableManager(blank=True)
 
     def get_absolute_url(self):
         return reverse('link-detail', kwargs={'pk': self.pk})
