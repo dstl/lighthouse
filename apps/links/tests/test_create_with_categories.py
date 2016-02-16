@@ -4,8 +4,6 @@ from apps.users.models import User
 
 from django_webtest import WebTest
 
-import pdb
-
 
 class LinkWithCategoriesTest(WebTest):
     def setUp(self):
@@ -44,8 +42,6 @@ class LinkWithCategoriesTest(WebTest):
         categories = [element.text for element in response.html.findAll(
             None, {"class": "link-category"})
         ]
-
-        # pdb.set_trace()
 
         assert "Mapping" in categories
         assert "Geospatial" in categories

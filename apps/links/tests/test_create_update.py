@@ -25,6 +25,7 @@ class LinkTest(WebTest):
         self.assertEquals(form['name'].value, '')
         self.assertEquals(form['description'].value, '')
         self.assertEquals(form['destination'].value, '')
+        self.assertEquals(form['categories'].value, '')
 
         form['name'] = 'Google'
         form['destination'] = 'https://google.com'
