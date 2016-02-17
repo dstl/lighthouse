@@ -4,8 +4,6 @@ from apps.users.models import User
 
 from django_webtest import WebTest
 
-import pdb
-
 
 class LinkTest(WebTest):
     def setUp(self):
@@ -38,6 +36,30 @@ class LinkTest(WebTest):
             response.html.find(id='link_owner').text,
             'Fake Fakerly'
         )
+
+    def test_create_empty_link(self):
+        form = self.app.get(reverse('link-create')).form
+
+        self.assertEquals(form['name'].value, '')
+        self.assertEquals(form['description'].value, '')
+        self.assertEquals(form['destination'].value, '')
+        self.assertEquals(form['categories'].value, '')
+
+        form['name'] = ''
+        form['destination'] = ''
+        response = form.submit()
+
+        error_list = response.html.find('ul', {'class': 'form-error-list'})
+
+        self.assertIsNotNone(error_list)
+        self.assertEqual(len(error_list.findChildren()), 2)
+
+        form = response.form
+
+        self.assertEquals(form['name'].value, '')
+        self.assertEquals(form['description'].value, '')
+        self.assertEquals(form['destination'].value, '')
+        self.assertEquals(form['categories'].value, '')
 
     def test_edit_link_render(self):
         existing_link = Link(

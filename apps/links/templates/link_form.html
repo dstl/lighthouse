@@ -2,6 +2,17 @@
 
 {% block grid_content %}
 <form method="post" action="">
+
+  {% if form.errors %}
+  <ul class="form-error-list">
+    {% for key,value in form.errors.items %}
+    {% for error in value %}
+    <li>{{ value.as_text }}</li>
+    {% endfor %}
+    {% endfor %}
+  </ul>
+  {% endif %}
+
   {% csrf_token %}
   <label for="{{ form.name.id_for_label }}">Name:</label><input id="{{ form.name.id_for_label }}" value="{{ form.name.value|default_if_none:"" }}" maxlength="256" name="name" type="text">
   <label for="{{ form.description.id_for_label }}">Description:</label><textarea cols="40" id="{{ form.description.id_for_label }}" name="description" rows="10">{{ form.description.value|default_if_none:"" }}</textarea>

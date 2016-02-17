@@ -48,6 +48,11 @@ def LinkCreate(request):
             new_link.save()
 
             return redirect('link-detail', pk=new_link.pk)
+        else:
+            return render(request, "link_form.html", {
+                'form': link_form,
+                'existing_categories': all_existing_categories
+            })
     else:
         return render(request, "link_form.html", {
             'form': link_form,
@@ -58,8 +63,6 @@ def LinkCreate(request):
 def LinkEdit(request, pk):
     link = Link.objects.get(pk=pk)
     link_form = LinkForm(request.POST or None, instance=link)
-
-    # pdb.set_trace()
 
     all_existing_categories = Tag.objects.all()
 
