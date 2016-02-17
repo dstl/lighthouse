@@ -3,15 +3,15 @@
 {% block grid_content %}
 <form method="post" action="">
   {% csrf_token %}
-  <label for="{{ form.name.id_for_label }}">Name:</label><input id="{{ form.name.id_for_label }}" value="{{ form.name.value|default_if_none:"" }}" maxlength="256" name="name" type="text">
-  <label for="{{ form.description.id_for_label }}">Description:</label><textarea cols="40" id="{{ form.description.id_for_label }}" name="description" rows="10">{{ form.description.value|default_if_none:"" }}</textarea>
-  <label for="{{ form.categories.id_for_label }}">Categories:</label>
+  <label for="{{ form.instance.name.id_for_label }}">Name:</label><input id="{{ form.instance.name.id_for_label }}" value="{{ form.instance.name.value|default_if_none:"" }}" maxlength="256" name="name" type="text">
+  <label for="{{ form.instance.description.id_for_label }}">Description:</label><textarea cols="40" id="{{ form.instance.description.id_for_label }}" name="description" rows="10">{{ form.instance.description.value|default_if_none:"" }}</textarea>
+  <label for="{{ form.instance.categories.id_for_label }}">Categories:</label>
   {% for category in existing_categories %}
-  <label class="link-category-label" for="{{ form.categories.id_for_label }}_{{ category }}">{{ category|capfirst }}</label>
-  <input class="link-category-checkbox" id="{{ form.categories.id_for_label }}_{{ category }}" type="checkbox" value="{{ category }}" name="categories" />
+  <label class="link-category-label" for="{{ form.instance.categories.id_for_label }}_{{ category }}">{{ category|capfirst }}</label>
+  <input class="link-category-checkbox" id="{{ form.instance.categories.id_for_label }}_{{ category }}" type="checkbox" value="{{ category }}" name="categories" />
   {% endfor %}
-  <input id="{{ form.categories.id_for_label }}" value="" maxlength="256" name="categories" type="text">
-  <label for="{{ form.destination.id_for_label }}">Destination:</label><input id="{{ form.destination.id_for_label }}" value="{{ form.destination.value|default_if_none:"" }}" maxlength="2000" name="destination" type="url">
+  <input id="{{ form.instance.categories.id_for_label }}" value="" maxlength="256" name="categories" type="text">
+  <label for="{{ form.instance.destination.id_for_label }}">Destination:</label><input id="{{ form.instance.destination.id_for_label }}" value="{{ form.instance.destination.value|default_if_none:"" }}" maxlength="2000" name="destination" type="url">
   <input type="submit" method="POST" value="Save bookmark">
 </form>
 
