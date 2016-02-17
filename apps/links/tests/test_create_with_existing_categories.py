@@ -60,10 +60,21 @@ class CategorisedLinksWithCategoriesTest(WebTest):
 
         form['name'] = 'Google Maps'
         form['destination'] = 'https://google.com'
-        # form['categories'] = 'mapping, geospatial'
 
-        self.assertFalse(form.get('categories', index=0).checked)  # Social
-        self.assertFalse(form.get('categories', index=1).checked)  # Imagery
+        self.assertFalse(form.get('categories', index=0).checked)
+        self.assertEquals(
+            form.html.findAll(
+                'label', {'class': 'link-category-label'}
+            )[0].text,
+            'Social'
+        )
+        self.assertFalse(form.get('categories', index=1).checked)
+        self.assertEquals(
+            form.html.findAll(
+                'label', {'class': 'link-category-label'}
+            )[1].text,
+            'Imagery'
+        )
         self.assertEquals(form.get('categories', index=2).value, '')
 
         form.get('categories', index=1).checked = True  # Imagery
@@ -85,3 +96,56 @@ class CategorisedLinksWithCategoriesTest(WebTest):
         assert "Imagery" in categories
 
         self.assertEquals(len(categories), 1)
+
+    def test_create_link_with_mixed_categories_submit(self):
+        form = self.app.get(reverse('link-create')).form
+
+        form['name'] = 'Google Maps'
+        form['destination'] = 'https://google.com'
+
+        form.get('categories', index=1).checked = True  # Imagery
+        form.get('categories', index=2).value = 'mapping'
+
+        response = form.submit().follow()
+
+        response.mustcontain('<h1>Google Maps</h1>')
+
+        self.assertEquals(
+            response.html.find(id='link_owner').text,
+            'Fake Fakerly'
+        )
+
+        # To find all the categories. then map to get `text`
+        categories = [element.text for element in response.html.findAll(
+            None, {"class": "link-category"})
+        ]
+
+        assert "Imagery" in categories
+        assert "Mapping" in categories
+
+        self.assertEquals(len(categories), 2)
+
+        form = self.app.get(reverse('link-create')).form
+
+        self.assertFalse(form.get('categories', index=0).checked)
+        self.assertEquals(
+            form.html.findAll(
+                'label', {'class': 'link-category-label'}
+            )[0].text,
+            'Social'
+        )
+        self.assertFalse(form.get('categories', index=1).checked)
+        self.assertEquals(
+            form.html.findAll(
+                'label', {'class': 'link-category-label'}
+            )[1].text,
+            'Imagery'
+        )
+        self.assertFalse(form.get('categories', index=2).checked)
+        self.assertEquals(
+            form.html.findAll(
+                'label', {'class': 'link-category-label'}
+            )[2].text,
+            'Mapping'
+        )
+        self.assertEquals(form.get('categories', index=3).value, '')
