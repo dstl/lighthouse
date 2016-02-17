@@ -64,6 +64,11 @@ class LinkTest(WebTest):
         form = self.app.get(
             reverse('link-edit', kwargs={'pk': existing_link.pk})).form
 
+        self.assertEquals(form['name'].value, 'Wikimapia')
+        self.assertEquals(form['description'].value,
+                          'A great mapping application')
+        self.assertEquals(form['destination'].value, 'https://wikimapia.org')
+
         form['name'].value = 'Bing Maps'
         form['description'].value = 'Another great mapping application'
         form['destination'].value = 'https://maps.bing.com'
