@@ -7,7 +7,7 @@
   <ul class="form-error-list">
     {% for key,value in form.errors.items %}
     {% for error in value %}
-    <li>{{ value.as_text }}</li>
+    <li>{{ key }}: {{ value.as_text|cut:"* " }}</li>
     {% endfor %}
     {% endfor %}
   </ul>
