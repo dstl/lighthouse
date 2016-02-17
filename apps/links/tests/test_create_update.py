@@ -4,6 +4,8 @@ from apps.users.models import User
 
 from django_webtest import WebTest
 
+import pdb
+
 
 class LinkTest(WebTest):
     def setUp(self):
@@ -73,7 +75,14 @@ class LinkTest(WebTest):
         form['description'].value = 'Another great mapping application'
         form['destination'].value = 'https://maps.bing.com'
 
-        response = form.submit().follow()
+        response = form.submit()
+
+        self.assertEquals(
+            reverse('link-detail', kwargs={'pk': existing_link.pk}),
+            response.location
+        )
+
+        response = response.follow()
 
         self.assertIn('Bing Maps', response)
         self.assertNotIn('Wikimapia', response)
