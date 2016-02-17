@@ -63,7 +63,7 @@ urlpatterns = [
     ),
     url(
         r'^link/new$',
-        LinkCreate.as_view(),
+        LinkCreate,
         name='link-create',
     ),
 ]
