@@ -14,16 +14,43 @@
   {% endif %}
 
   {% csrf_token %}
-  <label for="{{ form.name.id_for_label }}">Name:</label><input id="{{ form.name.id_for_label }}" value="{{ form.name.value|default_if_none:"" }}" maxlength="256" name="name" type="text">
-  <label for="{{ form.description.id_for_label }}">Description:</label><textarea cols="40" id="{{ form.description.id_for_label }}" name="description" rows="10">{{ form.description.value|default_if_none:"" }}</textarea>
-  <label for="{{ form.categories.id_for_label }}">Categories:</label>
-  {% for category in existing_categories %}
-  <label class="link-category-label" for="{{ form.categories.id_for_label }}_{{ category }}">{{ category|capfirst }}</label>
-  <input class="link-category-checkbox" id="{{ form.categories.id_for_label }}_{{ category }}" type="checkbox" value="{{ category }}" name="categories" />
-  {% endfor %}
-  <input id="{{ form.categories.id_for_label }}" value="" maxlength="256" name="categories" type="text">
-  <label for="{{ form.destination.id_for_label }}">Destination:</label><input id="{{ form.destination.id_for_label }}" value="{{ form.destination.value|default_if_none:"" }}" maxlength="2000" name="destination" type="url">
-  <input type="submit" method="POST" value="Save bookmark">
+  <div class="form-group">
+    <label class="form-label-bold" for="{{ form.name.id_for_label }}">
+      Name:
+    </label>
+    <input class="form-control" id="{{ form.name.id_for_label }}" value="{{ form.name.value|default_if_none:"" }}" maxlength="256" name="name" type="text">
+  </div>
+  <div class="form-group">
+    <label class="form-label-bold" for="{{ form.description.id_for_label }}">
+      Description:
+    </label>
+    <textarea class="form-control" cols="40" id="{{ form.description.id_for_label }}" name="description" rows="10">{{ form.description.value|default_if_none:"" }}</textarea>
+  </div>
+  <div class="form-group">
+    <label class="form-label-bold">
+      Categories:
+    </label>
+    {% for category in existing_categories %}
+    <label class="link-category-label" for="{{ form.categories.id_for_label }}_{{ category }}">{{ category|capfirst }}</label>
+    <input class="form-control" class="link-category-checkbox" id="{{ form.categories.id_for_label }}_{{ category }}" type="checkbox" value="{{ category }}" name="categories" />
+    {% endfor %}
+  </div>
+  <div class="form-group">
+    <label class="form-label-bold" for="{{ form.categories.id_for_label }}">
+      Other categories:
+    </label>
+    <p class="form-hint">
+      Any categories that aren't available in that list, comma-separated.
+      <br>
+      E.g., "social, geospatial".
+    </p>
+    <input class="form-control" id="{{ form.categories.id_for_label }}" value="" maxlength="256" name="categories" type="text">
+  </div>
+  <label class="form-label-bold" for="{{ form.destination.id_for_label }}">
+    Destination:
+  </label>
+  <input id="{{ form.destination.id_for_label }}" value="{{ form.destination.value|default_if_none:"" }}" maxlength="2000" name="destination" type="url">
+  <input type="submit" method="POST" value="Save bookmark" class="button">
 </form>
 
 {% endblock %}
