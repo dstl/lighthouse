@@ -37,6 +37,26 @@ class LinkTest(WebTest):
             'Fake Fakerly'
         )
 
+    def test_create_link_external(self):
+        form = self.app.get(reverse('link-create')).form
+
+        self.assertEquals(form['name'].value, '')
+        self.assertEquals(form['description'].value, '')
+        self.assertEquals(form['destination'].value, '')
+        self.assertEquals(form['categories'].value, '')
+
+        form['name'] = 'Google'
+        form['destination'] = 'https://google.com'
+        form['is_external'].value = True
+        response = form.submit().follow()
+        response.mustcontain('<h1>Google</h1>')
+        response.mustcontain('External')
+
+        self.assertEquals(
+            response.html.find(id='link_owner').text,
+            'Fake Fakerly'
+        )
+
     def test_create_empty_link(self):
         form = self.app.get(reverse('link-create')).form
 
