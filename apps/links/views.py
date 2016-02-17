@@ -82,6 +82,11 @@ def LinkEdit(request, pk):
             link.save()
 
             return redirect('link-detail', pk=link.pk)
+        else:
+            return render(request, "link_form.html", {
+                'form': link_form,
+                'existing_categories': all_existing_categories
+            })
     else:
         return render(request, "link_form.html", {
             'form': link_form,
