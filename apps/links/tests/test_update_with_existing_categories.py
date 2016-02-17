@@ -48,3 +48,28 @@ class CategorisedLinksWithCategoriesUpdateTest(WebTest):
             'Imagery'
         )
         self.assertEquals(form.get('categories', index=2).value, '')
+
+    def test_update_link_with_existing_categories_submit(self):
+        form = self.app.get(
+            reverse('link-edit', kwargs={'pk': self.existing_link.pk})).form
+
+        form.get('categories', index=1).checked = False  # Imagery
+
+        response = form.submit().follow()
+
+        response.mustcontain('<h1>Tweetbot</h1>')
+
+        self.assertEquals(
+            response.html.find(id='link_owner').text,
+            'Fake Fakerly'
+        )
+
+        # To find all the categories. then map to get `text`
+        categories = [element.text for element in response.html.findAll(
+            None, {"class": "link-category"})
+        ]
+
+        assert "Social" in categories
+        assert "Imagery" not in categories
+
+        self.assertEquals(len(categories), 1)

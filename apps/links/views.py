@@ -42,8 +42,7 @@ def LinkCreate(request):
             provided_categories = link_form.data.getlist('categories')
             cleaned_categories = clean_categories(provided_categories)
 
-            for cat in cleaned_categories:
-                new_link.categories.add(cat)
+            new_link.categories.set(*cleaned_categories)
 
             new_link.save()
 
@@ -76,8 +75,7 @@ def LinkEdit(request, pk):
             provided_categories = link_form.data.getlist('categories')
             cleaned_categories = clean_categories(provided_categories)
 
-            for cat in cleaned_categories:
-                link.categories.add(cat)
+            link.categories.set(*cleaned_categories)
 
             link.save()
 
