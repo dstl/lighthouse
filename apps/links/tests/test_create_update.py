@@ -44,10 +44,11 @@ class LinkTest(WebTest):
         self.assertEquals(form['description'].value, '')
         self.assertEquals(form['destination'].value, '')
         self.assertEquals(form['categories'].value, '')
+        self.assertEqual(form['is_external'].value, 'False')
 
         form['name'] = 'Google'
         form['destination'] = 'https://google.com'
-        form['is_external'].value = True
+        form['is_external'].select('True')
         response = form.submit().follow()
         response.mustcontain('<h1>Google</h1>')
         response.mustcontain('External')

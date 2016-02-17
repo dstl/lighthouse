@@ -37,6 +37,7 @@ def LinkCreate(request):
                 description=link_form.instance.description,
                 destination=link_form.instance.destination,
                 owner=request.user,
+                is_external=link_form.instance.is_external,
             )
             new_link.save()
             provided_categories = link_form.data.getlist('categories')
