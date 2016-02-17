@@ -58,12 +58,12 @@ urlpatterns = [
     ),
     url(
         r'^link/(?P<pk>\d+)/edit$',
-        LinkEdit.as_view(),
+        LinkEdit,
         name='link-edit',
     ),
     url(
         r'^link/new$',
-        LinkCreate.as_view(),
+        LinkCreate,
         name='link-create',
     ),
 ]

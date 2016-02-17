@@ -25,6 +25,7 @@ class LinkTest(WebTest):
         self.assertEquals(form['name'].value, '')
         self.assertEquals(form['description'].value, '')
         self.assertEquals(form['destination'].value, '')
+        self.assertEquals(form['categories'].value, '')
 
         form['name'] = 'Google'
         form['destination'] = 'https://google.com'
@@ -35,6 +36,30 @@ class LinkTest(WebTest):
             response.html.find(id='link_owner').text,
             'Fake Fakerly'
         )
+
+    def test_create_empty_link(self):
+        form = self.app.get(reverse('link-create')).form
+
+        self.assertEquals(form['name'].value, '')
+        self.assertEquals(form['description'].value, '')
+        self.assertEquals(form['destination'].value, '')
+        self.assertEquals(form['categories'].value, '')
+
+        form['name'] = ''
+        form['destination'] = ''
+        response = form.submit()
+
+        error_list = response.html.find('ul', {'class': 'form-error-list'})
+
+        self.assertIsNotNone(error_list)
+        self.assertEqual(len(error_list.findChildren()), 2)
+
+        form = response.form
+
+        self.assertEquals(form['name'].value, '')
+        self.assertEquals(form['description'].value, '')
+        self.assertEquals(form['destination'].value, '')
+        self.assertEquals(form['categories'].value, '')
 
     def test_edit_link_render(self):
         existing_link = Link(
@@ -63,11 +88,23 @@ class LinkTest(WebTest):
         form = self.app.get(
             reverse('link-edit', kwargs={'pk': existing_link.pk})).form
 
+        self.assertEquals(form['name'].value, 'Wikimapia')
+        self.assertEquals(form['description'].value,
+                          'A great mapping application')
+        self.assertEquals(form['destination'].value, 'https://wikimapia.org')
+
         form['name'].value = 'Bing Maps'
         form['description'].value = 'Another great mapping application'
         form['destination'].value = 'https://maps.bing.com'
 
-        response = form.submit().follow()
+        response = form.submit()
+
+        self.assertEquals(
+            reverse('link-detail', kwargs={'pk': existing_link.pk}),
+            response.location
+        )
+
+        response = response.follow()
 
         self.assertIn('Bing Maps', response)
         self.assertNotIn('Wikimapia', response)
@@ -75,3 +112,38 @@ class LinkTest(WebTest):
         self.assertNotIn('A great mapping application', response)
         self.assertIn('https://maps.bing.com', response)
         self.assertNotIn('https://wikimapia.org', response)
+
+    def test_update_to_empty_link(self):
+        existing_link = Link(
+            name='Wikimapia',
+            description='A great mapping application',
+            destination='https://wikimapia.org',
+            owner=self.logged_in_user)
+        existing_link.save()
+
+        form = self.app.get(
+            reverse('link-edit', kwargs={'pk': existing_link.pk})).form
+
+        self.assertEquals(form['name'].value, 'Wikimapia')
+        self.assertEquals(form['description'].value,
+                          'A great mapping application')
+        self.assertEquals(form['destination'].value, 'https://wikimapia.org')
+
+        form['name'].value = ''
+        form['description'].value = 'Another great mapping application'
+        form['destination'].value = 'https://maps.bing.com'
+
+        response = form.submit()
+
+        error_list = response.html.find('ul', {'class': 'form-error-list'})
+
+        self.assertIsNotNone(error_list)
+        self.assertEqual(len(error_list.findChildren()), 1)
+
+        form = response.form
+
+        self.assertEquals(form['name'].value, '')
+        self.assertEquals(form['description'].value,
+                          'Another great mapping application')
+        self.assertEquals(form['destination'].value, 'https://maps.bing.com')
+        self.assertEquals(form['categories'].value, '')
