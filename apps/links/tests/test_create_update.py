@@ -58,6 +58,29 @@ class LinkTest(WebTest):
             'Fake Fakerly'
         )
 
+    def test_update_link_external(self):
+        existing_link = Link(
+            name='Wikimapia',
+            description='A great mapping application',
+            destination='https://wikimapia.org',
+            owner=self.logged_in_user,
+            is_external=False)
+        existing_link.save()
+
+        form = self.app.get(
+            reverse('link-edit', kwargs={'pk': existing_link.pk})).form
+
+        self.assertEquals(form['name'].value, 'Wikimapia')
+        self.assertEquals(form['description'].value,
+                          'A great mapping application')
+        self.assertEquals(form['destination'].value, 'https://wikimapia.org')
+        self.assertEqual(form['is_external'].value, 'False')
+
+        form['is_external'].select('True')
+        response = form.submit().follow()
+        response.mustcontain('<h1>Wikimapia</h1>')
+        response.mustcontain('External')
+
     def test_create_empty_link(self):
         form = self.app.get(reverse('link-create')).form
 
