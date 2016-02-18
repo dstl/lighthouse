@@ -59,3 +59,8 @@ class LinkUpdate(CategoriesFormMixin, UpdateView):
 class LinkList(ListView):
     model = Link
     paginate_by = 5
+
+    def get_queryset(self):
+        qs = super(LinkList, self).get_queryset().order_by('id')
+        qs = qs.reverse()
+        return qs
