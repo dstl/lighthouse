@@ -2,11 +2,19 @@
 
 {% block grid_content %}
 <div class="grid-row">
+  <div id="categories-filter" class="column-one-third">
+    {% for category in categories %}
+    <label for="categories-filter-{{ category.name }}">
+      <h3>{{ category.name|capfirst }}</h3>
+      <input id="categories-filter-{{ category.name }}" value="{{ category.name }}" />
+    </label>
+    {% endfor %}
+  </div>
   <div class="column-two-thirds">
     <ol>
       {% for link in object_list %}
-        <li class="link-list-item"><a href='{% url "link-detail" link.pk %}'>{{link.name}}</a></li>
-        <p>{{link.description}}</p>
+        <li class="link-list-item"><a href='{% url "link-detail" link.pk %}'>{{ link.name }}</a></li>
+        <p>{{ link.description }}</p>
       {% endfor %}
     </ol>
 
@@ -16,9 +24,9 @@
       <ol class="pagination">
         {% for page in paginator.page_range %}
           {% if page == page_obj.number %}
-            <li><em>{{page}}</em></li>
+            <li><em>{{ page }}</em></li>
           {% else %}
-            <li><a href='?page={{page}}'>{{page}}</a></li>
+            <li><a href='?page={{ page }}'>{{ page }}</a></li>
           {% endif %}
         {% endfor %}
       </ol>

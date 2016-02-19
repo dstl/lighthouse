@@ -64,3 +64,8 @@ class LinkList(ListView):
         qs = super(LinkList, self).get_queryset().order_by('id')
         qs = qs.reverse()
         return qs
+
+    def get_context_data(self, **kwargs):
+        context = super(LinkList, self).get_context_data(**kwargs)
+        context['categories'] = Tag.objects.all()
+        return context
