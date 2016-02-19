@@ -61,7 +61,15 @@ class LinkList(ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        qs = super(LinkList, self).get_queryset().order_by('id')
+        if 'categories' in self.request.GET:
+            categories_to_filter = self.request.GET['categories']
+            if type(categories_to_filter) == str:
+                categories_to_filter = [categories_to_filter]
+            qs = Link.objects.filter(
+                categories__name__in=categories_to_filter
+            ).order_by('id')
+        else:
+            qs = super(LinkList, self).get_queryset().order_by('id')
         qs = qs.reverse()
         return qs
 

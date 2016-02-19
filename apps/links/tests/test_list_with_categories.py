@@ -55,20 +55,32 @@ class ListLinksWithCategoriesTest(WebTest):
         filterEl = response.html.find(id='categories-filter')
 
         mappingLbl = filterEl.find(attrs={'for': 'categories-filter-mapping'})
+        mappingCheckbox = filterEl.find(id='categories-filter-mapping')
         self.assertIsNotNone(mappingLbl)
-        self.assertIsNotNone(filterEl.find(id='categories-filter-mapping'))
+        self.assertIsNotNone(mappingCheckbox)
+        self.assertEquals(mappingCheckbox.attrs['value'], 'mapping')
+        self.assertFalse('checked' in mappingCheckbox.attrs)
 
         socialLbl = filterEl.find(attrs={'for': 'categories-filter-social'})
+        socialCheckbox = filterEl.find(id='categories-filter-social')
         self.assertIsNotNone(socialLbl)
-        self.assertIsNotNone(filterEl.find(id='categories-filter-social'))
+        self.assertIsNotNone(socialCheckbox)
+        self.assertEquals(socialCheckbox.attrs['value'], 'social')
+        self.assertFalse('checked' in socialCheckbox.attrs)
 
         geoLbl = filterEl.find(attrs={'for': 'categories-filter-geospatial'})
+        geoCheckbox = filterEl.find(id='categories-filter-geospatial')
         self.assertIsNotNone(geoLbl)
-        self.assertIsNotNone(filterEl.find(id='categories-filter-geospatial'))
+        self.assertIsNotNone(geoCheckbox)
+        self.assertEquals(geoCheckbox.attrs['value'], 'geospatial')
+        self.assertFalse('checked' in geoCheckbox.attrs)
 
         imageryLbl = filterEl.find(attrs={'for': 'categories-filter-imagery'})
+        imageryCheckbox = filterEl.find(id='categories-filter-imagery')
         self.assertIsNotNone(imageryLbl)
-        self.assertIsNotNone(filterEl.find(id='categories-filter-imagery'))
+        self.assertIsNotNone(imageryCheckbox)
+        self.assertEquals(imageryCheckbox.attrs['value'], 'imagery')
+        self.assertFalse('checked' in imageryCheckbox.attrs)
 
         assert 'Mapping' in mappingLbl.text
         assert 'Social' in socialLbl.text
@@ -76,11 +88,16 @@ class ListLinksWithCategoriesTest(WebTest):
         assert 'Imagery' in imageryLbl.text
 
     def test_filter_by_single_category(self):
+
         response = self.app.get(reverse('link-list'))
 
         form = response.form
 
+        self.assertEquals(
+            form.get('categories', index=0).id, 'categories-filter-mapping'
+        )
         form.get('categories', index=0).checked = True
+
         response = form.submit()
 
         self.assertEquals(
@@ -103,7 +120,7 @@ class ListLinksWithCategoriesTest(WebTest):
                 'li',
                 {'class': 'link-list-item'}
             )[1].text,
-            self.el3.name
+            self.el2.name
         )
 
         self.assertEquals(

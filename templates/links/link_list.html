@@ -3,11 +3,11 @@
 {% block grid_content %}
 <div class="grid-row">
   <div id="categories-filter" class="column-one-third">
-    <form method="get">
+    <form method="get" action="">
       {% for category in categories %}
       <label for="categories-filter-{{ category.name }}">
         <h3>{{ category.name|capfirst }}</h3>
-        <input id="categories-filter-{{ category.name }}" value="{{ category.name }}" name="categories" />
+        <input type="checkbox" id="categories-filter-{{ category.name }}" value="{{ category.name }}" name="categories" />
       </label>
       {% endfor %}
     </form>
