@@ -74,3 +74,44 @@ class ListLinksWithCategoriesTest(WebTest):
         assert 'Social' in socialLbl.text
         assert 'Geospatial' in geoLbl.text
         assert 'Imagery' in imageryLbl.text
+
+    def test_filter_by_single_category(self):
+        response = self.app.get(reverse('link-list'))
+
+        form = response.form
+
+        form.get('categories', index=0).checked = True
+        response = form.submit()
+
+        self.assertEquals(
+            len(response.html.findAll('li', {'class': 'link-list-item'})),
+            3
+        )
+
+        self.assertIsNone(response.html.find('ol', {'class': 'pagination'}))
+
+        self.assertEquals(
+            response.html.findAll(
+                'li',
+                {'class': 'link-list-item'}
+            )[0].text,
+            self.el6.name
+        )
+
+        self.assertEquals(
+            response.html.findAll(
+                'li',
+                {'class': 'link-list-item'}
+            )[1].text,
+            self.el3.name
+        )
+
+        self.assertEquals(
+            response.html.findAll(
+                'li',
+                {'class': 'link-list-item'}
+            )[2].text,
+            self.el1.name
+        )
+        # Check that only the appropriate links are on the page
+        # Check that the pagination reflects the smaller result set
