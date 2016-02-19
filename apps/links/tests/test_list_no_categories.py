@@ -1,6 +1,6 @@
 from django.core.urlresolvers import reverse
 from apps.users.models import User
-from apps.links.models import Link
+from .common import generate_fake_links
 
 from django_webtest import WebTest
 
@@ -13,21 +13,14 @@ class ListLinksWithNoCategoriesTest(WebTest):
             email='fake@dstl.gov.uk')
         self.logged_in_user.save()
 
-        self.existing_link_1 = Link(
-            name='Wikimapia',
-            description='A great mapping application',
-            destination='https://wikimapia.org',
-            owner=self.logged_in_user,
-            is_external=False)
-        self.existing_link_1.save()
+        el1, el2 = generate_fake_links(
+            self.logged_in_user,
+            count=2
+        )
 
-        self.existing_link_2 = Link(
-            name='Twitter',
-            description='A thing for Social Media stuff',
-            destination='https://twitter.com',
-            owner=self.logged_in_user,
-            is_external=False)
-        self.existing_link_2.save()
+        self.existing_link_1 = el1
+
+        self.existing_link_2 = el2
 
         response = self.app.get(reverse('login-view'))
 
@@ -48,7 +41,7 @@ class ListLinksWithNoCategoriesTest(WebTest):
                 'li',
                 {'class': 'link-list-item'}
             )[0].text,
-            'Twitter'
+            self.existing_link_2.name
         )
 
         self.assertEquals(
@@ -56,41 +49,15 @@ class ListLinksWithNoCategoriesTest(WebTest):
                 'li',
                 {'class': 'link-list-item'}
             )[1].text,
-            'Wikimapia'
+            self.existing_link_1.name
         )
 
     def test_two_pages(self):
-        existing_link_3 = Link(
-            name='Third Link',
-            description='Test',
-            destination='https://test3.org',
-            owner=self.logged_in_user,
-            is_external=False)
-        existing_link_3.save()
-
-        existing_link_4 = Link(
-            name='Fourth Link',
-            description='Test',
-            destination='https://test4.org',
-            owner=self.logged_in_user,
-            is_external=False)
-        existing_link_4.save()
-
-        existing_link_5 = Link(
-            name='Fifth Link',
-            description='Test',
-            destination='https://test5.org',
-            owner=self.logged_in_user,
-            is_external=False)
-        existing_link_5.save()
-
-        existing_link_6 = Link(
-            name='Sixth Link',
-            description='Test',
-            destination='https://test6.org',
-            owner=self.logged_in_user,
-            is_external=False)
-        existing_link_6.save()
+        el3, el4, el5, el6 = generate_fake_links(
+            self.logged_in_user,
+            start=3,
+            count=4
+        )
 
         response = self.app.get(reverse('link-list'))
 
@@ -106,7 +73,7 @@ class ListLinksWithNoCategoriesTest(WebTest):
                 'li',
                 {'class': 'link-list-item'}
             )[0].text,
-            'Sixth Link'
+            el6.name
         )
 
         self.assertEquals(
@@ -114,7 +81,7 @@ class ListLinksWithNoCategoriesTest(WebTest):
                 'li',
                 {'class': 'link-list-item'}
             )[1].text,
-            'Fifth Link'
+            el5.name
         )
 
         self.assertEquals(
@@ -122,7 +89,7 @@ class ListLinksWithNoCategoriesTest(WebTest):
                 'li',
                 {'class': 'link-list-item'}
             )[2].text,
-            'Fourth Link'
+            el4.name
         )
 
         self.assertEquals(
@@ -130,7 +97,7 @@ class ListLinksWithNoCategoriesTest(WebTest):
                 'li',
                 {'class': 'link-list-item'}
             )[3].text,
-            'Third Link'
+            el3.name
         )
 
         self.assertEquals(
@@ -138,5 +105,5 @@ class ListLinksWithNoCategoriesTest(WebTest):
                 'li',
                 {'class': 'link-list-item'}
             )[4].text,
-            'Twitter'
+            self.existing_link_2.name
         )
