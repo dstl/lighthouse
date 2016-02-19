@@ -37,6 +37,7 @@ def LinkCreate(request):
                 description=link_form.instance.description,
                 destination=link_form.instance.destination,
                 owner=request.user,
+                is_external=link_form.instance.is_external,
             )
             new_link.save()
             provided_categories = link_form.data.getlist('categories')
@@ -67,10 +68,6 @@ def LinkEdit(request, pk):
 
     if request.method == "POST":
         if (link_form.is_valid()):
-            link.name = link_form.instance.name
-            link.description = link_form.instance.description
-            link.destination = link_form.instance.destination
-            link.owner = request.user
             link.save()
             provided_categories = link_form.data.getlist('categories')
             cleaned_categories = clean_categories(provided_categories)

@@ -8,6 +8,7 @@ class Link(models.Model):
     name = models.CharField(max_length=256)
     description = models.TextField(null=True, blank=True)
     destination = models.URLField(max_length=2000, unique=True)
+    is_external = models.BooleanField(default=False, blank=False)
     owner = models.ForeignKey(
         User,
         on_delete=models.PROTECT

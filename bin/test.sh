@@ -8,10 +8,6 @@ if [[ -z "$VIRTUAL_ENV" ]]; then
   (( result+=$? ))
 fi
 
-if [[ -n "$JOB_NAME" ]]; then
-	export LIGHTHOUSE_DB="$JOB_NAME$BUILD_NUMBER"
-fi
-
 # Install the test requirements
 pip install -r requirements_test.txt
 (( result+=$? ))

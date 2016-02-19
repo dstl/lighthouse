@@ -18,13 +18,47 @@
     <label class="form-label-bold" for="{{ form.name.id_for_label }}">
       Name:
     </label>
-    <input class="form-control" id="{{ form.name.id_for_label }}" value="{{ form.name.value|default_if_none:"" }}" maxlength="256" name="name" type="text">
+    <input class="form-control" id="{{ form.name.id_for_label }}" value="{{ form.name.value|default_if_none:"" }}" maxlength="256" name="name" type="text" />
   </div>
   <div class="form-group">
     <label class="form-label-bold" for="{{ form.description.id_for_label }}">
       Description:
     </label>
     <textarea class="form-control" cols="40" id="{{ form.description.id_for_label }}" name="description" rows="10">{{ form.description.value|default_if_none:"" }}</textarea>
+  </div>
+  <div class="form-group">
+    <h2 class="form-label-bold">
+      Is the tool internal or is it an external tool available
+      online?
+    </h2>
+
+    <p>
+      Select one of the options below.
+    </p>
+
+    <fieldset>
+      <legend class="visuallyhidden">
+        Is the tool internal or is it an external tool available
+        online?
+      </legend>
+
+      <label for="{{ form.is_external.id_for_label }}_false"
+        class="block-label form-control">
+        <input id="{{ form.is_external.id_for_label }}_false" type="radio" name="is_external" value="False" {% if not form.instance.is_external %}checked="checked"{% endif %} />
+        <span class="heading-small">In-house</span><br />
+        For tools developed by a Dstl employee and hosted within our
+        secure networks.
+      </label>
+
+      <label for="{{ form.is_external.id_for_label }}_true"
+        class="block-label form-control">
+        <input id="{{ form.is_external.id_for_label }}_true" type="radio" name="is_external" value="True" {% if form.instance.is_external %}checked="checked"{% endif %} />
+        <span class="heading-small">External</span><br />
+        For tools developed by an unrelated third party which are
+        available online.
+      </label>
+
+    </fieldset>
   </div>
   <div class="form-group">
     <label class="form-label-bold">
@@ -44,13 +78,13 @@
       <br>
       E.g., "social, geospatial".
     </p>
-    <input class="form-control" id="{{ form.categories.id_for_label }}" value="" maxlength="256" name="categories" type="text">
+    <input class="form-control" id="{{ form.categories.id_for_label }}" value="" maxlength="256" name="categories" type="text" />
   </div>
   <label class="form-label-bold" for="{{ form.destination.id_for_label }}">
     Destination:
   </label>
-  <input id="{{ form.destination.id_for_label }}" value="{{ form.destination.value|default_if_none:"" }}" maxlength="2000" name="destination" type="url">
-  <input type="submit" method="POST" value="Save bookmark" class="button">
+  <input id="{{ form.destination.id_for_label }}" value="{{ form.destination.value|default_if_none:"" }}" maxlength="2000" name="destination" type="url" />
+  <input type="submit" method="POST" value="Save bookmark" class="button" />
 </form>
 
 {% endblock %}
