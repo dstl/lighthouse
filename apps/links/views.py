@@ -1,5 +1,6 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from django.views.generic import DetailView, ListView
+from django.views.generic import CreateView, DetailView, ListView, UpdateView
 from taggit.models import Tag
 
 from .models import Link
@@ -26,67 +27,33 @@ def clean_categories(provided_categories):
     return cleaned_categories
 
 
-def LinkCreate(request):
-    link_form = LinkForm(request.POST or None)
-    all_existing_categories = Tag.objects.all()
+class CategoriesFormMixin(object):
+    def get_context_data(self, **kwargs):
+        context = super(CategoriesFormMixin, self).get_context_data(**kwargs)
+        context['existing_categories'] = Tag.objects.all()
+        return context
 
-    if request.method == "POST":
-        if (link_form.is_valid()):
-            new_link = Link(
-                name=link_form.instance.name,
-                description=link_form.instance.description,
-                destination=link_form.instance.destination,
-                owner=request.user,
-                is_external=link_form.instance.is_external,
-            )
-            new_link.save()
-            provided_categories = link_form.data.getlist('categories')
-            cleaned_categories = clean_categories(provided_categories)
-
-            new_link.categories.set(*cleaned_categories)
-
-            new_link.save()
-
-            return redirect('link-detail', pk=new_link.pk)
-        else:
-            return render(request, "link_form.html", {
-                'form': link_form,
-                'existing_categories': all_existing_categories
-            })
-    else:
-        return render(request, "link_form.html", {
-            'form': link_form,
-            'existing_categories': all_existing_categories
-        })
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        # first save gets us the object in the database (when creating a new
+        # link), as you can't apply tags without a primary key
+        link = form.save()
+        provided_categories = form.data.getlist('categories')
+        cleaned_categories = clean_categories(provided_categories)
+        form.instance.categories.set(*cleaned_categories)
+        link.save()
+        self.object = link
+        return HttpResponseRedirect(self.get_success_url())
 
 
-def LinkEdit(request, pk):
-    link = Link.objects.get(pk=pk)
-    link_form = LinkForm(request.POST or None, instance=link)
+class LinkCreate(CategoriesFormMixin, CreateView):
+    model = Link
+    fields = ['name', 'description', 'destination', 'is_external', 'categories']
 
-    all_existing_categories = Tag.objects.all()
 
-    if request.method == "POST":
-        if (link_form.is_valid()):
-            link.save()
-            provided_categories = link_form.data.getlist('categories')
-            cleaned_categories = clean_categories(provided_categories)
-
-            link.categories.set(*cleaned_categories)
-
-            link.save()
-
-            return redirect('link-detail', pk=link.pk)
-        else:
-            return render(request, "link_form.html", {
-                'form': link_form,
-                'existing_categories': all_existing_categories
-            })
-    else:
-        return render(request, "link_form.html", {
-            'form': link_form,
-            'existing_categories': all_existing_categories
-        })
+class LinkUpdate(CategoriesFormMixin, UpdateView):
+    model = Link
+    fields = ['name', 'description', 'destination', 'is_external', 'categories']
 
 
 class LinkList(ListView):

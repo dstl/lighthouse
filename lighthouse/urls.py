@@ -17,7 +17,7 @@ from django.conf.urls import url
 from django.contrib import admin
 
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from apps.links.views import LinkCreate, LinkDetail, LinkList, LinkEdit
+from apps.links.views import LinkCreate, LinkDetail, LinkList, LinkUpdate
 from apps.users.views import UserCreate, UserDetail, UserList, WhoAmI
 from apps.login.views import LoginView, LoginUser, Logout
 from apps.home.views import Home
@@ -58,12 +58,12 @@ urlpatterns = [
     ),
     url(
         r'^link/(?P<pk>\d+)/edit$',
-        LinkEdit,
+        LinkUpdate.as_view(),
         name='link-edit',
     ),
     url(
         r'^link/new$',
-        LinkCreate,
+        LinkCreate.as_view(),
         name='link-create',
     ),
 ]
