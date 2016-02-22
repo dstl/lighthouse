@@ -7,7 +7,7 @@
       {% for category in categories %}
       <label for="categories-filter-{{ category.name }}">
         <h3>{{ category.name|capfirst }}</h3>
-        <input type="checkbox" id="categories-filter-{{ category.name }}" value="{{ category.name }}" name="categories" />
+        <input type="checkbox" id="categories-filter-{{ category.name }}" value="{{ category.name }}" name="categories" {% if category.name in filtered_categories %}checked="checked"{% endif %} />
       </label>
       {% endfor %}
       <input type="submit" value="Filter" />

@@ -1,6 +1,5 @@
 from django.core.urlresolvers import reverse
 from apps.users.models import User
-from apps.links.models import Link
 from .common import generate_fake_links
 
 from django_webtest import WebTest
@@ -99,6 +98,7 @@ class ListLinksWithCategoriesTest(WebTest):
         form.get('categories', index=0).checked = True
 
         response = form.submit()
+        form = response.form
 
         self.assertEquals(
             len(response.html.findAll('li', {'class': 'link-list-item'})),
@@ -130,5 +130,5 @@ class ListLinksWithCategoriesTest(WebTest):
             )[2].text,
             self.el1.name
         )
-        # Check that only the appropriate links are on the page
-        # Check that the pagination reflects the smaller result set
+
+        self.assertTrue(form.get('categories', index=0).checked)

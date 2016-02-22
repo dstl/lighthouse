@@ -74,6 +74,14 @@ class LinkList(ListView):
         return qs
 
     def get_context_data(self, **kwargs):
+        if 'categories' in self.request.GET:
+            categories_to_filter = self.request.GET['categories']
+            if type(categories_to_filter) == str:
+                categories_to_filter = [categories_to_filter]
+        else:
+            categories_to_filter = []
+
         context = super(LinkList, self).get_context_data(**kwargs)
         context['categories'] = Tag.objects.all()
+        context['filtered_categories'] = categories_to_filter
         return context
