@@ -12,7 +12,7 @@ fi
 pip install flake8
 (( result+=$? ))
 
-flake8 **/*.py --count --statistics
+flake8 . --count --statistics
 (( result+=$? ))
 
 exit $result
