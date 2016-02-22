@@ -17,11 +17,20 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='link',
             name='categories',
-            field=taggit.managers.TaggableManager(blank=True, help_text='A comma-separated list of tags.', through='taggit.TaggedItem', to='taggit.Tag', verbose_name='Tags'),
+            field=taggit.managers.TaggableManager(
+                blank=True,
+                help_text='A comma-separated list of tags.',
+                through='taggit.TaggedItem',
+                to='taggit.Tag',
+                verbose_name='Tags'
+            ),
         ),
         migrations.AlterField(
             model_name='link',
             name='owner',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='users.User'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                to='users.User'
+            ),
         ),
     ]
