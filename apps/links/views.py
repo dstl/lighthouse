@@ -62,12 +62,12 @@ class LinkList(ListView):
 
     def get_queryset(self):
         if 'categories' in self.request.GET:
-            categories_to_filter = self.request.GET['categories']
+            categories_to_filter = dict(self.request.GET)['categories']
             if type(categories_to_filter) == str:
                 categories_to_filter = [categories_to_filter]
             qs = Link.objects.filter(
                 categories__name__in=categories_to_filter
-            ).order_by('id')
+            ).order_by('id').distinct()
         else:
             qs = super(LinkList, self).get_queryset().order_by('id')
         qs = qs.reverse()
@@ -75,7 +75,7 @@ class LinkList(ListView):
 
     def get_context_data(self, **kwargs):
         if 'categories' in self.request.GET:
-            categories_to_filter = self.request.GET['categories']
+            categories_to_filter = dict(self.request.GET)['categories']
             if type(categories_to_filter) == str:
                 categories_to_filter = [categories_to_filter]
         else:

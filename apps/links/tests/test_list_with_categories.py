@@ -132,3 +132,64 @@ class ListLinksWithCategoriesTest(WebTest):
         )
 
         self.assertTrue(form.get('categories', index=0).checked)
+
+    def test_filter_by_multiple_categories(self):
+
+        response = self.app.get(reverse('link-list'))
+
+        form = response.form
+
+        self.assertEquals(
+            form.get('categories', index=0).id, 'categories-filter-mapping'
+        )
+        form.get('categories', index=0).checked = True
+
+        self.assertEquals(
+            form.get('categories', index=2).id, 'categories-filter-geospatial'
+        )
+        form.get('categories', index=2).checked = True
+
+        response = form.submit()
+        form = response.form
+
+        self.assertEquals(
+            len(response.html.findAll('li', {'class': 'link-list-item'})),
+            4
+        )
+
+        self.assertIsNone(response.html.find('ol', {'class': 'pagination'}))
+
+        self.assertEquals(
+            response.html.findAll(
+                'li',
+                {'class': 'link-list-item'}
+            )[0].text,
+            self.el6.name
+        )
+
+        self.assertEquals(
+            response.html.findAll(
+                'li',
+                {'class': 'link-list-item'}
+            )[1].text,
+            self.el4.name
+        )
+
+        self.assertEquals(
+            response.html.findAll(
+                'li',
+                {'class': 'link-list-item'}
+            )[2].text,
+            self.el2.name
+        )
+
+        self.assertEquals(
+            response.html.findAll(
+                'li',
+                {'class': 'link-list-item'}
+            )[3].text,
+            self.el1.name
+        )
+
+        self.assertTrue(form.get('categories', index=0).checked)
+        self.assertTrue(form.get('categories', index=2).checked)
