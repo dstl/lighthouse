@@ -1,10 +1,8 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
 from taggit.models import Tag
 
 from .models import Link
-from .forms import LinkForm
 
 
 class LinkDetail(DetailView):
@@ -48,12 +46,16 @@ class CategoriesFormMixin(object):
 
 class LinkCreate(CategoriesFormMixin, CreateView):
     model = Link
-    fields = ['name', 'description', 'destination', 'is_external', 'categories']
+    fields = [
+        'name', 'description', 'destination', 'is_external', 'categories'
+    ]
 
 
 class LinkUpdate(CategoriesFormMixin, UpdateView):
     model = Link
-    fields = ['name', 'description', 'destination', 'is_external', 'categories']
+    fields = [
+        'name', 'description', 'destination', 'is_external', 'categories'
+    ]
 
 
 class LinkList(ListView):

@@ -1,3 +1,4 @@
+#!/bin/bash
 dot="$(cd "$(dirname "$0")"; pwd)"
 cd "$dot/../"
 result=0

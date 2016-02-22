@@ -1,3 +1,4 @@
+#!/bin/bash
 dot="$(cd "$(dirname "$0")"; pwd)"
 cd "$dot/../"
 result=0
@@ -11,7 +12,7 @@ fi
 pip install flake8
 (( result+=$? ))
 
-flake8 **/*.py --count --statistics
+flake8 . --count --statistics --exclude="$VIRTUAL_ENV"
 (( result+=$? ))
 
 exit $result

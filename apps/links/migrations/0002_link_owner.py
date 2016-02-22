@@ -17,7 +17,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='link',
             name='owner',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.PROTECT, to='users.User'),
+            field=models.ForeignKey(
+                default=1,
+                on_delete=django.db.models.deletion.PROTECT,
+                to='users.User'
+            ),
             preserve_default=False,
         ),
     ]
