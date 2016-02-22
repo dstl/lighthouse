@@ -1,3 +1,4 @@
+#!/bin/bash
 result=0
 virtualenv_location="${VIRTUALENV_LOCATION:-$HOME/.venv/lighthouse}"
 
