@@ -12,7 +12,7 @@ fi
 pip install flake8
 (( result+=$? ))
 
-flake8 . --count --statistics
+flake8 . --count --statistics --exclude="$VIRTUAL_ENV"
 (( result+=$? ))
 
 exit $result
