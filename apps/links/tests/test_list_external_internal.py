@@ -103,3 +103,22 @@ class ListLinksWithExternalityTest(WebTest):
                 {'class': 'link-list-item'}
             )[1].text,
         )
+
+    def test_external_internal_checkboxes(self):
+        response = self.app.get(reverse('link-list'))
+
+        filterEl = response.html.find(id='categories-filter')
+
+        externalLbl = filterEl.find(attrs={'for': 'types-filter-external'})
+        externalCheckbox = filterEl.find(id='types-filter-external')
+        self.assertIsNotNone(externalLbl)
+        self.assertIsNotNone(externalCheckbox)
+        self.assertEquals(externalCheckbox.attrs['value'], 'external')
+        self.assertFalse('checked' in externalCheckbox.attrs)
+
+        internalLbl = filterEl.find(attrs={'for': 'types-filter-internal'})
+        internalCheckbox = filterEl.find(id='types-filter-internal')
+        self.assertIsNotNone(internalLbl)
+        self.assertIsNotNone(internalCheckbox)
+        self.assertEquals(internalCheckbox.attrs['value'], 'internal')
+        self.assertFalse('checked' in internalCheckbox.attrs)

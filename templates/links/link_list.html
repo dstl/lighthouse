@@ -4,12 +4,22 @@
 <div class="grid-row">
   <div id="categories-filter" class="column-one-third">
     <form method="get" action="">
+      {# Category filters #}
       {% for category in categories %}
       <label for="categories-filter-{{ category.name }}">
         <h3>{{ category.name|capfirst }}</h3>
         <input type="checkbox" id="categories-filter-{{ category.name }}" value="{{ category.name }}" name="categories" {% if category.name in filtered_categories %}checked="checked"{% endif %} />
       </label>
       {% endfor %}
+      {# Internal/external filters #}
+      <label for="types-filter-external">
+        <h3>External</h3>
+        <input type="checkbox" id="types-filter-external" value="external" name="types" />
+      </label>
+      <label for="types-filter-internal">
+        <h3>Internal</h3>
+        <input type="checkbox" id="types-filter-internal" value="internal" name="types" />
+      </label>
       <input type="submit" value="Filter" />
     </form>
   </div>
