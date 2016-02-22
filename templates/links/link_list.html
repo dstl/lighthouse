@@ -14,11 +14,11 @@
       {# Internal/external filters #}
       <label for="types-filter-external">
         <h3>External</h3>
-        <input type="checkbox" id="types-filter-external" value="external" name="types" />
+        <input type="checkbox" id="types-filter-external" value="external" name="types" {% if 'external' in filtered_types %}checked="checked"{% endif %} />
       </label>
       <label for="types-filter-internal">
         <h3>Internal</h3>
-        <input type="checkbox" id="types-filter-internal" value="internal" name="types" />
+        <input type="checkbox" id="types-filter-internal" value="internal" name="types" {% if 'internal' in filtered_types %}checked="checked"{% endif %} />
       </label>
       <input type="submit" value="Filter" />
     </form>

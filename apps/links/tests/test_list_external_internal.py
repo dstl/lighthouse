@@ -13,16 +13,16 @@ class ListLinksWithExternalityTest(WebTest):
             email='fake@dstl.gov.uk')
         self.logged_in_user.save()
 
-        self.el1, self.el2 = generate_fake_links(
+        self.el1, self.el2, self.el3 = generate_fake_links(
             self.logged_in_user,
-            count=2,
+            count=3,
             is_external=True
         )
 
-        self.el3, self.el4, self.el5 = generate_fake_links(
+        self.el4, self.el5 = generate_fake_links(
             self.logged_in_user,
-            start=3,
-            count=3
+            start=4,
+            count=2
         )
 
         # Note: the generator expects to send out a tuple, so allow that.
@@ -122,3 +122,173 @@ class ListLinksWithExternalityTest(WebTest):
         self.assertIsNotNone(internalCheckbox)
         self.assertEquals(internalCheckbox.attrs['value'], 'internal')
         self.assertFalse('checked' in internalCheckbox.attrs)
+
+    def test_external_checkboxes_filter(self):
+        response = self.app.get(reverse('link-list'))
+
+        form = response.form
+
+        self.assertEquals(
+            form.get('types', index=0).id, 'types-filter-external'
+        )
+        form.get('types', index=0).checked = True
+
+        response = form.submit()
+        form = response.form
+
+        self.assertEquals(
+            len(response.html.findAll('li', {'class': 'link-list-item'})),
+            4
+        )
+
+        self.assertIsNone(response.html.find('ol', {'class': 'pagination'}))
+
+        self.assertIn(
+            self.el6.name,
+            response.html.findAll(
+                'li',
+                {'class': 'link-list-item'}
+            )[0].text,
+        )
+
+        self.assertIn(
+            self.el3.name,
+            response.html.findAll(
+                'li',
+                {'class': 'link-list-item'}
+            )[1].text,
+        )
+
+        self.assertIn(
+            self.el2.name,
+            response.html.findAll(
+                'li',
+                {'class': 'link-list-item'}
+            )[2].text,
+        )
+
+        self.assertIn(
+            self.el1.name,
+            response.html.findAll(
+                'li',
+                {'class': 'link-list-item'}
+            )[3].text,
+        )
+
+        self.assertTrue(form.get('types', index=0).checked)
+        self.assertFalse(form.get('types', index=1).checked)
+
+    def test_internal_checkboxes_filter(self):
+        response = self.app.get(reverse('link-list'))
+
+        form = response.form
+
+        self.assertEquals(
+            form.get('types', index=1).id, 'types-filter-internal'
+        )
+        form.get('types', index=1).checked = True
+
+        response = form.submit()
+        form = response.form
+
+        self.assertEquals(
+            len(response.html.findAll('li', {'class': 'link-list-item'})),
+            3
+        )
+
+        self.assertIsNone(response.html.find('ol', {'class': 'pagination'}))
+
+        self.assertIn(
+            self.el7.name,
+            response.html.findAll(
+                'li',
+                {'class': 'link-list-item'}
+            )[0].text,
+        )
+
+        self.assertIn(
+            self.el5.name,
+            response.html.findAll(
+                'li',
+                {'class': 'link-list-item'}
+            )[1].text,
+        )
+
+        self.assertIn(
+            self.el4.name,
+            response.html.findAll(
+                'li',
+                {'class': 'link-list-item'}
+            )[2].text,
+        )
+
+        self.assertFalse(form.get('types', index=0).checked)
+        self.assertTrue(form.get('types', index=1).checked)
+
+    def test_internal_and_external_checkboxes_filter(self):
+        response = self.app.get(reverse('link-list'))
+
+        form = response.form
+
+        self.assertEquals(
+            form.get('types', index=0).id, 'types-filter-external'
+        )
+        form.get('types', index=0).checked = True
+
+        self.assertEquals(
+            form.get('types', index=1).id, 'types-filter-internal'
+        )
+        form.get('types', index=1).checked = True
+
+        response = form.submit()
+        form = response.form
+
+        self.assertEquals(
+            len(response.html.findAll('li', {'class': 'link-list-item'})),
+            5
+        )
+
+        self.assertIsNotNone(response.html.find('ol', {'class': 'pagination'}))
+
+        self.assertIn(
+            self.el7.name,
+            response.html.findAll(
+                'li',
+                {'class': 'link-list-item'}
+            )[0].text,
+        )
+
+        self.assertIn(
+            self.el6.name,
+            response.html.findAll(
+                'li',
+                {'class': 'link-list-item'}
+            )[1].text,
+        )
+
+        self.assertIn(
+            self.el5.name,
+            response.html.findAll(
+                'li',
+                {'class': 'link-list-item'}
+            )[2].text,
+        )
+
+        self.assertIn(
+            self.el4.name,
+            response.html.findAll(
+                'li',
+                {'class': 'link-list-item'}
+            )[3].text,
+        )
+
+        self.assertIn(
+            self.el3.name,
+            response.html.findAll(
+                'li',
+                {'class': 'link-list-item'}
+            )[4].text,
+        )
+
+        self.assertTrue(form.get('types', index=0).checked)
+        self.assertTrue(form.get('types', index=1).checked)
