@@ -2,3 +2,5 @@
 *.swp
 Vagrantfile
 venv
+.sass-cache
+sass/CACHE
