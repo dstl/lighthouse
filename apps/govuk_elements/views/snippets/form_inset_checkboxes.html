@@ -1,0 +1,33 @@
+<h1 class="heading-medium">
+  What is your nationality?
+</h1>
+<p>
+  Select all options that are relevant to you.
+</p>
+
+<form>
+  <fieldset>
+
+    <legend class="visuallyhidden">What is your nationality?</legend>
+
+    <div class="form-group">
+      <label class="block-label" for="nationalities-british">
+        <input id="nationalities-british" name="nationalities" type="checkbox" value="British">
+        British (including English, Scottish, Welsh and Northern Irish)
+      </label>
+      <label class="block-label" for="nationalities-irish">
+        <input id="nationalities-irish" name="nationalities" type="checkbox" value="Irish">
+        Irish
+      </label>
+      <label class="block-label" for="nationalities-other" data-target="example-different-country">
+        <input id="nationalities-other" name="nationalities" type="checkbox" value="Citizen of a different country">
+        Citizen of a different country
+      </label>
+      <div class="panel panel-border-narrow js-hidden" id="example-different-country">
+        <label class="form-label" for="nationalities-other-country">Country name</label>
+        <input class="form-control" type="text" id="nationalities-other-country" name="nationalities-other-country">
+      </div>
+    </div>
+
+  </fieldset>
+</form>

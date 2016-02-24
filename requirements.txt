@@ -8,3 +8,5 @@ WebOb==1.5.1                        # MIT
 WebTest==2.0.20                     # MIT
 wheel==0.24.0                       # MIT
 django-taggit==0.18.0               # BSD
+django-compressor==2.0              # MIT
+django-libsass==0.6.0               # BSD

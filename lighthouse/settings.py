@@ -46,7 +46,9 @@ INSTALLED_APPS = [
     'apps.users',
     'apps.govuk_template',
 
-    'taggit'
+    'taggit',
+
+    'compressor',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -124,6 +126,26 @@ USE_L10N = True
 
 USE_TZ = True
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "apps/govuk_frontend_toolkit/stylesheets"),
+    os.path.join(BASE_DIR, "apps/govuk_elements/public/sass")
+]
+
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder'
+]
+
+COMPRESS_ROOT = os.path.join(BASE_DIR, "sass")
+
+COMPRESS_ENABLED = True
+
+# SASS
+COMPRESS_PRECOMPILERS = (
+    ('text/x-scss', 'django_libsass.SassCompiler'),
+)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
@@ -133,10 +155,6 @@ STATIC_URL = '/static/'
 # Enable pretty and useful colourful tests
 
 TEST_RUNNER = 'rainbowtests.test.runner.RainbowDiscoverRunner'
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static")
-]
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 
