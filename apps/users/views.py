@@ -34,9 +34,12 @@ class OrganisationCreate(CreateView):
     model = Organisation
     fields = ['name']
 
-    def post(self, request, *args, **kwargs):
-        super(OrganisationCreate, self).post(request, *args, **kwargs)
-        return HttpResponseRedirect(reverse('organisation-list'))
+    def get_success_url(self):
+        return reverse('organisation-list')
+
+    def form_valid(self, form):
+        super(OrganisationCreate, self).form_valid(form)
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class OrganisationDetail(DetailView):
