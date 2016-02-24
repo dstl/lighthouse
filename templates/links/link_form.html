@@ -16,14 +16,20 @@
   {% csrf_token %}
   <div class="form-group">
     <label class="form-label-bold" for="{{ form.name.id_for_label }}">
-      Name:
+      Tool name
     </label>
+    <p class="form-hint">
+      For example, 'Google Maps'
+    </p>
     <input class="form-control" id="{{ form.name.id_for_label }}" value="{{ form.name.value|default_if_none:"" }}" maxlength="256" name="name" type="text" />
   </div>
   <div class="form-group">
     <label class="form-label-bold" for="{{ form.description.id_for_label }}">
-      Description:
+      Description of tool
     </label>
+    <p class="form-hint">
+      Describe what the tool is and why it's needed.
+    </p>
     <textarea class="form-control" cols="40" id="{{ form.description.id_for_label }}" name="description" rows="10">{{ form.description.value|default_if_none:"" }}</textarea>
   </div>
   <div class="form-group">
@@ -45,7 +51,7 @@
       <label for="{{ form.is_external.id_for_label }}_false"
         class="block-label form-control">
         <input id="{{ form.is_external.id_for_label }}_false" type="radio" name="is_external" value="False" {% if not form.instance.is_external %}checked="checked"{% endif %} />
-        <span class="heading-small">In-house</span><br />
+        <span class="heading-small">Internal</span><br />
         For tools developed by a Dstl employee and hosted within our
         secure networks.
       </label>
@@ -80,10 +86,17 @@
     </p>
     <input class="form-control" id="{{ form.categories.id_for_label }}" value="" maxlength="256" name="categories" type="text" />
   </div>
-  <label class="form-label-bold" for="{{ form.destination.id_for_label }}">
-    Destination:
-  </label>
-  <input id="{{ form.destination.id_for_label }}" value="{{ form.destination.value|default_if_none:"" }}" maxlength="2000" name="destination" type="url" />
+  <div class="form-group">
+    <label class="form-label-bold" for="{{ form.destination.id_for_label }}">
+      Destination
+    </label>
+    <p class="form-hint">
+      A URL to access the tool from a device connected to the Dstl network.
+      <br>
+      For example, 'https://maps.google.com/'
+    </p>
+    <input class="form-control" id="{{ form.destination.id_for_label }}" value="{{ form.destination.value|default_if_none:"" }}" maxlength="2000" name="destination" type="url" />
+  </div>
   <input type="submit" method="POST" value="Save bookmark" class="button" />
 </form>
 
