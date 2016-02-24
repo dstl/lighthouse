@@ -1,9 +1,23 @@
+# apps/users/views.py
 from django.views.generic import CreateView, DetailView, ListView, TemplateView
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
-from .models import User, Organisation
+
+from .models import User, Organisation, Team
+from .forms import TeamForm, OrganisationForm
+
+"""
+    The user is doing a lot of work, and we are keeping it all in this one
+    file, 'cause they are all connected. We may break them out at some point.
+    Anyway, here's the stuff that handles the views for...
+    Users, Team, Organsations.
+
+"""
 
 
+###############################################################################
+#
+#   USERS
+#
 class UserDetail(DetailView):
     model = User
 
@@ -26,20 +40,40 @@ class WhoAmI(TemplateView):
         return context
 
 
+###############################################################################
+#
+#   TEAMS
+#
+class TeamList(ListView):
+    model = Team
+
+
+class TeamCreate(CreateView):
+    model = Team
+    form_class = TeamForm
+
+    def get_success_url(self):
+        return reverse('team-list')
+
+
+class TeamDetail(DetailView):
+    model = Team
+
+
+###############################################################################
+#
+#   ORGANISATIONS
+#
 class OrganisationList(ListView):
     model = Organisation
 
 
 class OrganisationCreate(CreateView):
     model = Organisation
-    fields = ['name']
+    form_class = OrganisationForm
 
     def get_success_url(self):
         return reverse('organisation-list')
-
-    def form_valid(self, form):
-        super(OrganisationCreate, self).form_valid(form)
-        return HttpResponseRedirect(self.get_success_url())
 
 
 class OrganisationDetail(DetailView):

@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+  <ol>
+    {% for team in object_list %}
+      <li><a href='{% url "team-detail" team.pk %}'>{{team.name}}</a></li>
+    {% endfor %}
+  </ol>
+
+  <p>
+  <a href="{% url 'team-create' %}">Add new team.</a>
+  </p>
+
+{% endblock %}
