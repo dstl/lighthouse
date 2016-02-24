@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+  <ol>
+    {% for organisation in object_list %}
+      <li><a href='{% url "organisation-detail" organisation.pk %}'>{{organisation.name}}</a></li>
+    {% endfor %}
+  </ol>
+
+  <p>
+  <a href="{% url 'organisation-create' %}">Add new organisation.</a>
+  </p>
+
+{% endblock %}

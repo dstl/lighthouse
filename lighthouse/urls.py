@@ -19,6 +19,8 @@ from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from apps.links.views import LinkCreate, LinkDetail, LinkList, LinkUpdate
 from apps.users.views import UserCreate, UserDetail, UserList, WhoAmI
+from apps.users.views import OrganisationCreate, OrganisationDetail, \
+    OrganisationList
 from apps.login.views import LoginView, LoginUser, Logout
 from apps.home.views import Home
 
@@ -65,6 +67,21 @@ urlpatterns = [
         r'^links/new/?$',
         LinkCreate.as_view(),
         name='link-create',
+    ),
+    url(
+        r'^organisations/?$',
+        OrganisationList.as_view(),
+        name='organisation-list',
+    ),
+    url(
+        r'^organisations/new/?$',
+        OrganisationCreate.as_view(),
+        name='organisation-create',
+    ),
+    url(
+        r'^organisations/(?P<pk>\d+)/?$',
+        OrganisationDetail.as_view(),
+        name='organisation-detail',
     ),
 ]
 urlpatterns += staticfiles_urlpatterns()
