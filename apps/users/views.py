@@ -1,6 +1,7 @@
 from django.views.generic import CreateView, DetailView, ListView, TemplateView
-
-from .models import User
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
+from .models import User, Organisation
 
 
 class UserDetail(DetailView):
@@ -23,3 +24,20 @@ class WhoAmI(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(WhoAmI, self).get_context_data(**kwargs)
         return context
+
+
+class OrganisationList(ListView):
+    model = Organisation
+
+
+class OrganisationCreate(CreateView):
+    model = Organisation
+    fields = ['name']
+
+    def post(self, request, *args, **kwargs):
+        super(OrganisationCreate, self).post(request, *args, **kwargs)
+        return HttpResponseRedirect(reverse('organisation-list'))
+
+
+class OrganisationDetail(DetailView):
+    model = Organisation

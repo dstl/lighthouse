@@ -19,3 +19,10 @@ class User(models.Model):
 
     def is_anonymous(self):
         return False
+
+
+class Organisation(models.Model):
+    name = models.CharField(max_length=256, unique=True)
+
+    def get_absolute_url(self):
+        return reverse('organisation-detail', kwargs={'pk': self.pk})
