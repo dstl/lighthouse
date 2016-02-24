@@ -69,17 +69,17 @@ urlpatterns = [
         name='link-create',
     ),
     url(
-        r'^organisations$',
+        r'^organisations/?$',
         OrganisationList.as_view(),
         name='organisation-list',
     ),
     url(
-        r'^organisation/new$',
+        r'^organisations/new/?$',
         OrganisationCreate.as_view(),
         name='organisation-create',
     ),
     url(
-        r'^organisation/(?P<pk>\d+)$',
+        r'^organisations/(?P<pk>\d+)/?$',
         OrganisationDetail.as_view(),
         name='organisation-detail',
     ),
