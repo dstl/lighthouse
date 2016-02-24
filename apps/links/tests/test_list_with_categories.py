@@ -107,28 +107,28 @@ class ListLinksWithCategoriesTest(WebTest):
 
         self.assertIsNone(response.html.find('ol', {'class': 'pagination'}))
 
-        self.assertEquals(
+        self.assertIn(
+            self.el6.name,
             response.html.findAll(
                 'li',
                 {'class': 'link-list-item'}
             )[0].text,
-            self.el6.name
         )
 
-        self.assertEquals(
+        self.assertIn(
+            self.el2.name,
             response.html.findAll(
                 'li',
                 {'class': 'link-list-item'}
             )[1].text,
-            self.el2.name
         )
 
-        self.assertEquals(
+        self.assertIn(
+            self.el1.name,
             response.html.findAll(
                 'li',
                 {'class': 'link-list-item'}
             )[2].text,
-            self.el1.name
         )
 
         self.assertTrue(form.get('categories', index=0).checked)
@@ -159,36 +159,36 @@ class ListLinksWithCategoriesTest(WebTest):
 
         self.assertIsNone(response.html.find('ol', {'class': 'pagination'}))
 
-        self.assertEquals(
+        self.assertIn(
+            self.el6.name,
             response.html.findAll(
                 'li',
                 {'class': 'link-list-item'}
             )[0].text,
-            self.el6.name
         )
 
-        self.assertEquals(
+        self.assertIn(
+            self.el4.name,
             response.html.findAll(
                 'li',
                 {'class': 'link-list-item'}
             )[1].text,
-            self.el4.name
         )
 
-        self.assertEquals(
+        self.assertIn(
+            self.el2.name,
             response.html.findAll(
                 'li',
                 {'class': 'link-list-item'}
             )[2].text,
-            self.el2.name
         )
 
-        self.assertEquals(
+        self.assertIn(
+            self.el1.name,
             response.html.findAll(
                 'li',
                 {'class': 'link-list-item'}
             )[3].text,
-            self.el1.name
         )
 
         self.assertTrue(form.get('categories', index=0).checked)

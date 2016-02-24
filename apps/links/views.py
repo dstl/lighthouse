@@ -63,6 +63,7 @@ class LinkList(ListView):
     paginate_by = 5
 
     def get_queryset(self):
+        qs = super(LinkList, self).get_queryset().order_by('id')
         if 'categories' in self.request.GET:
             categories_to_filter = dict(self.request.GET)['categories']
             if type(categories_to_filter) == str:
@@ -70,8 +71,18 @@ class LinkList(ListView):
             qs = Link.objects.filter(
                 categories__name__in=categories_to_filter
             ).order_by('id').distinct()
-        else:
-            qs = super(LinkList, self).get_queryset().order_by('id')
+
+        if 'types' in self.request.GET:
+            types_to_filter = self.request.GET.getlist('types')
+            if type(types_to_filter) == str:
+                types_to_filter = [types_to_filter]
+            if ('internal' in types_to_filter and
+                    'external' not in types_to_filter):
+                qs = qs.exclude(is_external=True)
+            elif ('internal' not in types_to_filter and
+                    'external' in types_to_filter):
+                qs = qs.exclude(is_external=False)
+
         qs = qs.reverse()
         return qs
 
@@ -83,7 +94,10 @@ class LinkList(ListView):
         else:
             categories_to_filter = []
 
+        types_to_filter = self.request.GET.getlist('types', [])
+
         context = super(LinkList, self).get_context_data(**kwargs)
         context['categories'] = Tag.objects.all()
         context['filtered_categories'] = categories_to_filter
+        context['filtered_types'] = types_to_filter
         return context

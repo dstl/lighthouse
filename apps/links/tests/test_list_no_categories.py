@@ -36,20 +36,20 @@ class ListLinksWithNoCategoriesTest(WebTest):
 
         self.assertIsNone(response.html.find('ol', {'class': 'pagination'}))
 
-        self.assertEquals(
+        self.assertIn(
+            self.existing_link_2.name,
             response.html.findAll(
                 'li',
                 {'class': 'link-list-item'}
             )[0].text,
-            self.existing_link_2.name
         )
 
-        self.assertEquals(
+        self.assertIn(
+            self.existing_link_1.name,
             response.html.findAll(
                 'li',
                 {'class': 'link-list-item'}
             )[1].text,
-            self.existing_link_1.name
         )
 
     def test_two_pages(self):
@@ -68,42 +68,42 @@ class ListLinksWithNoCategoriesTest(WebTest):
 
         self.assertIsNotNone(response.html.find('ol', {'class': 'pagination'}))
 
-        self.assertEquals(
+        self.assertIn(
+            el6.name,
             response.html.findAll(
                 'li',
                 {'class': 'link-list-item'}
             )[0].text,
-            el6.name
         )
 
-        self.assertEquals(
+        self.assertIn(
+            el5.name,
             response.html.findAll(
                 'li',
                 {'class': 'link-list-item'}
             )[1].text,
-            el5.name
         )
 
-        self.assertEquals(
+        self.assertIn(
+            el4.name,
             response.html.findAll(
                 'li',
                 {'class': 'link-list-item'}
             )[2].text,
-            el4.name
         )
 
-        self.assertEquals(
+        self.assertIn(
+            el3.name,
             response.html.findAll(
                 'li',
                 {'class': 'link-list-item'}
             )[3].text,
-            el3.name
         )
 
-        self.assertEquals(
+        self.assertIn(
+            self.existing_link_2.name,
             response.html.findAll(
                 'li',
                 {'class': 'link-list-item'}
             )[4].text,
-            self.existing_link_2.name
         )
