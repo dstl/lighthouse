@@ -55,10 +55,11 @@
 
 // Lighthouse-specific stuff
 @import "forms";
-@import "headings";
+@import "buttons";
 @import "list";
 @import "pagination";
-@import "buttons";
+@import "headings";
+@import "header";
 
 #content {
 	width:960px;

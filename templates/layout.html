@@ -33,10 +33,5 @@
 {% endblock %}
 
 {% block proposition_header %}
-<div style="color:white">
-{% if request.user.is_authenticated %}
-{{ request.user.fullName }} | <a href="{% url 'logout' %}">logout</a>
-{% endif %}
-</div>
-
+{% include "includes/navigation.html" %}
 {% endblock %}

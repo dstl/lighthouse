@@ -84,6 +84,11 @@
             </a>
           </div>
           {% block inside_header %}{% endblock %}
+          <div class="user-name">
+            {% if request.user.is_authenticated %}
+            {{ request.user.fullName }} | <a href="{% url 'logout' %}">Sign out</a>
+            {% endif %}
+          </div>
         </div>
         {% block proposition_header %}{% endblock %}
       </div>
