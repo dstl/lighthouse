@@ -17,7 +17,8 @@ from django.conf.urls import url
 from django.contrib import admin
 
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from apps.links.views import LinkCreate, LinkDetail, LinkList, LinkUpdate
+from apps.links.views import LinkCreate, LinkDetail, LinkList, LinkUpdate, \
+    LinkRedirect
 from apps.users.views import UserCreate, UserDetail, UserList, WhoAmI
 from apps.users.views import OrganisationCreate, \
     OrganisationDetail, \
@@ -61,6 +62,11 @@ urlpatterns = [
         r'^links/(?P<pk>\d+)/?$',
         LinkDetail.as_view(),
         name='link-detail',
+    ),
+    url(
+        r'^links/(?P<pk>\d+)/redirect/??$',
+        LinkRedirect.as_view(),
+        name='link-redirect',
     ),
     url(
         r'^links/(?P<pk>\d+)/edit/?$',

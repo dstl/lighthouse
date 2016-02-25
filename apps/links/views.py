@@ -9,6 +9,19 @@ class LinkDetail(DetailView):
     model = Link
 
 
+class LinkRedirect(DetailView):
+    model = Link
+    template_name_suffix = '_redirect'
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object.is_external:
+            context = self.get_context_data(object=self.object)
+            return self.render_to_response(context)
+        else:
+            return HttpResponseRedirect(self.object.destination)
+
+
 def clean_categories(provided_categories):
     cleaned_categories = []
     for cat in [cat.strip(' ,') for cat in provided_categories]:

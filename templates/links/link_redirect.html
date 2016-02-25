@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block grid_content %}
+
+<main id="content" role="main">
+<h1 class="form-title heading-large">{{link.name}} is a tool hosted outside of the Dstl network</h1>
+<p>
+  By clicking the "Yes, take me" button below your browser will be redirected
+  to <strong>{{link.destination}}</strong>.
+  <br>
+  Are you sure you want to visit this tool?
+</p>
+<div class="form-group">
+  <a id="cancel_button" href="{% url "link-detail" link.pk %}" class="button button-secondary">Cancel</a>
+  <a id="confirm_redirect_button" href="{{link.destination}}" class="button">Yes, take me</a>
+</div>
+</main>
+
+{% endblock %}

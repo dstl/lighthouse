@@ -5,7 +5,8 @@
 <h1>{{link.name}}</h1>
 <p id="link_owner">{{link.owner.fullName}}</p>
 <p>{{link.description}}</p>
-<p><a href='{{link.destination}}'>Go there</a></p>
+<p><a id="link_follow_button" href="{% url "link-redirect" link.pk %}">Go there</a></p>
+<p><a id="link_follow_anchor" href="{{link.destination}}">{{link.destination}}</a></p>
 {% if link.is_external %}
 <p>External tool</p>
 {% else %}
