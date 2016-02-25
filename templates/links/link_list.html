@@ -36,7 +36,7 @@
     </form>
   </div>
   <div class="column-two-thirds">
-    <h2 class="link-list-header heading-medium heading-snug-top">Tools</h2>
+    <h2 id="tools-header" class="link-list-header heading-medium heading-snug-top">Showing page {{ page_obj.number }} of {{ paginator.num_pages }}</h2>
     <ol>
       {% for link in object_list %}
         <li class="link-list-item">
@@ -58,7 +58,7 @@
     {% if paginator.num_pages > 1 %}
       <ol class="pagination">
         {% if page_obj.has_previous %}
-            <li><a class="button" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+            <li><a class="button" id="page-link-prev" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
         {% else %}
             <li><span class="button button-disabled">Previous</span></li>
         {% endif %}
@@ -70,7 +70,7 @@
           {% endif %}
         {% endfor %}
         {% if page_obj.has_next %}
-            <li><a class="button" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+            <li><a class="button" id="page-link-next" href="?page={{ page_obj.next_page_number }}">Next</a></li>
         {% else %}
             <li><span class="button button-disabled">Next</span></li>
         {% endif %}
