@@ -36,7 +36,12 @@
     </form>
   </div>
   <div class="column-two-thirds">
+    {% if object_list %}
     <h2 id="tools-header" class="link-list-header heading-medium heading-snug-top">Showing page {{ page_obj.number }} of {{ paginator.num_pages }}</h2>
+    {% else %}
+    <h2 id="tools-header">No results found.</h2>
+    {% endif %}
+    {% if object_list %}
     <ol>
       {% for link in object_list %}
         <li class="link-list-item">
@@ -52,7 +57,15 @@
         </li>
       {% endfor %}
     </ol>
-
+    {% else %}
+    <div id="no-results-message">
+      <p class="heading-small">
+        None of the published tools match the filters you applied.
+        <br>
+        Try removing some, or being less specific.
+      </p>
+    </div>
+    {% endif %}
     <hr>
 
     {% if paginator.num_pages > 1 %}
