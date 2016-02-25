@@ -1,33 +1,46 @@
 {% extends "layout.html" %}
 
 {% block grid_content %}
+<h1 class="heading-large">Search for tools</h1>
+
 <div class="grid-row">
-  <div id="categories-filter" class="column-one-third">
+  <div id="categories-filter" class="column-third">
     <form method="get" action="">
+      <h2 class="filter-controls-header heading-medium heading-snug-top">Tool categories</h2>
       {# Category filters #}
-      {% for category in categories %}
-      <label for="categories-filter-{{ category.name }}">
-        <h3>{{ category.name|capfirst }}</h3>
-        <input type="checkbox" id="categories-filter-{{ category.name }}" value="{{ category.name }}" name="categories" {% if category.name in filtered_categories %}checked="checked"{% endif %} />
-      </label>
-      {% endfor %}
-      {# Internal/external filters #}
-      <label for="types-filter-external">
-        <h3>External</h3>
-        <input type="checkbox" id="types-filter-external" value="external" name="types" {% if 'external' in filtered_types %}checked="checked"{% endif %} />
-      </label>
-      <label for="types-filter-internal">
-        <h3>Internal</h3>
-        <input type="checkbox" id="types-filter-internal" value="internal" name="types" {% if 'internal' in filtered_types %}checked="checked"{% endif %} />
-      </label>
-      <input type="submit" value="Filter" />
+      <div class="form-group">
+        <input type="submit" value="Filter using selections below" class="button" />
+      </div>
+      <div class="form-group">
+        {% for category in categories %}
+        <label for="categories-filter-{{ category.name }}" class="block-label block-label-small">
+          <h3>{{ category.name|capfirst }}</h3>
+          <input type="checkbox" id="categories-filter-{{ category.name }}" value="{{ category.name }}" name="categories" {% if category.name in filtered_categories %}checked="checked"{% endif %} />
+        </label>
+        {% endfor %}
+      </div>
+      <div class="form-group">
+        {# Internal/external filters #}
+        <label for="types-filter-external" class="block-label block-label-small">
+          <h3>External</h3>
+          <input type="checkbox" id="types-filter-external" value="external" name="types" {% if 'external' in filtered_types %}checked="checked"{% endif %} />
+        </label>
+        <label for="types-filter-internal" class="block-label block-label-small">
+          <h3>Internal</h3>
+          <input type="checkbox" id="types-filter-internal" value="internal" name="types" {% if 'internal' in filtered_types %}checked="checked"{% endif %} />
+        </label>
+      </div>
+      <div class="form-group">
+        <input type="submit" value="Filter" class="button" />
+      </div>
     </form>
   </div>
   <div class="column-two-thirds">
+    <h2 class="link-list-header heading-medium heading-snug-top">Tools</h2>
     <ol>
       {% for link in object_list %}
         <li class="link-list-item">
-          <a href='{% url "link-detail" link.pk %}'>{{ link.name }}</a>
+          <h3 class="inline"><a href='{% url "link-detail" link.pk %}'>{{ link.name }}</a></h3>
           {% if link.is_external %}
           <span class="is-external-label">External</span>
           {% else %}
@@ -44,9 +57,9 @@
       <ol class="pagination">
         {% for page in paginator.page_range %}
           {% if page == page_obj.number %}
-            <li><em>{{ page }}</em></li>
+            <li><span class="button button-disabled">{{ page }}</span></li>
           {% else %}
-            <li><a href='?page={{ page }}'>{{ page }}</a></li>
+            <li><a href='?page={{ page }}' class="button">{{ page }}</a></li>
           {% endif %}
         {% endfor %}
       </ol>

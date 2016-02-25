@@ -1,0 +1,16 @@
+.block-label-small {
+  @extend .block-label;
+  // background:transparent;
+  // border:none;
+  padding: (10px $gutter-half $gutter-half /2 $gutter * 1.1);
+
+  input {
+    position: absolute;
+    top: 8px;
+    left: $gutter-half / 2;
+  }
+}
+
+.block-label-small:last-child {
+  margin-bottom: 0;
+}

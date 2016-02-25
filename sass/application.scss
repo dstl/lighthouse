@@ -53,6 +53,13 @@
 @import "elements/phase-banner";                  // Alpha and beta banners and tags
 @import "elements/components";                    // GOV.UK prefixed styles - blue highlighted box
 
+// Lighthouse-specific stuff
+@import "forms";
+@import "headings";
+@import "list";
+@import "pagination";
+@import "buttons";
+
 #content {
 	width:960px;
 	margin:0 auto;

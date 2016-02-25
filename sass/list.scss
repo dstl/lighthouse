@@ -1,0 +1,18 @@
+.link-list-item {
+  margin-bottom: 1.875em;
+  position: relative;
+  h3 {
+    @extend .heading-medium;
+    margin-bottom:0;
+    z-index: 10;
+    position: relative;
+  }
+  h3.inline {
+    margin-top: 0 !important;
+    display: inline-block;
+  }
+  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+}
