@@ -41,11 +41,13 @@
       {% for link in object_list %}
         <li class="link-list-item">
           <h3 class="inline"><a href='{% url "link-detail" link.pk %}'>{{ link.name }}</a></h3>
-          {% if link.is_external %}
-          <span class="is-external-label">External</span>
-          {% else %}
-          <span class="is-external-label">Internal</span>
-          {% endif %}
+          <span class="categories">
+            {% if link.is_external %}
+            <span class="external is-external-label">External</span>
+            {% else %}
+            <span class="internal is-external-label">Internal</span>
+            {% endif %}
+          </span>
         </li>
         <p>{{ link.description }}</p>
       {% endfor %}

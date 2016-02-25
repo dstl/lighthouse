@@ -16,3 +16,31 @@
     margin-bottom: 0.5em;
   }
 }
+
+.tag {
+  @extend .bold-xsmall;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  background-color: fade-out($grey-3, 0.25);
+  color: $secondary-text-colour;
+  text-decoration: none;
+}
+
+.categories {
+  display: block;
+
+  a {
+    @extend .tag;
+    white-space: nowrap;
+  }
+
+  .internal {
+    @extend .tag;
+    color: fade-out($purple, 0.25);
+  }
+
+  .external {
+    @extend .tag;
+    color: fade-out($red, 0.25);
+  }
+}
