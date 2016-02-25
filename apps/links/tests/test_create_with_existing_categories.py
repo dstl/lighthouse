@@ -30,7 +30,14 @@ class CategorisedLinksWithCategoriesTest(WebTest):
         existing_link.save()
 
     def test_create_link_with_existing_categories_render(self):
-        form = self.app.get(reverse('link-create')).form
+        response = self.app.get(reverse('link-create'))
+        form = response.form
+
+        existing_categories_label = response.html.find(
+            id='existing-categories-label'
+        )
+
+        self.assertIsNotNone(existing_categories_label)
 
         self.assertEquals(form['name'].value, '')
         self.assertEquals(form['description'].value, '')

@@ -1,8 +1,13 @@
 {% extends "layout.html" %}
 
 {% block grid_content %}
-<form method="post" action="">
+{% if form.name.value %}
+<h1 class="form-title heading-xlarge">Edit {{ form.name.value }}</h1>
+{% else %}
+<h1 class="form-title heading-xlarge">New tool</h1>
+{% endif %}
 
+<form method="post" action="">
   {% if form.errors %}
   <ul class="form-error-list">
     {% for key,value in form.errors.items %}
@@ -16,14 +21,20 @@
   {% csrf_token %}
   <div class="form-group">
     <label class="form-label-bold" for="{{ form.name.id_for_label }}">
-      Name:
+      Tool name
     </label>
+    <p class="form-hint">
+      For example, 'Google Maps'
+    </p>
     <input class="form-control" id="{{ form.name.id_for_label }}" value="{{ form.name.value|default_if_none:"" }}" maxlength="256" name="name" type="text" />
   </div>
   <div class="form-group">
     <label class="form-label-bold" for="{{ form.description.id_for_label }}">
-      Description:
+      Description of tool
     </label>
+    <p class="form-hint">
+      Describe what the tool is and why it's needed.
+    </p>
     <textarea class="form-control" cols="40" id="{{ form.description.id_for_label }}" name="description" rows="10">{{ form.description.value|default_if_none:"" }}</textarea>
   </div>
   <div class="form-group">
@@ -45,7 +56,7 @@
       <label for="{{ form.is_external.id_for_label }}_false"
         class="block-label form-control">
         <input id="{{ form.is_external.id_for_label }}_false" type="radio" name="is_external" value="False" {% if not form.instance.is_external %}checked="checked"{% endif %} />
-        <span class="heading-small">In-house</span><br />
+        <span class="heading-small">Internal</span><br />
         For tools developed by a Dstl employee and hosted within our
         secure networks.
       </label>
@@ -60,30 +71,45 @@
 
     </fieldset>
   </div>
+  {% if existing_categories %}
   <div class="form-group">
-    <label class="form-label-bold">
-      Categories:
+    <label id="existing-categories-label" class="form-label-bold">
+      Does the tool fit into any existing categories?
     </label>
+    <p class="form-hint">
+      Select as many categories as the tool will fit into.
+      <br>
+      If you can't find them in this list, you can add them in the next form
+      field.
+    </p>
     {% for category in existing_categories %}
     <label class="link-category-label" for="{{ form.categories.id_for_label }}_{{ category }}">{{ category|capfirst }}</label>
     <input class="form-control" class="link-category-checkbox" id="{{ form.categories.id_for_label }}_{{ category }}" type="checkbox" value="{{ category }}" name="categories" {% if category in form.instance.categories.all %}checked="checked"{% endif %} />
     {% endfor %}
   </div>
+  {% endif %}
   <div class="form-group">
     <label class="form-label-bold" for="{{ form.categories.id_for_label }}">
-      Other categories:
+      Does the tool fit into any categories which aren't yet listed?
     </label>
     <p class="form-hint">
-      Any categories that aren't available in that list, comma-separated.
+      Type the unlisted categories, comma-separated.
       <br>
       E.g., "social, geospatial".
     </p>
     <input class="form-control" id="{{ form.categories.id_for_label }}" value="" maxlength="256" name="categories" type="text" />
   </div>
-  <label class="form-label-bold" for="{{ form.destination.id_for_label }}">
-    Destination:
-  </label>
-  <input id="{{ form.destination.id_for_label }}" value="{{ form.destination.value|default_if_none:"" }}" maxlength="2000" name="destination" type="url" />
+  <div class="form-group">
+    <label class="form-label-bold" for="{{ form.destination.id_for_label }}">
+      Destination
+    </label>
+    <p class="form-hint">
+      A URL to access the tool from a device connected to the Dstl network.
+      <br>
+      For example, 'https://maps.google.com/'
+    </p>
+    <input class="form-control" id="{{ form.destination.id_for_label }}" value="{{ form.destination.value|default_if_none:"" }}" maxlength="2000" name="destination" type="url" />
+  </div>
   <input type="submit" method="POST" value="Save bookmark" class="button" />
 </form>
 

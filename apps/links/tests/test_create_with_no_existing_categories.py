@@ -19,7 +19,14 @@ class CategorisedLinksWithNoCategoriesTest(WebTest):
         self.assertEquals(response.html.h1.text, 'Fake Fakerly')
 
     def test_create_link_with_new_category(self):
-        form = self.app.get(reverse('link-create')).form
+        response = self.app.get(reverse('link-create'))
+        form = response.form
+
+        existing_categories_label = response.html.find(
+            id='existing-categories-label'
+        )
+
+        self.assertIsNone(existing_categories_label)
 
         self.assertEquals(form['name'].value, '')
         self.assertEquals(form['description'].value, '')
