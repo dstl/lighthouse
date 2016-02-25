@@ -84,6 +84,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'lighthouse.wsgi.application'
 
+# WARNING: This is probably too much for production
+COMPRESS_REBUILD_TIMEOUT = 2
+
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
