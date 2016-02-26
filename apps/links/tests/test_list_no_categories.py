@@ -61,6 +61,13 @@ class ListLinksWithNoCategoriesTest(WebTest):
 
         response = self.app.get(reverse('link-list'))
 
+        tools_list_result_header = response.html.find(id="tools-header")
+
+        self.assertEquals(
+            tools_list_result_header.text,
+            'Showing page 1 of 2'
+        )
+
         self.assertEquals(
             len(response.html.findAll('li', {'class': 'link-list-item'})),
             5
@@ -106,4 +113,28 @@ class ListLinksWithNoCategoriesTest(WebTest):
                 'li',
                 {'class': 'link-list-item'}
             )[4].text,
+        )
+
+        response = response.click(linkid="page-link-next")
+
+        tools_list_result_header = response.html.find(id="tools-header")
+
+        self.assertEquals(
+            len(response.html.findAll('li', {'class': 'link-list-item'})),
+            1
+        )
+
+        self.assertIsNotNone(response.html.find('ol', {'class': 'pagination'}))
+
+        self.assertIn(
+            self.existing_link_1.name,
+            response.html.findAll(
+                'li',
+                {'class': 'link-list-item'}
+            )[0].text,
+        )
+
+        self.assertEquals(
+            tools_list_result_header.text,
+            'Showing page 2 of 2'
         )
