@@ -12,6 +12,12 @@ class TestLoginPage (unittest.TestCase):
         # For now, this will only pass if the lighthouse-app-server host is
         # running.
         url = "http://%s/login" % os.environ['LIGHTHOUSE_HOST']
+        title = 'Lighthouse'
+
         self.browser.visit(url)
 
-        self.assertTrue(self.browser.is_text_present('Hello Login'))
+        self.assertEqual(self.browser.url, url)
+        self.assertEqual(self.browser.status_code.code, 200)
+        self.assertIn(self.browser.title, title)
+
+        self.assertIn('Hello Login', self.browser.html)
