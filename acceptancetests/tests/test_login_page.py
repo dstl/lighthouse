@@ -1,5 +1,6 @@
 from splinter import Browser
 import unittest
+import os
 
 
 class TestLoginPage (unittest.TestCase):
@@ -10,7 +11,7 @@ class TestLoginPage (unittest.TestCase):
         # This needs to come from an environment variable at some point
         # For now, this will only pass if the lighthouse-app-server host is
         # running.
-        url = "http://10.10.11.10:8080/login"
+        url = "http://%s/login" % os.environ['LIGHTHOUSE_HOST']
         self.browser.visit(url)
 
         self.assertTrue(self.browser.is_text_present('Hello Login'))
