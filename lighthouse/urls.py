@@ -19,11 +19,11 @@ from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from apps.links.views import LinkCreate, LinkDetail, LinkList, LinkUpdate, \
     LinkRedirect
-from apps.users.views import UserCreate, UserDetail, UserList, WhoAmI
-from apps.users.views import OrganisationCreate, \
+from apps.users.views import UserCreate, UserDetail, UserList
+from apps.organisations.views import OrganisationCreate, \
     OrganisationDetail, \
     OrganisationList
-from apps.users.views import TeamCreate, \
+from apps.teams.views import TeamCreate, \
     TeamDetail, \
     TeamList
 from apps.login.views import LoginView, LoginUser, Logout
@@ -37,7 +37,6 @@ urlpatterns = [
     url(r'^logout$', Logout.as_view(), name="logout"),
 
     url(r'^$', Home.as_view(), name="home"),
-    url(r'^whoami$', WhoAmI.as_view(), name="whoami"),
     url(
         r'^users/?$',
         UserList.as_view(),

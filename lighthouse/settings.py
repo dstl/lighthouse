@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'apps.home',
     'apps.login',
     'apps.links',
+    'apps.organisations',
+    'apps.teams',
     'apps.users',
     'apps.govuk_template',
 
