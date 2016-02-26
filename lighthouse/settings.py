@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'taggit',
 
     'compressor',
+
+    'acceptancetests',
 ]
 
 MIDDLEWARE_CLASSES = [
