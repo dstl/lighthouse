@@ -4,3 +4,6 @@ Vagrantfile
 venv
 .sass-cache
 sass/CACHE
+
+# Splinter & Phantom
+ghostdriver.log
