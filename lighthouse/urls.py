@@ -19,8 +19,12 @@ from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from apps.links.views import LinkCreate, LinkDetail, LinkList, LinkUpdate
 from apps.users.views import UserCreate, UserDetail, UserList, WhoAmI
-from apps.users.views import OrganisationCreate, OrganisationDetail, \
+from apps.users.views import OrganisationCreate, \
+    OrganisationDetail, \
     OrganisationList
+from apps.users.views import TeamCreate, \
+    TeamDetail, \
+    TeamList
 from apps.login.views import LoginView, LoginUser, Logout
 from apps.home.views import Home
 
@@ -82,6 +86,21 @@ urlpatterns = [
         r'^organisations/(?P<pk>\d+)/?$',
         OrganisationDetail.as_view(),
         name='organisation-detail',
+    ),
+    url(
+        r'^teams/?$',
+        TeamList.as_view(),
+        name='team-list',
+    ),
+    url(
+        r'^teams/new/?$',
+        TeamCreate.as_view(),
+        name='team-create',
+    ),
+    url(
+        r'^teams/(?P<pk>\d+)/?$',
+        TeamDetail.as_view(),
+        name='team-detail',
     ),
 ]
 urlpatterns += staticfiles_urlpatterns()
