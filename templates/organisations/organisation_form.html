@@ -1,10 +1,10 @@
 {% extends "layout.html" %}
 
-{% block content %}
+{% block grid_content %}
 <form method="post" action="">
   {% csrf_token %}
-  {{ form.as_p }}
-  <button>Save team</button>
+  {{ form }}
+  <button>Save organisation</button>
 </form>
 
 {% endblock %}
