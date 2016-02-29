@@ -63,7 +63,7 @@ urlpatterns = [
         name='link-detail',
     ),
     url(
-        r'^links/(?P<pk>\d+)/redirect/??$',
+        r'^links/(?P<pk>\d+)/redirect/?$',
         LinkRedirect.as_view(),
         name='link-redirect',
     ),
