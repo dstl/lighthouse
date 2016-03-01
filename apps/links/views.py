@@ -1,7 +1,10 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
+from django import forms
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
 from taggit.models import Tag
+
 
 from .models import Link
 
@@ -45,6 +48,16 @@ class CategoriesFormMixin(object):
         context['existing_categories'] = Tag.objects.all()
         return context
 
+    def clean(self):
+        cleaned_data = super(CategoriesFormMixin, self).clean()
+
+        if not self.request.user.is_authenticated():
+            raise forms.ValidationError(
+                "You must be logged in to create a link"
+            )
+
+        return cleaned_data
+
     def form_valid(self, form):
         form.instance.owner = self.request.user
         # first save gets us the object in the database (when creating a new
@@ -58,14 +71,14 @@ class CategoriesFormMixin(object):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class LinkCreate(CategoriesFormMixin, CreateView):
+class LinkCreate(LoginRequiredMixin, CategoriesFormMixin, CreateView):
     model = Link
     fields = [
         'name', 'description', 'destination', 'is_external', 'categories'
     ]
 
 
-class LinkUpdate(CategoriesFormMixin, UpdateView):
+class LinkUpdate(LoginRequiredMixin, CategoriesFormMixin, UpdateView):
     model = Link
     fields = [
         'name', 'description', 'destination', 'is_external', 'categories'

@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from django.contrib.auth.decorators import login_required
 
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 

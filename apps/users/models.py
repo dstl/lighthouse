@@ -24,6 +24,9 @@ class User(models.Model):
     def get_absolute_url(self):
         return reverse('user-detail', kwargs={'slug': self.slug})
 
+    def is_authenticated(self):
+        return True
+
     def __unicode__(self):
         return self.slug
 
