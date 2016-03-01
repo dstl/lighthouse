@@ -18,11 +18,31 @@ class LoginView(TemplateView):
 class LoginUser(View):
 
     def get(self, request, *args, **kwargs):
-        user = authenticate(user_id=kwargs['pk'])
+        user = authenticate(slug=kwargs['slug'])
         if user is not None:
             login(request, user)
-            request.session['pet'] = 'fish'
-            return redirect(reverse('user-detail', kwargs={'pk': user.pk}))
+
+            #   Check to see if we are missing extra information such as
+            #   username, in which case bounce them to the update-profile
+            #   page.
+            #   NOTE: We can't stop the user from moving away from this
+            #   page, so it's totally possible to have a user running around
+            #   the place with no username and only a 'stub'.
+            #   As somepoint we'll *always* bounce the user to here if
+            #   they don't have a username.
+            """
+            if (user.username is None or
+                    user.username is ''):
+                return redirect(
+                    reverse(
+                        'user-updateprofile',
+                        kwargs={'slug': user.slug}
+                    )
+                )
+            else:
+                return redirect(reverse('link-list'))
+            """
+            return redirect(reverse('link-list'))
         else:
             return redirect(reverse('login-view'))
 

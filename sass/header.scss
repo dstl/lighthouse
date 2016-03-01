@@ -22,3 +22,16 @@
 #proposition-menu {
 	margin-left:15px
 }
+
+#user-details {
+  position: absolute;
+  right: 1em;
+  color: white;
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+}
