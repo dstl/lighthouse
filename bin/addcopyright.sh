@@ -96,7 +96,7 @@ do
 	copyright_text='{# '$copyright_text_raw' #}'
 	tmp_file_name=$file.tmp
 	insert_onto_line=1
-	if ! head -n3 $file | grep -q '^{%.*Copyright'
+	if ! head -n3 $file | grep -q '^{#.*Copyright'
 	then
 		# echo "Did not find a copyright notice in $file"
 		insertAfter "$file" $insert_onto_line "$copyright_text"
