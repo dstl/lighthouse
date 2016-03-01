@@ -3,14 +3,27 @@
 
 {% block grid_content %}
 
-  <ol>
+  <h1 class="form-title heading-xlarge">Organisations</h1>
+  <ul class="list list-bullet">
     {% for organisation in object_list %}
       <li><a href='{% url "organisation-detail" organisation.pk %}'>{{organisation.name}}</a></li>
     {% endfor %}
-  </ol>
+  </ul>
 
-  <p>
-  <a href="{% url 'organisation-create' %}">Add new organisation.</a>
-  </p>
+  <hr />
+  
+  <form method="post" action="{% url 'organisation-create' %}">
+    {% csrf_token %}
+    <div class="form-group">
+      <label class="form-label-bold" for="id_slug">
+        Create new organisation.
+      </label>
+      <p class="form-hint">
+        If an organisation isn't in the list above then you can add it here.
+      </p>
+      <input class="form-control" id="id_name" maxlength="256" name="name" type="text">
+    </div>
+    <input type="submit" method="POST" value="Add Organisation" class="button">
+  </form>
 
 {% endblock %}
