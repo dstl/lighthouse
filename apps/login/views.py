@@ -12,6 +12,8 @@ class LoginView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(LoginView, self).get_context_data(**kwargs)
         context['users'] = User.objects.all()
+        if 'next' in self.request.GET:
+            context['next'] = self.request.GET.get('next')
         return context
 
 
@@ -42,6 +44,9 @@ class LoginUser(View):
             else:
                 return redirect(reverse('link-list'))
             """
+            if 'next' in request.GET:
+                return redirect(self.request.GET.get('next'))
+
             return redirect(reverse('link-list'))
         else:
             return redirect(reverse('login-view'))

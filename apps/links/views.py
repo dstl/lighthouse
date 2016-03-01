@@ -5,7 +5,6 @@ from django.http import HttpResponseRedirect
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
 from taggit.models import Tag
 
-
 from .models import Link
 
 
