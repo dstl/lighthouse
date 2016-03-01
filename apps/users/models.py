@@ -2,10 +2,15 @@
 # apps/users/models.py
 from django.core.urlresolvers import reverse
 from django.db import models
+import uuid
+
+
+def slug_default():
+    return str(uuid.uuid1())
 
 
 class User(models.Model):
-    slug = models.SlugField(max_length=256, unique=True)
+    slug = models.SlugField(max_length=256, unique=True, default=slug_default)
     username = models.CharField(max_length=256, blank=True, null=True)
     best_way_to_find = models.CharField(max_length=1024, blank=True, null=True)
     best_way_to_contact = models.CharField(
