@@ -9,16 +9,18 @@ from django_webtest import WebTest
 class CategorisedLinksWithCategoriesTest(WebTest):
     def setUp(self):
         self.logged_in_user = User(
-            fullName='Fake Fakerly',
+            slug='user0001',
+            username='Fake Fakerly',
             phone='555-2187',
             email='fake@dstl.gov.uk')
         self.logged_in_user.save()
 
         response = self.app.get(reverse('login-view'))
-
-        response = response.click('Fake Fakerly').follow()
-
-        self.assertEquals(response.html.h1.text, 'Fake Fakerly')
+        response = response.click('user0001').follow()
+        user_id = response.html.find_all(
+                'span', attrs={'class': 'user_id'}
+            )[0].text
+        self.assertEquals(user_id, 'user0001')
 
         existing_link = Link(
             name='Tweetbot',
