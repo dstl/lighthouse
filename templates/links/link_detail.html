@@ -4,7 +4,7 @@
 {% block grid_content %}
 
 <h1>{{link.name}}</h1>
-<p id="link_owner">{{link.owner.fullName}}</p>
+<p id="link_owner">{{link.owner.username}}</p>
 <p>{{link.description}}</p>
 <p><a id="link_follow_button" href="{% url "link-redirect" link.pk %}">Go there</a></p>
 <p><a id="link_follow_anchor" href="{{link.destination}}">{{link.destination}}</a></p>

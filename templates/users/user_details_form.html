@@ -1,0 +1,25 @@
+{# (c) Crown Owned Copyright, 2016. Dstl. #}
+{% extends "layout.html" %}
+
+{% block grid_content %}
+
+{% if show_username_alert %}
+<div class="error-summary" role="group">
+  <h1 class="heading-medium error-summary-heading">Please add a username</h1>
+  <p>
+    To help people find you on  the system you need to add a username. The more information you can add to help people contact you the better.
+  </p>
+  <p>
+    Thank you.
+  </p>
+</div>
+{% endif %}
+
+<h1>Enter details</h1>
+<form method="post" action="">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button>Save user</button>
+</form>
+
+{% endblock %}

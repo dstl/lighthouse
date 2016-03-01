@@ -8,15 +8,15 @@ class AuthBackendTest(TestCase):
 
     def test_user_doesnt_exist(self):
         auth = SuperBasicAuth()
-        user = auth.authenticate(user_id=1)
+        user = auth.authenticate(slug=1)
 
         self.assertIsNone(user)
 
     def test_user_exists(self):
-        u1 = User(fullName='Jane Smith')
+        u1 = User(slug='user0001')
         u1.save()
 
         auth = SuperBasicAuth()
-        user = auth.authenticate(user_id=u1.id)
+        user = auth.authenticate(slug=u1.slug)
 
         self.assertEquals(user, u1)

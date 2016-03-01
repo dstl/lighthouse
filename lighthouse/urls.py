@@ -18,15 +18,29 @@ from django.conf.urls import url
 from django.contrib import admin
 
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from apps.links.views import LinkCreate, LinkDetail, LinkList, LinkUpdate, \
-    LinkRedirect
-from apps.users.views import UserCreate, UserDetail, UserList
-from apps.organisations.views import OrganisationCreate, \
-    OrganisationDetail, \
-    OrganisationList
-from apps.teams.views import TeamCreate, \
-    TeamDetail, \
-    TeamList
+
+from apps.links.views import (
+    LinkCreate,
+    LinkDetail,
+    LinkList,
+    LinkUpdate,
+    LinkRedirect,
+)
+
+from apps.users.views import (
+    UserCreate,
+    UserDetail,
+    UserUpdateProfile,
+    UserList,
+)
+
+from apps.organisations.views import (
+    OrganisationCreate,
+    OrganisationDetail,
+    OrganisationList,
+)
+
+from apps.teams.views import TeamCreate, TeamDetail, TeamList
 from apps.login.views import LoginView, LoginUser, Logout
 from apps.home.views import Home
 
@@ -34,7 +48,11 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
     url(r'^login$', LoginView.as_view(), name="login-view"),
-    url(r'^login/(?P<pk>\d+)$', LoginUser.as_view(), name="login-user"),
+    url(
+        r'^login/(?P<slug>[\w-]+)$',
+        LoginUser.as_view(),
+        name="login-user"
+    ),
     url(r'^logout$', Logout.as_view(), name="logout"),
 
     url(r'^$', Home.as_view(), name="home"),
@@ -44,14 +62,19 @@ urlpatterns = [
         name='user-list',
     ),
     url(
-        r'^users/(?P<pk>\d+)/?$',
-        UserDetail.as_view(),
-        name='user-detail',
-    ),
-    url(
         r'^users/new/?$',
         UserCreate.as_view(),
         name='user-create',
+    ),
+    url(
+        r'^users/(?P<slug>[\w-]+)/update-profile/?$',
+        UserUpdateProfile.as_view(),
+        name='user-updateprofile',
+    ),
+    url(
+        r'^users/(?P<slug>[\w-]+)/?$',
+        UserDetail.as_view(),
+        name='user-detail',
     ),
     url(
         r'^links/?$',
