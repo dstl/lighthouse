@@ -10,8 +10,5 @@ class Organisation(models.Model):
     def get_absolute_url(self):
         return reverse('organisation-detail', kwargs={'pk': self.pk})
 
-    def __unicode__(self):
-        return self.name
-
     def __str__(self):
         return self.name

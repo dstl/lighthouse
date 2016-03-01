@@ -19,5 +19,5 @@ class Link(models.Model):
     def get_absolute_url(self):
         return reverse('link-detail', kwargs={'pk': self.pk})
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
