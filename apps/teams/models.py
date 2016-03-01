@@ -9,6 +9,9 @@ class Team(models.Model):
     name = models.CharField(max_length=256, unique=True)
     organisation = models.ForeignKey(Organisation)
 
+    class Meta:
+        ordering = ["name"]
+
     def get_absolute_url(self):
         return reverse('team-detail', kwargs={'pk': self.pk})
 
