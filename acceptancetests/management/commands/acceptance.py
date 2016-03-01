@@ -13,7 +13,10 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         loader = unittest.TestLoader()
-        tests = loader.discover('./acceptancetests/tests', pattern="test_*.py")
+        tests = loader.discover(
+            './acceptancetests/tests',
+            pattern="acc_test_*.py"
+        )
 
         runner = unittest.TextTestRunner(verbosity=2)
 
