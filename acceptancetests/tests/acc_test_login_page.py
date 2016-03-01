@@ -21,4 +21,4 @@ class TestLoginPage (unittest.TestCase):
         self.assertEqual(self.browser.status_code.code, 200)
         self.assertIn(self.browser.title, title)
 
-        self.assertIn('Hello Login', self.browser.html)
+        self.assertIn('Login with ID.', self.browser.html)
