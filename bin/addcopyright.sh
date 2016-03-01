@@ -93,7 +93,7 @@ done
 # HTML Template files
 for file in $(findRelevantFiles -name '*.html' -o -name '*.htm')
 do
-	copyright_text='{% '$copyright_text_raw' %}'
+	copyright_text='{# '$copyright_text_raw' #}'
 	tmp_file_name=$file.tmp
 	insert_onto_line=1
 	if ! head -n3 $file | grep -q '^{%.*Copyright'

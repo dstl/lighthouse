@@ -1,4 +1,5 @@
 #!/bin/bash
+# (c) Crown Owned Copyright, 2016. Dstl.
 dot="$(cd "$(dirname "$0")"; pwd)"
 cd "$dot/../"
 result=0

@@ -1,3 +1,4 @@
+# (c) Crown Owned Copyright, 2016. Dstl.
 from django.core.urlresolvers import reverse
 from apps.users.models import User
 
