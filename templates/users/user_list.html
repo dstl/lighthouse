@@ -1,28 +1,15 @@
 {# (c) Crown Owned Copyright, 2016. Dstl. #}
-{% extends "base.htm" %}
+{% extends "layout.html" %}
 
 {% block grid_content %}
-
   <ol>
     {% for user in object_list %}
-      <li><a href='{% url "user-detail" user.pk %}'>{{user.fullName}}</a></li>
-      <p>{{user.phone}}</p>
-      <p>{{user.email}}</p>
+      <li><a href='{% url "user-detail" user.slug %}'>{{user.slug}}</a></li>
     {% endfor %}
   </ol>
 
-  <hr>
-
-  {% if paginator.num_pages > 1 %}
-    <ol>
-      {% for page in paginator.page_range %}
-        {% if page == page_obj.number %}
-          <li><em>{{page}}</em></li>
-        {% else %}
-          <li><a href='?page={{page}}'>{{page}}</a></li>
-        {% endif %}
-      {% endfor %}
-    </ol>
-  {% endif %}
+  <p>
+  <a href="{% url 'user-create' %}">Add new user.</a>
+  </p>
 
 {% endblock %}

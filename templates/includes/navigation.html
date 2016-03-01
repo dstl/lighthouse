@@ -1,5 +1,12 @@
 {# (c) Crown Owned Copyright, 2016. Dstl. #}
 <div class="header-proposition" style="position:relative">
+  <div id="user-details">
+    {% if user.slug %}
+      <span class="user_id">{{user.slug}}</span> | <a href="{% url 'logout' %}">Logout</a>
+    {% else %}
+      <a href="{% url 'login-view' %}">Login</a>
+    {% endif %}
+  </div>
   <div class="content">
     <nav id="proposition-menu">
       <a href="/" id="proposition-name">Lighthouse</a>
