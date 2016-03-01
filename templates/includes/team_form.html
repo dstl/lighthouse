@@ -1,0 +1,38 @@
+{# (c) Crown Owned Copyright, 2016. Dstl. #}
+<form method="post" action="{% url 'team-create' %}">
+  {% csrf_token %}
+  <div class="form-group">
+    <label class="form-label-bold" for="id_slug">
+      Create new team.
+    </label>
+    <p class="form-hint">
+      If an organisation isn't in the list above then you can add it here.
+      Please assign it to either an existing organisation or a new one.
+    </p>
+    {{ form.non_field_errors }}
+
+    <p>
+      {{ form.name.errors }}
+      <label class="form-label" for="id_name">Name:</label>
+      <input class="form-control" id="id_name" maxlength="256" name="name" type="text">
+    </p>
+
+    <p>
+      {{ form.organisation.errors }}
+      <label class="form-label" for="id_organisation">Organisation:</label>
+      <select class="form-control" id="id_organisation" name="organisation">
+        {% for id, name in form.fields.organisation.choices %}
+          <option value="{{id}}">{{name}}</option>
+        {% endfor %}
+      </select>
+    </p>
+
+    <p>
+      {{ form.new_organisation.errors }}
+      <label class="form-label" for="id_new_organisation">Or add a new organisation:</label>
+      <input class="form-control" id="id_new_organisation" maxlength="256" name="new_organisation" type="text">
+    </p>
+
+  </div>
+  <input type="submit" method="POST" value="Add Team" class="button">
+</form>

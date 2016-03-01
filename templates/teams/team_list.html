@@ -3,14 +3,15 @@
 
 {% block grid_content %}
 
-  <ol>
+  <h1 class="form-title heading-xlarge">Teams</h1>
+  <ul class="list list-bullet">
     {% for team in object_list %}
       <li><a href='{% url "team-detail" team.pk %}'>{{team.name}}</a></li>
     {% endfor %}
-  </ol>
+  </ul>
 
-  <p>
-  <a href="{% url 'team-create' %}">Add new team.</a>
-  </p>
+  <hr />
+
+  {% include "includes/team_form.html" %}
 
 {% endblock %}
