@@ -1,3 +1,4 @@
+# (c) Crown Owned Copyright, 2016. Dstl.
 from splinter import Browser
 import unittest
 import os

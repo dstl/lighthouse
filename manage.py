@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# (c) Crown Owned Copyright, 2016. Dstl.
 import os
 import sys
 

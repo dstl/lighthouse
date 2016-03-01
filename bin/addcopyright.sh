@@ -19,12 +19,22 @@ function insertAfter # file_name line_number text_to_insert
 		echo "Couldn't create temporary file $tmp_file_name"
 		exit 1
 	fi
-	rm $file_name
 	mv $tmp_file_name $file_name
 }
 
+# TODO: This needs to be made more argumentative. Specifically, specifying which
+# file extensions to use per list of files to comment.
+function findRelevantFiles
+{
+	find . -not \( -path ./apps/govuk_template -prune \) \
+		-not \( -path ./apps/govuk_frontend_toolkit -prune \) \
+		-not \( -path ./apps/govuk_elements -prune \) \
+		-not \( -path ./.git -prune \) \
+		"$@"
+}
+
 # Python files or shell files
-for file in $(find . -name '*.py' -o -name '*.sh')
+for file in $(findRelevantFiles -name '*.py' -o -name '*.sh')
 do
 	copyright_text='# '$copyright_text_raw
 	tmp_file_name=$file.tmp
@@ -50,7 +60,7 @@ do
 done
 
 # SCSS files and JS files
-for file in $(find . -name '*.scss' -o -name '*.js')
+for file in $(findRelevantFiles -name '*.scss' -o -name '*.js')
 do
 	copyright_text='// '$copyright_text_raw
 	tmp_file_name=$file.tmp
@@ -68,7 +78,7 @@ do
 done
 
 # CSS files
-for file in $(find . -name '*.css')
+for file in $(findRelevantFiles -name '*.css')
 do
 	copyright_text='/* '$copyright_text_raw' */'
 	tmp_file_name=$file.tmp
@@ -81,9 +91,9 @@ do
 done
 
 # HTML Template files
-for file in $(find . -name '*.html' -o -name '*.htm')
+for file in $(findRelevantFiles -name '*.html' -o -name '*.htm')
 do
-	copyright_text='{% '$copyright_text_raw' %}'
+	copyright_text='{# '$copyright_text_raw' #}'
 	tmp_file_name=$file.tmp
 	insert_onto_line=1
 	if ! head -n3 $file | grep -q '^{%.*Copyright'

@@ -1,4 +1,5 @@
 #!/bin/bash
+# (c) Crown Owned Copyright, 2016. Dstl.
 result=0
 virtualenv_location="${VIRTUALENV_LOCATION:-$HOME/.venv/lighthouse}"
 

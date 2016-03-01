@@ -1,3 +1,4 @@
+# (c) Crown Owned Copyright, 2016. Dstl.
 # apps/organisations/views.py
 from django.views.generic import CreateView, DetailView, ListView
 from django.core.urlresolvers import reverse

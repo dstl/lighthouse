@@ -1,3 +1,4 @@
+# (c) Crown Owned Copyright, 2016. Dstl.
 # apps/organisations/tests.py
 from django.core.urlresolvers import reverse
 from django_webtest import WebTest
