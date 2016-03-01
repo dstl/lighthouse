@@ -2,10 +2,47 @@
 {% extends "layout.html" %}
 
 {% block grid_content %}
+
+<h1 class="form-title heading-xlarge">New organisation</h1>
+
+{% if form.errors %}
+<div class="error-summary" role="group" aria-labelledby="error-summary-heading-example-2" tabindex="-1">
+
+    <h1 class="heading-medium error-summary-heading" id="error-summary-heading-example-2">
+      Error adding organisation
+    </h1>
+
+    <p>
+      Sorry there were problems when adding the organisation, please see below for details.
+    </p>
+
+    <ul class="error-summary-list">
+      {% for key,value in form.errors.items %}
+      {% for error in value %}
+      <li>{{ value.as_text|cut:"* " }}</li>
+      {% endfor %}
+      {% endfor %}
+    </ul>
+
+</div>
+{% endif %}
+
 <form method="post" action="">
   {% csrf_token %}
-  {{ form }}
-  <button>Save organisation</button>
+  <div class="form-group">
+    <label class="form-label-bold" for="id_slug">
+      Create new organisation.
+    </label>
+    <p class="form-hint">
+      If an organisation isn't in the list above then you can add it here.
+    </p>
+    <input class="form-control" id="id_name" maxlength="256" name="name" type="text">
+  </div>
+  <input type="submit" method="POST" value="Add Organisation" class="button">
 </form>
+
+<hr />
+
+<a href="{% url 'organisation-list' %}">Back to organisations</a>
 
 {% endblock %}

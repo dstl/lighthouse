@@ -32,6 +32,7 @@ class OrganisationTest(TestCase):
 
 
 class OrganisationWebTest(WebTest):
+
     def test_cannot_create_nameless_organisation(self):
         form = self.app.get(reverse('organisation-create')).form
         response = form.submit()
@@ -40,3 +41,40 @@ class OrganisationWebTest(WebTest):
             'This field is required.',
             form['name'].errors
         )
+
+    def test_create_new_organisation_from_list_view(self):
+        form = self.app.get(reverse('organisation-list')).form
+        form['name'] = 'alpha'
+        response = form.submit()
+        self.assertEquals(response.status_int, 302)
+
+        response = self.app.get(reverse('organisation-list'))
+        response = response.click('alpha')
+        org_name = response.html.find(
+            'h1',
+            attrs={'class': 'heading-xlarge'}
+        ).text
+        self.assertEquals(org_name, 'Organisation: alpha')
+
+    def test_cannot_create_duplicate_organisation(self):
+        o = Organisation(name='alpha')
+        o.save()
+        form = self.app.get(reverse('organisation-list')).form
+        form['name'] = 'alpha'
+        response = form.submit()
+        form = response.context['form']
+        self.assertIn(
+            'Organisation with this Name already exists.',
+            form['name'].errors
+        )
+
+    def test_can_click_through_existing_organisation_link(self):
+        o = Organisation(name='alpha')
+        o.save()
+        response = self.app.get(reverse('organisation-list'))
+        response = response.click('alpha')
+        org_name = response.html.find(
+            'h1',
+            attrs={'class': 'heading-xlarge'}
+        ).text
+        self.assertEquals(org_name, 'Organisation: alpha')
