@@ -7,6 +7,9 @@ from django.db import models
 class Organisation(models.Model):
     name = models.CharField(max_length=256, unique=True)
 
+    class Meta:
+        ordering = ["name"]
+
     def get_absolute_url(self):
         return reverse('organisation-detail', kwargs={'pk': self.pk})
 
