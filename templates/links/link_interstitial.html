@@ -12,8 +12,12 @@
   Are you sure you want to visit this tool?
 </p>
 <div class="form-group">
+  <form method='get' action='{% url "link-redirect" link.pk %}'>
+    <input type='hidden' name='redirect' value='redirect'>
+    <button type='submit' id='confirm_redirect_button' class='button'
+            data-href='{{link.destination}}'>Yes, take me</button>
+  </form>
   <a id="cancel_button" href="{% url "link-detail" link.pk %}" class="button button-secondary">Cancel</a>
-  <a id="confirm_redirect_button" href="{{link.destination}}" class="button">Yes, take me</a>
 </div>
 </main>
 

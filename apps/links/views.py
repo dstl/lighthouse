@@ -5,6 +5,9 @@ from django.http import HttpResponseRedirect
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
 from taggit.models import Tag
 
+from django.shortcuts import redirect
+from django.core.urlresolvers import reverse
+
 from .models import Link
 
 
@@ -14,15 +17,21 @@ class LinkDetail(DetailView):
 
 class LinkRedirect(DetailView):
     model = Link
-    template_name_suffix = '_redirect'
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        if self.object.is_external:
-            context = self.get_context_data(object=self.object)
-            return self.render_to_response(context)
-        else:
-            return HttpResponseRedirect(self.object.destination)
+        if self.object.is_external and request.GET.get('redirect') is None:
+            return redirect(
+                reverse('link-interstitial', kwargs={'pk': self.object.pk})
+            )
+
+        self.object.register_usage(request.user)
+        return redirect(self.object.destination)
+
+
+class LinkInterstitial(DetailView):
+    model = Link
+    template_name_suffix = '_interstitial'
 
 
 def clean_categories(provided_categories):

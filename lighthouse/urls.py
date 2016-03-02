@@ -22,6 +22,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from apps.links.views import (
     LinkCreate,
     LinkDetail,
+    LinkInterstitial,
     LinkList,
     LinkUpdate,
     LinkRedirect,
@@ -90,6 +91,11 @@ urlpatterns = [
         r'^links/(?P<pk>\d+)/redirect/?$',
         LinkRedirect.as_view(),
         name='link-redirect',
+    ),
+    url(
+        r'^links/(?P<pk>\d+)/go/?$',
+        LinkInterstitial.as_view(),
+        name='link-interstitial',
     ),
     url(
         r'^links/(?P<pk>\d+)/edit/?$',

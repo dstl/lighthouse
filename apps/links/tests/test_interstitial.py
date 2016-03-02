@@ -31,13 +31,13 @@ class LinksWithInterstitialTest(WebTest):
         response = self.app.get(
             reverse('link-detail', kwargs={'pk': self.external_link.pk}))
 
-        response = response.click(linkid="link_follow_button")
+        response = response.click(linkid="link_follow_button").follow()
 
         confirm_button = response.html.find(id="confirm_redirect_button")
         cancel_button = response.html.find(id="cancel_button")
 
         self.assertEquals(
-            confirm_button.attrs['href'],
+            confirm_button.attrs['data-href'],
             self.external_link.destination
         )
 
@@ -48,7 +48,7 @@ class LinksWithInterstitialTest(WebTest):
 
         self.assertIsNotNone(confirm_button)
 
-    def test_internal_link__does_not_go_to_interstitial(self):
+    def test_internal_link_does_not_go_to_interstitial(self):
         response = self.app.get(
             reverse('link-detail', kwargs={'pk': self.internal_link.pk}))
 
