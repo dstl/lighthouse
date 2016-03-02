@@ -10,6 +10,12 @@ from .forms import TeamForm
 class TeamList(ListView):
     model = Team
 
+    #   We're also going to jam the for on the list view page.
+    def get_context_data(self, **kwargs):
+        context = super(TeamList, self).get_context_data(**kwargs)
+        context['form'] = TeamForm
+        return context
+
 
 class TeamCreate(CreateView):
     model = Team

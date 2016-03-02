@@ -3,7 +3,10 @@
 
 {% block grid_content %}
 
-<h1>{{team.name}}</h1>
-In organisation <a href="{% url "organisation-detail" team.organisation.pk %}">{{team.organisation}}</a>
+<h1 class="form-title heading-xlarge">Team: {{team.name}}</h1>
+
+<p class="lede">
+  This team is in the <a href="{% url "organisation-detail" team.organisation.pk %}">{{team.organisation}}</a> organisation.
+</p>
 
 {% endblock %}

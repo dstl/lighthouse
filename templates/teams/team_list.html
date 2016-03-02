@@ -3,14 +3,25 @@
 
 {% block grid_content %}
 
-  <ol>
-    {% for team in object_list %}
-      <li><a href='{% url "team-detail" team.pk %}'>{{team.name}}</a></li>
-    {% endfor %}
-  </ol>
+  <h1 class="form-title heading-xlarge">Teams</h1>
 
-  <p>
-  <a href="{% url 'team-create' %}">Add new team.</a>
+  <p class="lede">
+    These are the teams currently registered with the system. Click on a team to view the members in that team.
   </p>
+
+  <ul class="list list-bullet team-list">
+    {% for team in object_list %}
+      <li><a class="main-list-item" href='{% url "team-detail" team.pk %}'>{{team.name}}</a>
+        <ul class="list team-info">
+          <li>Organisation: <a href='{% url "organisation-detail" team.organisation.pk %}'>{{team.organisation.name}}</a></li>
+          <li>Total Members: </li>
+        </ul>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <hr />
+
+  {% include "includes/team_form.html" %}
 
 {% endblock %}

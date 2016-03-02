@@ -45,3 +45,17 @@
     color: fade-out($red, 0.25);
   }
 }
+
+ul.team-list {
+  a.main-list-item {
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+  ul.team-info {
+    margin-left: 2em;
+    color: #333;
+    li {
+      margin-bottom: 0;
+    }
+  }
+}

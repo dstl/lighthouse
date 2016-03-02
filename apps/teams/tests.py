@@ -109,3 +109,34 @@ class TeamWebTest(WebTest):
         #   the db.
         check_org = Organisation.objects.filter(name=org_name).exists()
         self.assertTrue(check_org)
+
+    def test_can_create_team_from_list_view(self):
+        org_name = 'New Org'
+        team_name = 'New Team skippity bippity bop'
+        form = self.app.get(reverse('team-list')).form
+        form['name'] = team_name
+        form['new_organisation'] = org_name
+        response = form.submit()
+        self.assertEquals(response.status_int, 302)
+
+        response = self.app.get(reverse('team-list'))
+        response = response.click(team_name)
+        org_name = response.html.find(
+            'h1',
+            attrs={'class': 'heading-xlarge'}
+        ).text
+        self.assertEquals(org_name, 'Team: ' + team_name)
+
+    def test_can_click_through_existing_team_link(self):
+        o = Organisation(name='New Org')
+        o.save()
+        team_name = 'New Team skippity bippity bop'
+        t = Team(name=team_name, organisation=o)
+        t.save()
+        response = self.app.get(reverse('team-list'))
+        response = response.click(team_name)
+        org_name = response.html.find(
+            'h1',
+            attrs={'class': 'heading-xlarge'}
+        ).text
+        self.assertEquals(org_name, 'Team: ' + team_name)

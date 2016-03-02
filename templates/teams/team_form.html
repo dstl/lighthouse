@@ -2,10 +2,13 @@
 {% extends "layout.html" %}
 
 {% block grid_content %}
-<form method="post" action="">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button>Save team</button>
-</form>
+
+<h1 class="form-title heading-xlarge">Teams</h1>
+
+{% include "includes/team_form.html" %}
+
+<hr />
+
+<a href="{% url 'team-list' %}">Back to teams</a>
 
 {% endblock %}
