@@ -169,3 +169,5 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 AUTHENTICATION_BACKENDS = [
     'apps.login.super_basic_auth_backend.SuperBasicAuth'
 ]
+
+LOGIN_URL = '/login'
