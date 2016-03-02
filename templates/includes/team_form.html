@@ -13,14 +13,14 @@
 
     <p>
       {{ form.name.errors }}
-      <label class="form-label" for="id_name">Name:</label>
-      <input class="form-control" id="id_name" maxlength="256" name="name" type="text">
+      <label class="form-label" for="{{ form.name.id_for_label }}">Name:</label>
+      <input class="form-control" id="{{ form.name.id_for_label }}" maxlength="256" name="name" type="text">
     </p>
 
     <p>
       {{ form.organisation.errors }}
-      <label class="form-label" for="id_organisation">Organisation:</label>
-      <select class="form-control" id="id_organisation" name="organisation">
+      <label class="form-label" for="{{ form.organisation.id_for_label }}">Organisation:</label>
+      <select class="form-control" id="{{ form.organisation.id_for_label }}" name="organisation">
         {% for id, name in form.fields.organisation.choices %}
           <option value="{{id}}">{{name}}</option>
         {% endfor %}
@@ -29,8 +29,8 @@
 
     <p>
       {{ form.new_organisation.errors }}
-      <label class="form-label" for="id_new_organisation">Or add a new organisation:</label>
-      <input class="form-control" id="id_new_organisation" maxlength="256" name="new_organisation" type="text">
+      <label class="form-label" for="{{ form.new_organisation.id_for_label }}">Or add a new organisation:</label>
+      <input class="form-control" id="{{ form.new_organisation.id_for_label }}" maxlength="256" name="new_organisation" type="text">
     </p>
 
   </div>
