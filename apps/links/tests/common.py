@@ -1,5 +1,7 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
+from django.core.urlresolvers import reverse
 from apps.links.models import Link
+from apps.users.models import User
 
 
 def generate_fake_links(owner, start=1, count=1, is_external=False):
@@ -17,3 +19,22 @@ def generate_fake_links(owner, start=1, count=1, is_external=False):
         )
         link.save()
         yield link
+
+
+def make_user():
+    user = User(
+        slug='user0001',
+        username='Fake Fakerly',
+        phone='555-2187',
+        email='fake@dstl.gov.uk')
+    user.save()
+    return user
+
+
+def check_user(owner, user):
+    response = owner.app.get(reverse('login-view'))
+    response = response.click(user.slug).follow()
+    user_id = response.html.find(
+            'span', attrs={'class': 'user_id'}
+        ).attrs['data-slug']
+    return (user_id == user.slug)

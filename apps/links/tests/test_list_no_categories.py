@@ -1,6 +1,6 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
 from django.core.urlresolvers import reverse
-from apps.users.models import User
+from .common import make_user, check_user
 from .common import generate_fake_links
 
 from django_webtest import WebTest
@@ -8,12 +8,7 @@ from django_webtest import WebTest
 
 class ListLinksWithNoCategoriesTest(WebTest):
     def setUp(self):
-        self.logged_in_user = User(
-            slug='user0001',
-            username='Fake Fakerly',
-            phone='555-2187',
-            email='fake@dstl.gov.uk')
-        self.logged_in_user.save()
+        self.logged_in_user = make_user()
 
         el1, el2 = generate_fake_links(
             self.logged_in_user,
@@ -24,12 +19,7 @@ class ListLinksWithNoCategoriesTest(WebTest):
 
         self.existing_link_2 = el2
 
-        response = self.app.get(reverse('login-view'))
-        response = response.click('user0001').follow()
-        user_id = response.html.find_all(
-                'span', attrs={'class': 'user_id'}
-            )[0].text
-        self.assertEquals(user_id, 'user0001')
+        self.assertTrue(check_user(self, self.logged_in_user))
 
     def test_one_page(self):
         response = self.app.get(reverse('link-list'))

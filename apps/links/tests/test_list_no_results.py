@@ -1,19 +1,13 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
 from django.core.urlresolvers import reverse
-from apps.users.models import User
-from .common import generate_fake_links
+from .common import generate_fake_links, make_user, check_user
 
 from django_webtest import WebTest
 
 
 class ListLinksWithNoResultsTest(WebTest):
     def setUp(self):
-        self.logged_in_user = User(
-            slug='user0001',
-            username='Fake Fakerly',
-            phone='555-2187',
-            email='fake@dstl.gov.uk')
-        self.logged_in_user.save()
+        self.logged_in_user = make_user()
 
         (self.el1,) = generate_fake_links(
             self.logged_in_user,
@@ -32,12 +26,7 @@ class ListLinksWithNoResultsTest(WebTest):
         self.el2.categories.add('mapping')
         self.el2.save()
 
-        response = self.app.get(reverse('login-view'))
-        response = response.click('user0001').follow()
-        user_id = response.html.find_all(
-                'span', attrs={'class': 'user_id'}
-            )[0].text
-        self.assertEquals(user_id, 'user0001')
+        self.assertTrue(check_user(self, self.logged_in_user))
 
     def test_no_results_message(self):
         response = self.app.get(reverse('link-list'))
