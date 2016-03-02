@@ -12,21 +12,28 @@
   {% if form.errors %}
   <ul class="form-error-list">
     {% for key,value in form.errors.items %}
-    {% for error in value %}
-    <li>{{ key }}: {{ value.as_text|cut:"* " }}</li>
-    {% endfor %}
+      {% for error in value %}
+        <li><a href="#id_{{ key }}_group">{{ key }}: {{ value.as_text|cut:"* " }}</a></li>
+      {% endfor %}
     {% endfor %}
   </ul>
   {% endif %}
 
   {% csrf_token %}
-  <div class="form-group">
+  <div class="form-group" id="{{ form.name.id_for_label }}_group">
     <label class="form-label-bold" for="{{ form.name.id_for_label }}">
       Tool name
     </label>
     <p class="form-hint">
       For example, 'Google Maps'
     </p>
+    {% if form.name.errors %}
+    <ul id="{{ form.name.id_for_label }}_error_list">
+      {% for error in form.name.errors %}
+        <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
     <input class="form-control" id="{{ form.name.id_for_label }}" value="{{ form.name.value|default_if_none:"" }}" maxlength="256" name="name" type="text" />
   </div>
   <div class="form-group">
@@ -47,6 +54,13 @@
     <p>
       Select one of the options below.
     </p>
+    {% if form.is_external.errors %}
+    <ul id="{{ form.is_external.id_for_label }}_error_list">
+      {% for error in form.is_external.errors %}
+        <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
 
     <fieldset>
       <legend class="visuallyhidden">
@@ -83,6 +97,13 @@
       If you can't find them in this list, you can add them in the next form
       field.
     </p>
+    {% if form.categories.errors %}
+    <ul id="{{ form.categories.id_for_label }}_error_list">
+      {% for error in form.categories.errors %}
+        <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
     {% for category in existing_categories %}
     <label class="link-category-label" for="{{ form.categories.id_for_label }}_{{ category }}">{{ category|capfirst }}</label>
     <input class="form-control" class="link-category-checkbox" id="{{ form.categories.id_for_label }}_{{ category }}" type="checkbox" value="{{ category }}" name="categories" {% if category in form.instance.categories.all %}checked="checked"{% endif %} />
@@ -100,10 +121,18 @@
     </p>
     <input class="form-control" id="{{ form.categories.id_for_label }}" value="" maxlength="256" name="categories" type="text" />
   </div>
-  <div class="form-group">
+
+  <div class="form-group" id="{{ form.destination.id_for_label }}_group">
     <label class="form-label-bold" for="{{ form.destination.id_for_label }}">
       Destination
     </label>
+    {% if form.destination.errors %}
+    <ul id="{{ form.destination.id_for_label }}_error_list">
+      {% for error in form.destination.errors %}
+        <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
     <p class="form-hint">
       A URL to access the tool from a device connected to the Dstl network.
       <br>
