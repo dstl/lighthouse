@@ -1,8 +1,12 @@
 {# (c) Crown Owned Copyright, 2016. Dstl. #}
 <div class="header-proposition" style="position:relative">
   <div id="user-details">
-    {% if user.slug %}
-      <span class="user_id">{{user.slug}}</span> | <a href="{% url 'logout' %}">Logout</a>
+    {% if request.user.is_authenticated %}
+      {% if user.username %}
+        <span class="user_id" data-slug="{{user.slug}}">{{user.username}}</span> | <a href="{% url 'logout' %}">Logout</a>
+      {% else %}
+        <span class="user_id" data-slug="{{user.slug}}">{{user.slug}}</span> | <a href="{% url 'logout' %}">Logout</a>
+      {% endif %}
     {% else %}
       <a href="{% url 'login-view' %}">Login</a>
     {% endif %}

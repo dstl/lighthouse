@@ -1,19 +1,14 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
 from django.core.urlresolvers import reverse
 from apps.links.models import Link
-from apps.users.models import User
+from .common import make_user
 
 from django_webtest import WebTest
 
 
 class LinkNotLoggedInTest(WebTest):
     def setUp(self):
-        self.existing_user = User(
-            slug='user0001',
-            username='Fake Fakerly',
-            phone='555-2187',
-            email='fake@dstl.gov.uk')
-        self.existing_user.save()
+        self.existing_user = make_user()
         self.existing_link = Link(
             name='Wikimapia',
             description='A great mapping application',

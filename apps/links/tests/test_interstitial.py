@@ -1,26 +1,15 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
 from django.core.urlresolvers import reverse
 from apps.links.models import Link
-from apps.users.models import User
+from .common import make_user, check_user
 
 from django_webtest import WebTest
 
 
 class LinksWithInterstitialTest(WebTest):
     def setUp(self):
-        self.logged_in_user = User(
-            slug='user0001',
-            username='Fake Fakerly',
-            phone='555-2187',
-            email='fake@dstl.gov.uk')
-        self.logged_in_user.save()
-
-        response = self.app.get(reverse('login-view'))
-        response = response.click('user0001').follow()
-        user_id = response.html.find_all(
-                'span', attrs={'class': 'user_id'}
-            )[0].text
-        self.assertEquals(user_id, 'user0001')
+        self.logged_in_user = make_user()
+        self.assertTrue(check_user(self, self.logged_in_user))
 
         self.external_link = Link(
             name='Tweetbot',
