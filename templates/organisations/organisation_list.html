@@ -4,14 +4,23 @@
 {% block grid_content %}
 
   <h1 class="form-title heading-xlarge">Organisations</h1>
-  <ul class="list list-bullet">
+
+  <p class="lede">
+    These are the organisations currently registered with the system. Click on an organisation to view the teams in that organisation.
+  </p>
+
+  <ul class="list list-bullet organisation-list">
     {% for organisation in object_list %}
-      <li><a href='{% url "organisation-detail" organisation.pk %}'>{{organisation.name}}</a></li>
+      <li><a class="main-list-item" href='{% url "organisation-detail" organisation.pk %}'>{{organisation.name}}</a>
+        <ul class="list organisation-info">
+          <li>Total Teams: </li>
+        </ul>
+      </li>
     {% endfor %}
   </ul>
 
   <hr />
-  
+
   <form method="post" action="{% url 'organisation-create' %}">
     {% csrf_token %}
     <div class="form-group">
