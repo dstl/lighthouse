@@ -32,7 +32,6 @@ class LoginUser(View):
             #   the place with no username and only a 'stub'.
             #   As somepoint we'll *always* bounce the user to here if
             #   they don't have a username.
-            """
             if (user.username is None or
                     user.username is ''):
                 return redirect(
@@ -41,13 +40,16 @@ class LoginUser(View):
                         kwargs={'slug': user.slug}
                     )
                 )
-            else:
-                return redirect(reverse('link-list'))
-            """
+
             if 'next' in request.GET:
                 return redirect(self.request.GET.get('next'))
 
-            return redirect(reverse('link-list'))
+            return redirect(
+                reverse(
+                    'user-detail',
+                    kwargs={'slug': user.slug}
+                )
+            )
         else:
             return redirect(reverse('login-view'))
 
