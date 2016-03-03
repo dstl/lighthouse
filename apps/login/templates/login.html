@@ -5,9 +5,27 @@
 
   <h1 class="form-title heading-xlarge">Login</h1>
 
+  <form method="post" action="{% url "user-create" %}">
+    {% csrf_token %}
+    <div class="form-group">
+      <label class="form-label-bold" for="id_slug">
+        Login with ID.
+      </label>
+      <p class="form-hint">
+        Please use your normal system ID to log in here.
+      </p>
+      <input class="form-control" id="id_slug" maxlength="256" name="slug" type="text">
+    </div>
+    <input type="submit" method="POST" value="Login" class="button">
+  </form>
+
   {% if users %}
+  <hr />
     <p class="heading-small">
-      Please use on of the following user IDs to login as.
+      [DEBUG]
+    </p>
+    <p class="form-hint">
+       Alternatively for debug purposes, you can quick login as a user from the list below.
     </p>
 
     <ul>
@@ -19,22 +37,7 @@
         {% endif %}
       {% endfor %}
     </ul>
-  <hr />
   {% endif %}
 
-  <form method="post" action="{% url "user-create" %}">
-    {% csrf_token %}
-    <div class="form-group">
-      <label class="form-label-bold" for="id_slug">
-        Login with ID.
-      </label>
-      <p class="form-hint">
-        If your user ID isn't in the list above, then you can register it with
-        the system here.
-      </p>
-      <input class="form-control" id="id_slug" maxlength="256" name="slug" type="text">
-    </div>
-    <input type="submit" method="POST" value="Login" class="button">
-  </form>
 
 {% endblock %}
