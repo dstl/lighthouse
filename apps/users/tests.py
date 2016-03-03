@@ -79,3 +79,31 @@ class UserWebTest(WebTest):
                 'span', attrs={'class': 'user_id'}
             )[0].text
         self.assertEquals(user_id, 'user0001')
+
+    def test_update_button_shows_on_user_profile(self):
+        #   Create the two users
+        u1 = User(slug='user0001')
+        u1.save()
+        u2 = User(slug='user0002')
+        u2.save()
+        #   Login as the first user
+        response = self.app.get(reverse('login-view'))
+        response = response.click('user0001').follow()
+        #   Now goto the profile page for the 1st user and see if the button
+        #   exists
+        response = self.app.get(reverse(
+            'user-detail',
+            kwargs={'slug': 'user0001'}))
+        button = response.html.find(
+                'a',
+                attrs={'id': 'update_profile_link'})
+        self.assertTrue(button)
+
+        #   Now visit the profile page for the not logged in user
+        response = self.app.get(reverse(
+            'user-detail',
+            kwargs={'slug': 'user0002'}))
+        button = response.html.find(
+                'a',
+                attrs={'id': 'update_profile_link'})
+        self.assertFalse(button)
