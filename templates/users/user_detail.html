@@ -43,7 +43,7 @@
 
 {% ifequal request.user.slug user.slug %}
   <hr />
-  <a href="{% url 'user-updateprofile' request.user.slug %}" class="button">Update your profile</a>
+  <a id="update_profile_link" href="{% url 'user-updateprofile' request.user.slug %}" class="button">Update your profile</a>
 {% endifequal %}
 
 {% endblock %}
