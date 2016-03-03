@@ -94,7 +94,26 @@ class LinkTest(WebTest):
         error_list = response.html.find('ul', {'class': 'form-error-list'})
 
         self.assertIsNotNone(error_list)
-        self.assertEqual(len(error_list.findChildren()), 2)
+        self.assertEqual(len(error_list.findChildren('li')), 2)
+        self.assertEqual(len(error_list.findChildren('a')), 2)
+
+        self.assertIsNotNone(error_list.findChildren(
+            'a', {"href": '#id_name_group'}
+            ))
+        self.assertIsNotNone(error_list.findChildren(
+            'a', {"href": '#id_destination_group'}
+            ))
+
+        name_group = response.html.find(id='id_name_group')
+        self.assertIsNotNone(name_group)
+
+        name_errors = response.html.find(id='id_name_error_list')
+        self.assertIsNotNone(name_errors)
+        self.assertEqual(len(name_errors.findChildren()), 1)
+
+        destination_errors = response.html.find(id='id_destination_error_list')
+        self.assertIsNotNone(destination_errors)
+        self.assertEqual(len(destination_errors.findChildren()), 1)
 
         form = response.form
 
@@ -180,7 +199,21 @@ class LinkTest(WebTest):
         error_list = response.html.find('ul', {'class': 'form-error-list'})
 
         self.assertIsNotNone(error_list)
-        self.assertEqual(len(error_list.findChildren()), 1)
+        self.assertEqual(len(error_list.findChildren('li')), 1)
+        self.assertEqual(len(error_list.findChildren('a')), 1)
+
+        self.assertIsNotNone(error_list.findChildren('a')[0].attrs['href'])
+        self.assertEqual(
+            error_list.findChildren('a')[0].attrs['href'],
+            '#id_name_group'
+        )
+
+        name_group = response.html.find(id='id_name_group')
+        self.assertIsNotNone(name_group)
+
+        name_errors = response.html.find(id='id_name_error_list')
+        self.assertIsNotNone(name_errors)
+        self.assertEqual(len(name_errors.findChildren()), 1)
 
         form = response.form
 

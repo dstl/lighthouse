@@ -10,26 +10,41 @@
 
 <form method="post" action="">
   {% if form.errors %}
-  <ul class="form-error-list">
-    {% for key,value in form.errors.items %}
-    {% for error in value %}
-    <li>{{ key }}: {{ value.as_text|cut:"* " }}</li>
-    {% endfor %}
-    {% endfor %}
-  </ul>
+  <div class="error-summary">
+    <h2 class="heading-medium error-summary-heading">Your tool could not be saved</h2>
+    {% ifequal form.errors.items|length 1 %}
+    <p>There is a problem which needs solving before your tool can be saved</p>
+    {% else %}
+    <p>There are a few problems that need solving before your tool can be saved</p>
+    {% endifequal %}
+    <ul class="form-error-list error-summary-list">
+      {% for key,value in form.errors.items %}
+        {% for error in value %}
+          <li class="error-message"><a href="#id_{{ key }}_group">{{ key|capfirst }}: {{ value.as_text|cut:"* " }}</a></li>
+        {% endfor %}
+      {% endfor %}
+    </ul>
+  </div>
   {% endif %}
 
   {% csrf_token %}
-  <div class="form-group">
+  <div class="form-group{% if form.name.errors %} error{% endif %}" id="{{ form.name.id_for_label }}_group">
     <label class="form-label-bold" for="{{ form.name.id_for_label }}">
       Tool name
     </label>
     <p class="form-hint">
       For example, 'Google Maps'
     </p>
+    {% if form.name.errors %}
+    <ul id="{{ form.name.id_for_label }}_error_list">
+      {% for error in form.name.errors %}
+        <li class="error-message">{{ error }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
     <input class="form-control" id="{{ form.name.id_for_label }}" value="{{ form.name.value|default_if_none:"" }}" maxlength="256" name="name" type="text" />
   </div>
-  <div class="form-group">
+  <div class="form-group{% if form.description.errors %} error{% endif %}">
     <label class="form-label-bold" for="{{ form.description.id_for_label }}">
       Description of tool
     </label>
@@ -38,7 +53,7 @@
     </p>
     <textarea class="form-control" cols="40" id="{{ form.description.id_for_label }}" name="description" rows="10">{{ form.description.value|default_if_none:"" }}</textarea>
   </div>
-  <div class="form-group">
+  <div class="form-group{% if form.is_external.errors %} error{% endif %}">
     <h2 class="form-label-bold">
       Is the tool internal or is it an external tool available
       online?
@@ -47,6 +62,13 @@
     <p>
       Select one of the options below.
     </p>
+    {% if form.is_external.errors %}
+    <ul id="{{ form.is_external.id_for_label }}_error_list">
+      {% for error in form.is_external.errors %}
+        <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
 
     <fieldset>
       <legend class="visuallyhidden">
@@ -72,6 +94,7 @@
 
     </fieldset>
   </div>
+
   {% if existing_categories %}
   <div class="form-group">
     <label id="existing-categories-label" class="form-label-bold">
@@ -89,7 +112,8 @@
     {% endfor %}
   </div>
   {% endif %}
-  <div class="form-group">
+
+  <div class="form-group{% if form.categories.errors %} error{% endif %}">
     <label class="form-label-bold" for="{{ form.categories.id_for_label }}">
       Does the tool fit into any categories which aren't yet listed?
     </label>
@@ -98,9 +122,17 @@
       <br>
       E.g., "social, geospatial".
     </p>
+    {% if form.categories.errors %}
+    <ul id="{{ form.categories.id_for_label }}_error_list">
+      {% for error in form.categories.errors %}
+        <li class="error-message">{{ error }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
     <input class="form-control" id="{{ form.categories.id_for_label }}" value="" maxlength="256" name="categories" type="text" />
   </div>
-  <div class="form-group">
+
+  <div class="form-group{% if form.destination.errors %} error{% endif %}" id="{{ form.destination.id_for_label }}_group">
     <label class="form-label-bold" for="{{ form.destination.id_for_label }}">
       Destination
     </label>
@@ -109,8 +141,16 @@
       <br>
       For example, 'https://maps.google.com/'
     </p>
+    {% if form.destination.errors %}
+    <ul id="{{ form.destination.id_for_label }}_error_list">
+      {% for error in form.destination.errors %}
+        <li class="error-message">{{ error }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
     <input class="form-control" id="{{ form.destination.id_for_label }}" value="{{ form.destination.value|default_if_none:"" }}" maxlength="2000" name="destination" type="url" />
   </div>
+
   <input type="submit" method="POST" value="Save bookmark" class="button" />
 </form>
 
