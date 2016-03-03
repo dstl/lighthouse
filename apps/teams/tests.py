@@ -61,11 +61,17 @@ class TeamWebTest(WebTest):
         form['name'] = 'New Team'
         response = form.submit()
         html = response.html
-        errors = html.find("ul", {"class": "errorlist"}).find("li").contents
+        errors = html.find(
+            "ul",
+            {"class": "form-error-list"}
+        ).find("li").contents
+
+        self.assertEqual(len(errors), 1)
+
         self.assertIn(
             'You must select an existing organisation or create a new one.',
-            errors
-         )
+            errors[0].text
+        )
 
     def test_cannot_create_org_and_new_org_team(self):
         o = Organisation(name='New Org')
@@ -76,10 +82,16 @@ class TeamWebTest(WebTest):
         form['new_organisation'] = 'New Org'
         response = form.submit()
         html = response.html
-        errors = html.find("ul", {"class": "errorlist"}).find("li").contents
-        failMessage = "You can't select an existing organisation and " + \
-            "create a new one at the same time."
-        self.assertIn(failMessage, errors)
+        errors = html.find(
+            "ul",
+            {"class": "form-error-list"}
+        ).find("li").contents
+
+        self.assertEqual(len(errors), 1)
+
+        failMessage = "You can't select an existing organisation and "
+        failMessage += "create a new one at the same time."
+        self.assertIn(failMessage, errors[0].text)
 
     def test_can_create_team_with_existsing_org(self):
         o = Organisation(name='New Org')
