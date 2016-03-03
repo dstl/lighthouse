@@ -38,6 +38,19 @@ class UserUpdateProfile(UpdateView):
             self.request.user.username == ''
         ):
             context['show_username_alert'] = True
+        else:
+            if (
+                self.request.user.best_way_to_find is None or
+                self.request.user.best_way_to_find == '' or
+                self.request.user.best_way_to_contact is None or
+                self.request.user.best_way_to_contact == '' or
+                self.request.user.phone is None or
+                self.request.user.phone == '' or
+                self.request.user.email is None or
+                self.request.user.email == ''
+            ):
+                context['show_extra_details_alert'] = True
+
         return context
 
     #   Once we've updated the details, go back home
