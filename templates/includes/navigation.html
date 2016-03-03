@@ -3,7 +3,7 @@
   <div id="user-details">
     {% if request.user.is_authenticated %}
       {% if user.username %}
-        <span class="user_id" data-slug="{{user.slug}}">{{user.username}}</span> | <a href="{% url 'logout' %}">Logout</a>
+        <span class="user_id" data-slug="{{user.slug}}"><a href="{% url 'user-detail' user.slug %}">{{user.username}}</a></span> | <a href="{% url 'logout' %}">Logout</a>
       {% else %}
         <span class="user_id" data-slug="{{user.slug}}">{{user.slug}}</span> | <a href="{% url 'logout' %}">Logout</a>
       {% endif %}
