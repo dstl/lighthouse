@@ -39,17 +39,25 @@ class UserWebTest(WebTest):
         )
 
     def test_create_new_user(self):
+        #   got to the login form, and enter a user ID, this will sign us up.
         form = self.app.get(reverse('login-view')).form
         form['slug'] = 'user0001'
         response = form.submit().follow()
-        self.assertEquals(response.status_int, 302)
 
-        response = self.app.get(reverse('login-view'))
-        response = response.click('user0001').follow()
-        user_id = response.html.find_all(
-                'span', attrs={'class': 'user_id'}
-            )[0].text
-        self.assertEquals(user_id, 'user0001')
+        #   Now go to the user profile page
+        response = self.app.get(
+            reverse(
+                'user-detail',
+                kwargs={'slug': 'user0001'}
+            )
+        )
+        #   Check that we have the user slug in the name in the nav bar
+        self.assertTrue(
+            response.html.find(
+                'span',
+                attrs={'data-slug': 'user0001'}
+            )
+        )
 
     def test_cannot_create_duplicate_user(self):
         u = User(slug='user0001')
