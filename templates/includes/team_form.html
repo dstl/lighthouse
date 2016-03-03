@@ -30,7 +30,7 @@
       {% endfor %}
     </ul>
     {% endif %}
-    <input class="form-control" id="{{ form.name.id_for_label }}" maxlength="256" name="name" type="text">
+    <input class="form-control" id="{{ form.name.id_for_label }}" maxlength="256" name="name" type="text" value="{{ form.name.value|default_if_none:"" }}">
   </div>
 
   <div class="form-group{% if form.organisation.errors %} error{% endif %}" id="{{ form.organisation.id_for_label }}_group">
@@ -55,7 +55,7 @@
     {% endfor %}
     <label for="{{ form.new_organisation.id_for_label }}" class="block-label block-label-text form-control">
       <span class="heading-small">Add a new organisation</span><br />
-      <input class="form-control radio-free-text" id="{{ form.new_organisation.id_for_label }}" maxlength="256" name="new_organisation" type="text">
+      <input class="form-control radio-free-text" id="{{ form.new_organisation.id_for_label }}" maxlength="256" name="new_organisation" type="text" value="{{ form.new_organisation.value|default_if_none:"" }}">
     </label>
   </div>
 
