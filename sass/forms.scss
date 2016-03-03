@@ -15,3 +15,20 @@
 .block-label-small:last-child {
   margin-bottom: 0;
 }
+
+
+.block-label-text .radio-free-text {
+  display:block;
+  width:auto;
+  position: relative;
+  top: auto;
+  left: auto;
+  cursor: auto;
+  margin: 0;
+  width: 100%;
+  height: auto;
+}
+
+.block-label-text {
+  padding: 18px 15px 15px 15px;
+}

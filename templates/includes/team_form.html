@@ -1,38 +1,37 @@
 {# (c) Crown Owned Copyright, 2016. Dstl. #}
+<h2 class="form-title heading-large">Create a new team</h2>
 <form method="post" action="{% url 'team-create' %}">
   {% csrf_token %}
   <div class="form-group">
-    <label class="form-label-bold" for="id_slug">
-      Create new team.
-    </label>
-    <p class="form-hint">
-      If an organisation isn't in the list above then you can add it here.
-      Please assign it to either an existing organisation or a new one.
-    </p>
-    {{ form.non_field_errors }}
-
-    <p>
+    <div class="form-group">
       {{ form.name.errors }}
-      <label class="form-label" for="{{ form.name.id_for_label }}">Name:</label>
+      <label for="{{ form.name.id_for_label }}" class="form-label-bold">
+        What is this team called?
+      </label>
       <input class="form-control" id="{{ form.name.id_for_label }}" maxlength="256" name="name" type="text">
-    </p>
+    </div>
 
-    <p>
+    <div class="form-group">
+      <label id="existing-categories-label" class="form-label-bold">
+        To which organisation does this team belong?
+      </label>
+      <p class="form-hint">
+        If none of the organisations listed below are the organisation you're looking for you can enter a new one.
+      </p>
+      {{ form.non_field_errors }}
       {{ form.organisation.errors }}
-      <label class="form-label" for="{{ form.organisation.id_for_label }}">Organisation:</label>
-      <select class="form-control" id="{{ form.organisation.id_for_label }}" name="organisation">
-        {% for id, name in form.fields.organisation.choices %}
-          <option value="{{id}}">{{name}}</option>
-        {% endfor %}
-      </select>
-    </p>
-
-    <p>
-      {{ form.new_organisation.errors }}
-      <label class="form-label" for="{{ form.new_organisation.id_for_label }}">Or add a new organisation:</label>
-      <input class="form-control" id="{{ form.new_organisation.id_for_label }}" maxlength="256" name="new_organisation" type="text">
-    </p>
+      {% for org in form.fields.organisation.queryset %}
+      <label for="{{ form.organisation.id_for_label }}_{{org.id}}" class="block-label form-control">
+        <input id="{{ form.organisation.id_for_label }}_{{org.id}}" type="radio" name="organisation" value="{{org.id}}" />
+        <span class="heading-small">{{org.name}}</span><br />
+      </label>
+      {% endfor %}
+      <label for="{{ form.new_organisation.id_for_label }}" class="block-label block-label-text form-control">
+        <span class="heading-small">Add a new organisation</span><br />
+        <input class="form-control radio-free-text" id="{{ form.new_organisation.id_for_label }}" maxlength="256" name="new_organisation" type="text">
+      </label>
+    </div>
 
   </div>
-  <input type="submit" method="POST" value="Add Team" class="button">
+  <input type="submit" method="POST" value="Create team" class="button">
 </form>
