@@ -2,6 +2,7 @@
 # apps/users/models.py
 from django.core.urlresolvers import reverse
 from django.db import models
+from apps.teams.models import Team
 import uuid
 
 
@@ -20,6 +21,8 @@ class User(models.Model):
     phone = models.CharField(max_length=256, blank=True, null=True)
     email = models.CharField(max_length=256, blank=True, null=True)
     last_login = models.DateTimeField(blank=True, null=True)
+
+    teams = models.ManyToManyField(Team)
 
     def get_absolute_url(self):
         return reverse('user-detail', kwargs={'slug': self.slug})
