@@ -6,6 +6,15 @@ from django.test import TestCase
 from django.db.utils import IntegrityError
 
 from .models import Organisation
+from apps.teams.models import Team
+
+
+def create_organisation(name, num_teams=0):
+    o = Organisation(name=name)
+    o.save()
+    for x in range(0, num_teams):
+        Team(name='New Team %d' % (x + 1), organisation=o).save()
+    return o
 
 
 class OrganisationTest(TestCase):
@@ -78,3 +87,29 @@ class OrganisationWebTest(WebTest):
             attrs={'class': 'heading-xlarge'}
         ).text
         self.assertEquals(org_name, 'Organisation: alpha')
+
+    def test_show_number_of_teams_two(self):
+        o = create_organisation(name='two teams', num_teams=2)
+        response = self.app.get(reverse('organisation-list'))
+
+        self.assertIn(
+            o.name,
+            response.html.find('a', {"class": "main-list-item"}).text
+        )
+        self.assertIn(
+            'Total teams: 2',
+            response.html.find('ul', {"class": "organisation-info"}).text
+        )
+
+    def test_show_number_of_teams_none(self):
+        o = create_organisation(name='no teams', num_teams=0)
+        response = self.app.get(reverse('organisation-list'))
+
+        self.assertIn(
+            o.name,
+            response.html.find('a', {"class": "main-list-item"}).text
+        )
+        self.assertIn(
+            'This organisation has no teams',
+            response.html.find('ul', {"class": "organisation-info"}).text
+        )
