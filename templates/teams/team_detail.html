@@ -9,4 +9,10 @@
   This team is in the <a href="{% url "organisation-detail" team.organisation.pk %}">{{team.organisation}}</a> organisation.
 </p>
 
+<ul class="member-list">
+	{% for member in team.user_set.all %}
+	<li>{{ member.username }}</li>
+	{% endfor %}
+</ul>
+
 {% endblock %}

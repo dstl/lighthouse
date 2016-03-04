@@ -198,3 +198,27 @@ class TeamWebTest(WebTest):
             'This team has no members',
             response.html.find('ul', {"class": "team-info"}).text
         )
+
+    def test_list_members(self):
+        t = create_team(name='two members', num_members=2)
+        response = self.app.get(reverse('team-detail', kwargs={"pk": t.pk}))
+
+        user_items = response.html.find(
+            'ul',
+            {"class": "member-list"}
+        ).findChildren('li')
+
+        self.assertEqual(
+            len(user_items),
+            2
+        )
+
+        self.assertIn(
+            'Team Member 1',
+            user_items[0].text
+        )
+
+        self.assertIn(
+            'Team Member 2',
+            user_items[1].text
+        )
