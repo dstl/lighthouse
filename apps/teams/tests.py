@@ -10,17 +10,25 @@ from apps.organisations.models import Organisation
 from apps.users.models import User
 
 
-def create_team(name, num_members=0):
+def create_team(name, num_members=0, usernames={}):
     o = Organisation(name="Organisation for %s" % name)
     o.save()
     t = Team(name=name, organisation=o)
     t.save()
     # pdb.set_trace()
     for x in range(0, num_members):
+        if x in usernames.keys():
+            username = usernames[x]
+        else:
+            username = 'Team Member %d' % (x + 1)
+
         u = User(
-            slug='teammember%d' % (x + 1),
-            username='Team Member %d' % (x + 1)
+            slug='teammember%d' % (x + 1)
         )
+
+        if username is not None:
+            u.username = username
+
         u.save()
         u.teams.add(t)
         u.save()
@@ -220,5 +228,32 @@ class TeamWebTest(WebTest):
 
         self.assertIn(
             'Team Member 2',
+            user_items[1].text
+        )
+
+    def test_list_members_no_username(self):
+        t = create_team(
+            name='two members', num_members=2,
+            usernames={0: None, 1: 'steve'}
+        )
+        response = self.app.get(reverse('team-detail', kwargs={"pk": t.pk}))
+
+        user_items = response.html.find(
+            'ul',
+            {"class": "member-list"}
+        ).findChildren('li')
+
+        self.assertEqual(
+            len(user_items),
+            2
+        )
+
+        self.assertIn(
+            'teammember1',
+            user_items[0].text
+        )
+
+        self.assertIn(
+            'steve',
             user_items[1].text
         )

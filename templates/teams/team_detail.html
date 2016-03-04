@@ -11,7 +11,7 @@
 
 <ul class="member-list">
 	{% for member in team.user_set.all %}
-	<li>{{ member.username }}</li>
+	<li>{{ member.username|default_if_none:member.slug }}</li>
 	{% endfor %}
 </ul>
 
