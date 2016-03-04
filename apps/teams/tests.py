@@ -7,6 +7,25 @@ from django.db.utils import IntegrityError
 
 from .models import Team
 from apps.organisations.models import Organisation
+from apps.users.models import User
+
+
+def create_team(name, num_members=0):
+    o = Organisation(name="Organisation for %s" % name)
+    o.save()
+    t = Team(name=name, organisation=o)
+    t.save()
+    # pdb.set_trace()
+    for x in range(0, num_members):
+        u = User(
+            slug='teammember%d' % (x + 1),
+            username='Team Member %d' % (x + 1)
+        )
+        u.save()
+        u.teams.add(t)
+        u.save()
+        t.save()
+    return t
 
 
 class TeamTest(TestCase):
@@ -152,3 +171,30 @@ class TeamWebTest(WebTest):
             attrs={'class': 'heading-xlarge'}
         ).text
         self.assertEquals(org_name, 'Team: ' + team_name)
+
+    def test_show_number_of_members_two(self):
+        t = create_team(name='two members', num_members=2)
+        response = self.app.get(reverse('team-list'))
+
+        self.assertIn(
+            t.name,
+            response.html.find('a', {"class": "main-list-item"}).text
+        )
+        self.assertIn(
+            'Total members: 2',
+            response.html.find('ul', {"class": "team-info"}).text
+        )
+
+    def test_show_number_of_members_none(self):
+        t = create_team(name='no members', num_members=0)
+        # pdb.set_trace()
+        response = self.app.get(reverse('team-list'))
+
+        self.assertIn(
+            t.name,
+            response.html.find('a', {"class": "main-list-item"}).text
+        )
+        self.assertIn(
+            'This team has no members',
+            response.html.find('ul', {"class": "team-info"}).text
+        )

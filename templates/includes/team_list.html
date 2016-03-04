@@ -5,7 +5,11 @@
         {% if show_organisation %}
           <li>Organisation: <a href='{% url "organisation-detail" team.organisation.pk %}'>{{team.organisation.name}}</a></li>
         {% endif %}
-        <li>Total Members: </li>
+        {% ifequal team.user_set.all|length 0 %}
+        <li>This team has no members</li>
+        {% else %}
+        <li>Total members: {{team.user_set.all|length}}</li>
+        {% endifequal %}
       </ul>
     </li>
   {% endfor %}
