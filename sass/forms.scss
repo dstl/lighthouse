@@ -32,3 +32,110 @@
 .block-label-text {
   padding: 18px 15px 15px 15px;
 }
+
+
+// Form alerts
+// ==========================================================================
+$alert-colour: $yellow;           // Alert text and border colour
+$alert-background: #f7f7fe;       // Alert background colour
+
+.alert {
+
+  // Ensure the .alert class is applied to .form-group, otherwide box-sizing(border-box) will need to be used
+  // @include box-sizing(border-box);
+  margin-right: 15px;
+
+  // Error messages should be red and bold
+  .error-message {
+    color: $alert-colour;
+    font-weight: bold;
+  }
+
+  // Form inputs should have a red border
+  .form-control {
+    border: 4px solid $alert-colour;
+  }
+
+  .form-hint {
+    margin-bottom: 0;
+  }
+
+}
+
+.alert,
+.alert-summary {
+
+  // Add a yellow border to the left of the field
+  border-left: 4px solid $alert-colour;
+  padding-left: 10px;
+
+  @include media(tablet) {
+    border-left: 5px solid $alert-colour;
+    padding-left: $gutter-half;
+  }
+}
+
+.alert-message {
+  @include core-19;
+
+  display: block;
+  clear: both;
+
+  margin: 0;
+  padding: 5px 0 7px 0;
+}
+
+// Summary of multiple alert messages
+.alert-summary {
+
+  // Alert summary has a border on all sides
+  border: 4px solid $alert-colour;
+
+  margin-top: $gutter-half;
+  margin-bottom: $gutter-half;
+
+  padding: $gutter-half 10px;
+
+  @include media(tablet) {
+    border: 5px solid $alert-colour;
+
+    margin-top: $gutter;
+    margin-bottom: $gutter;
+
+    padding: 20px $gutter-half $gutter-half $gutter-half;
+  }
+
+  @include ie-lte(6) {
+    zoom: 1;
+  }
+
+  // Use the GOV.UK outline focus style
+  &:focus {
+    outline: 3px solid $focus-colour;
+  }
+
+  .alert-summary-heading {
+    margin-top: 0;
+  }
+
+  p {
+    margin-bottom: 10px;
+  }
+
+  .alert-summary-list {
+    padding-left: 0;
+
+    li {
+
+      @include media(tablet) {
+        margin-bottom: 5px;
+      }
+    }
+
+    a {
+      color: $alert-colour;
+      font-weight: bold;
+      text-decoration: underline;
+    }
+  }
+}

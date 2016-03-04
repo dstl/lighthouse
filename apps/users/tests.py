@@ -107,3 +107,118 @@ class UserWebTest(WebTest):
                 'a',
                 attrs={'id': 'update_profile_link'})
         self.assertFalse(button)
+
+    def test_alert_for_missing_username(self):
+        #   This user doesn't have a username
+        User(slug='user0001').save()
+
+        #   Log in as them
+        response = self.app.get(reverse('login-view'))
+        response = response.click('user0001')
+
+        #   Now go to the update user information page for this user-detail
+        response = self.app.get(reverse(
+            'user-updateprofile',
+            kwargs={'slug': 'user0001'}))
+
+        #   Check that we have an error summary at the top
+        self.assertTrue(
+            response.html.find(
+                'h1',
+                attrs={'class': 'error-summary-heading'}
+            )
+        )
+
+    def test_alert_for_missing_other_information(self):
+
+        update_page = reverse(
+            'user-updateprofile',
+            kwargs={'slug': 'user0001'})
+        check_str = 'Please add additional information'
+
+        def find_alert(response):
+            return response.html.find(
+                        'h1',
+                        attrs={'class': 'alert-summary-heading'}
+                        )
+
+        #   create the user and log them in
+        u = User(slug='user0001', username='User 0001')
+        u.save()
+        response = self.app.get(reverse('login-view'))
+        response = response.click('user0001')
+
+        # go to the update page and check for the alert
+        response = self.app.get(update_page)
+        self.assertTrue(find_alert(response), check_str)
+
+        u.best_way_to_find = 'In the kitchen'
+        u.best_way_to_contact = 'By phone'
+        u.phone = '01777777'
+        u.email = ''
+        u.save()
+        #   Check that we have an alert summary at the top
+        response = self.app.get(update_page)
+        self.assertTrue(find_alert(response), check_str)
+
+        u.best_way_to_find = 'In the kitchen'
+        u.best_way_to_contact = 'By phone'
+        u.phone = ''
+        u.email = 'test@test.com'
+        u.save()
+        #   Check that we have an alert summary at the top
+        response = self.app.get(update_page)
+        self.assertTrue(find_alert(response), check_str)
+
+        u.best_way_to_find = 'In the kitchen'
+        u.best_way_to_contact = ''
+        u.phone = '01777777'
+        u.email = 'test@test.com'
+        u.save()
+        #   Check that we have an alert summary at the top
+        response = self.app.get(update_page)
+        self.assertTrue(find_alert(response), check_str)
+
+        u.best_way_to_find = ''
+        u.best_way_to_contact = 'By phone'
+        u.phone = '01777777'
+        u.email = 'test@test.com'
+        u.save()
+        #   Check that we have an alert summary at the top
+        response = self.app.get(update_page)
+        self.assertTrue(find_alert(response), check_str)
+
+    def test_no_error_alert_for_all_information(self):
+        #   This user has all the information
+        User(
+            slug='user0001',
+            username='User 0001',
+            best_way_to_find='In the kitchen',
+            best_way_to_contact='By phone',
+            phone='01777777',
+            email='test@test.com',
+        ).save()
+
+        #   Log in as them
+        response = self.app.get(reverse('login-view'))
+        response = response.click('user0001')
+
+        #   Now go to the update user information page for this user-detail
+        response = self.app.get(reverse(
+            'user-updateprofile',
+            kwargs={'slug': 'user0001'}))
+
+        #   Check that we don't have an error or alert summary
+        self.assertFalse(
+            response.html.find(
+                'h1',
+                attrs={'class': 'error-summary-heading'}
+            )
+        )
+
+        self.assertFalse(
+            response.html.find(
+                'h1',
+                attrs={'class': 'alert-summary-heading'}
+            )
+        )

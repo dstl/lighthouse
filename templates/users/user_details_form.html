@@ -3,11 +3,18 @@
 
 {% block grid_content %}
 
+<h1 class="form-title heading-xlarge">Update profile</h1>
+
+<p class="lede">
+  Anytime you need to update your information you can do that here.
+</p>
+
+
 {% if show_username_alert %}
 <div class="error-summary" role="group">
   <h1 class="heading-medium error-summary-heading">Please add a username</h1>
   <p>
-    To help people find you on  the system you need to add a username. The more information you can add to help people contact you the better.
+    To help people find you on the system you need to add a username. The more information you can add to help people contact you the better.
   </p>
   <p>
     Thank you.
@@ -15,11 +22,116 @@
 </div>
 {% endif %}
 
-<h1>Enter details</h1>
+{% if show_extra_details_alert %}
+<div class="alert-summary" role="group">
+  <h1 class="heading-medium alert-summary-heading">Please add additional information</h1>
+  <p>
+    The system works best when it's easy to find other people, and it's easy for them to find you. It's not required but it's helpful to add as much information as possible.
+  </p>
+  <p>
+    Thank you.
+  </p>
+</div>
+{% endif %}
+
+
 <form method="post" action="">
   {% csrf_token %}
-  {{ form.as_p }}
-  <button>Save user</button>
+
+  <div class="form-group {% if show_username_alert %}error{% endif %}">
+    <label class="form-label-bold" for="{{ form.username.id_for_label }}">
+      Username
+    </label>
+
+    {% if show_username_alert %}
+      <span class="error-message">
+        Please supply a username so other people can easily contact you.
+      </span>
+    {% endif %}
+
+    <p class="form-hint">
+      Generally how other people would recognise your name in the system.
+    </p>
+    {% if form.username.errors %}
+    <ul id="{{ form.username.id_for_label }}_error_list">
+      {% for error in form.username.errors %}
+        <li class="error-message">{{ error }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    <input class="form-control" id="{{ form.username.id_for_label }}" value="{{ form.username.value|default_if_none:"" }}" maxlength="256" name="username" type="text" />
+  </div>
+
+  <div class="form-group {% if show_extra_details_alert %}alert{% endif %}">
+
+    {% if show_extra_details_alert %}
+      <span class="alert-message">
+        It's super useful to other members of the system if you can make it as easy as possible for them to contact you.
+      </span>
+    {% endif %}
+
+    <p class="form-hint">
+      Quick details about how you'd like other people to get hold of you.
+    </p>
+
+    <p>
+      <label class="form-label-bold" for="{{ form.best_way_to_find.id_for_label }}">
+        Best way to find you.
+      </label>
+      {% if form.best_way_to_find.errors %}
+      <ul id="{{ form.best_way_to_find.id_for_label }}_error_list">
+        {% for error in form.best_way_to_find.errors %}
+          <li class="error-message">{{ error }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      <textarea class="form-control" id="{{ form.best_way_to_find.id_for_label }}" maxlength="1024" name="best_way_to_find">{{ form.best_way_to_find.value|default_if_none:"" }}</textarea>
+    </p>
+
+    <p>
+      <label class="form-label-bold" for="{{ form.best_way_to_contact.id_for_label }}">
+        Best way to contact you.
+      </label>
+      {% if form.best_way_to_contact.errors %}
+      <ul id="{{ form.best_way_to_contact.id_for_label }}_error_list">
+        {% for error in form.best_way_to_contact.errors %}
+          <li class="error-message">{{ error }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      <textarea class="form-control" id="{{ form.best_way_to_contact.id_for_label }}" maxlength="1024" name="best_way_to_contact">{{ form.best_way_to_contact.value|default_if_none:"" }}</textarea>
+    </p>
+
+    <p>
+      <label class="form-label-bold" for="{{ form.phone.id_for_label }}">
+        Phone
+      </label>
+      {% if form.phone.errors %}
+      <ul id="{{ form.phone.id_for_label }}_error_list">
+        {% for error in form.phone.errors %}
+          <li class="error-message">{{ error }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      <input class="form-control" id="{{ form.phone.id_for_label }}" value="{{ form.phone.value|default_if_none:"" }}" maxlength="256" name="phone" type="text" />
+    </p>
+
+    <p>
+      <label class="form-label-bold" for="{{ form.email.id_for_label }}">
+        Email
+      </label>
+      {% if form.email.errors %}
+      <ul id="{{ form.email.id_for_label }}_error_list">
+        {% for error in form.email.errors %}
+          <li class="error-message">{{ error }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      <input class="form-control" id="{{ form.email.id_for_label }}" value="{{ form.email.value|default_if_none:"" }}" maxlength="256" name="email" type="text" />
+    </p>
+  </div>
+
+  <input type="submit" method="POST" value="Update details" class="button" />
 </form>
 
 {% endblock %}
