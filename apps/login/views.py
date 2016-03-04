@@ -52,7 +52,10 @@ def LogUserIn(self, request, slug):
 
         #   We need to create the user, log them in and redirect them to
         #   give us more information (because they obviously wont have
-        #   any yet)
+        #   any yet). But not if it's an empty slug!
+        if slug == '' or slug is None:
+            return reverse('home')
+
         new_user = User(slug=slug)
         new_user.save()
         user = authenticate(slug=slug)

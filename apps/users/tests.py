@@ -29,14 +29,15 @@ class UserTest(TestCase):
 
 class UserWebTest(WebTest):
 
-    def test_cannot_create_nameless_user(self):
+    def test_cannot_create_slugless_user(self):
         form = self.app.get(reverse('login-view')).form
-        response = form.submit()
-        form = response.context['form']
-        self.assertIn(
-            'This field is required.',
-            form['slug'].errors
+        response = form.submit().follow().follow()
+        login_label = response.html.find(
+            'label',
+            attrs={'class': 'form-label-bold', 'for': 'id_slug'}
         )
+        self.assertTrue(login_label)
+        self.assertEquals(login_label.text.strip(), 'Login with ID.')
 
     def test_create_new_user(self):
         #   got to the login form, and enter a user ID, this will sign us up.
@@ -59,34 +60,29 @@ class UserWebTest(WebTest):
             )
         )
 
-    def test_cannot_create_duplicate_user(self):
+    def test_can_login_as_existing_user(self):
         u = User(slug='user0001')
         u.save()
+
+        #   Log in as user
         form = self.app.get(reverse('login-view')).form
         form['slug'] = 'user0001'
         response = form.submit()
-        form = response.context['form']
-        self.assertIn(
-            'User with this Slug already exists.',
-            form['slug'].errors
-        )
 
-    def test_can_login_as_existing_user_via_link(self):
-        #   Pop a user into the database
-        self.user = User(
-            slug='user0001'
+        #   Now go to the user profile page
+        response = self.app.get(
+            reverse(
+                'user-detail',
+                kwargs={'slug': 'user0001'}
+            )
         )
-        self.user.save()
-
-        #   Now visit the login page, find the user in the list, click
-        #   it then check for the username/slug in the navgiation of
-        #   the next page.
-        response = self.app.get(reverse('login-view'))
-        response = response.click('user0001').follow()
-        user_id = response.html.find_all(
-                'span', attrs={'class': 'user_id'}
-            )[0].text
-        self.assertEquals(user_id, 'user0001')
+        #   Check that we have the user slug in the name in the nav bar
+        self.assertTrue(
+            response.html.find(
+                'span',
+                attrs={'data-slug': 'user0001'}
+            )
+        )
 
     def test_update_button_shows_on_user_profile(self):
         #   Create the two users
@@ -95,8 +91,10 @@ class UserWebTest(WebTest):
         u2 = User(slug='user0002')
         u2.save()
         #   Login as the first user
-        response = self.app.get(reverse('login-view'))
-        response = response.click('user0001').follow()
+        form = self.app.get(reverse('login-view')).form
+        form['slug'] = 'user0001'
+        response = form.submit()
+
         #   Now goto the profile page for the 1st user and see if the button
         #   exists
         response = self.app.get(reverse(
@@ -120,9 +118,10 @@ class UserWebTest(WebTest):
         #   This user doesn't have a username
         User(slug='user0001').save()
 
-        #   Log in as them
-        response = self.app.get(reverse('login-view'))
-        response = response.click('user0001')
+        #   Log in as user
+        form = self.app.get(reverse('login-view')).form
+        form['slug'] = 'user0001'
+        response = form.submit()
 
         #   Now go to the update user information page for this user-detail
         response = self.app.get(reverse(
@@ -153,8 +152,9 @@ class UserWebTest(WebTest):
         #   create the user and log them in
         u = User(slug='user0001', username='User 0001')
         u.save()
-        response = self.app.get(reverse('login-view'))
-        response = response.click('user0001')
+        form = self.app.get(reverse('login-view')).form
+        form['slug'] = 'user0001'
+        response = form.submit()
 
         # go to the update page and check for the alert
         response = self.app.get(update_page)
@@ -207,9 +207,10 @@ class UserWebTest(WebTest):
             email='test@test.com',
         ).save()
 
-        #   Log in as them
-        response = self.app.get(reverse('login-view'))
-        response = response.click('user0001')
+        #   Log in as user
+        form = self.app.get(reverse('login-view')).form
+        form['slug'] = 'user0001'
+        response = form.submit()
 
         #   Now go to the update user information page for this user-detail
         response = self.app.get(reverse(

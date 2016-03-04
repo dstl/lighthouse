@@ -15,9 +15,11 @@ class UserWebTest(WebTest):
         u = User(slug='user0001')
         u.save()
 
-        #   Let's log in as this user and see where we end up
-        response = self.app.get(reverse('login-view'))
-        response = response.click('user0001').follow()
+        #   Log in as user
+        form = self.app.get(reverse('login-view')).form
+        form['slug'] = 'user0001'
+        response = form.submit().follow()
+
         #   We should now be on the user needs to add information page
         self.assertEquals(
             response.html.find(
@@ -35,9 +37,11 @@ class UserWebTest(WebTest):
         u = User(slug='user0001', username='User 0001')
         u.save()
 
-        #   Let's log in as this user and see where we end up
-        response = self.app.get(reverse('login-view'))
-        response = response.click('user0001').follow()
+        #   Log in as user
+        form = self.app.get(reverse('login-view')).form
+        form['slug'] = 'user0001'
+        response = form.submit().follow()
+
         #   Make sure we *don't* have an error summary heading
         self.assertFalse(
             response.html.find(
@@ -52,9 +56,10 @@ class UserWebTest(WebTest):
         #   Create the user
         User(slug='user0001').save()
 
-        #   Login as the  user
-        response = self.app.get(reverse('login-view'))
-        response = response.click('user0001').follow()
+        #   Log in as user
+        form = self.app.get(reverse('login-view')).form
+        form['slug'] = 'user0001'
+        response = form.submit()
 
         #   Go to the profile page (any page would do)
         response = self.app.get(
@@ -82,9 +87,10 @@ class UserWebTest(WebTest):
         #   Create the user
         User(slug='user0001', username='User 0001').save()
 
-        #   Login as the  user
-        response = self.app.get(reverse('login-view'))
-        response = response.click('user0001').follow()
+        #   Log in as user
+        form = self.app.get(reverse('login-view')).form
+        form['slug'] = 'user0001'
+        response = form.submit()
 
         #   Go to the profile page (any page would do)
         response = self.app.get(
