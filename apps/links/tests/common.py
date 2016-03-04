@@ -32,8 +32,12 @@ def make_user():
 
 
 def check_user(owner, user):
-    response = owner.app.get(reverse('login-view'))
-    response = response.click(user.slug).follow()
+
+    #   Log in as user
+    form = owner.app.get(reverse('login-view')).form
+    form['slug'] = 'user0001'
+    response = form.submit().follow()
+
     user_id = response.html.find(
             'span', attrs={'class': 'user_id'}
         ).attrs['data-slug']

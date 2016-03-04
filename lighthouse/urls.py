@@ -29,7 +29,6 @@ from apps.links.views import (
 )
 
 from apps.users.views import (
-    UserCreate,
     UserDetail,
     UserUpdateProfile,
     UserList,
@@ -42,13 +41,13 @@ from apps.organisations.views import (
 )
 
 from apps.teams.views import TeamCreate, TeamDetail, TeamList
-from apps.login.views import LoginView, LoginUser, Logout
+from apps.login.views import LoginRequest, LoginUser, Logout
 from apps.home.views import Home
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
-    url(r'^login$', LoginView.as_view(), name="login-view"),
+    url(r'^login$', LoginRequest.as_view(), name="login-view"),
     url(
         r'^login/(?P<slug>[\w-]+)$',
         LoginUser.as_view(),
@@ -61,11 +60,6 @@ urlpatterns = [
         r'^users/?$',
         UserList.as_view(),
         name='user-list',
-    ),
-    url(
-        r'^users/new/?$',
-        UserCreate.as_view(),
-        name='user-create',
     ),
     url(
         r'^users/(?P<slug>[\w-]+)/update-profile/?$',
