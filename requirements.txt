@@ -10,3 +10,4 @@ wheel==0.24.0                       # MIT
 django-taggit==0.18.0               # BSD
 django-compressor==2.0              # MIT
 django-libsass==0.6.0               # BSD
+python-dateutil==2.5.0              # Simplified BSD
