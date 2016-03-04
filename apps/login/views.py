@@ -74,7 +74,6 @@ class LoginRequest(TemplateView):
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        context['users'] = User.objects.all()
         if 'next' in self.request.GET:
             context['next'] = self.request.GET.get('next')
         return self.render_to_response(context)

@@ -19,25 +19,4 @@
     <input type="submit" method="POST" value="Login" class="button">
   </form>
 
-  {% if users %}
-  <hr />
-    <p class="heading-small">
-      [DEBUG]
-    </p>
-    <p class="form-hint">
-       Alternatively for debug purposes, you can quick login as a user from the list below.
-    </p>
-
-    <ul>
-      {% for user in users %}
-        {% if next %}
-        <li><a href='{% url "login-user" user.slug %}?next={{next}}'>{{user.slug}}</a></li>
-        {% else %}
-        <li><a href='{% url "login-user" user.slug %}'>{{user.slug}}</a></li>
-        {% endif %}
-      {% endfor %}
-    </ul>
-  {% endif %}
-
-
 {% endblock %}
