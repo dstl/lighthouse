@@ -1,23 +1,13 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
 # apps/users/views.py
 from django.http import HttpResponseRedirect
-from django.views.generic import CreateView, DetailView, ListView, UpdateView
+from django.views.generic import DetailView, ListView, UpdateView
 from django.core.urlresolvers import reverse
-
 from .models import User
 
 
 class UserDetail(DetailView):
     model = User
-
-
-class UserCreate(CreateView):
-    model = User
-    fields = ['slug', ]
-
-    def get_success_url(self):
-        #   Bounce thru the login page for the user
-        return reverse('login-user', kwargs={'slug': self.object.slug})
 
 
 class UserUpdateProfile(UpdateView):
