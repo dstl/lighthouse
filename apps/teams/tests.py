@@ -257,3 +257,28 @@ class TeamWebTest(WebTest):
             'steve',
             user_items[1].text
         )
+
+    def test_list_members_names_link(self):
+        t = create_team(
+            name='two members', num_members=1
+        )
+        response = self.app.get(reverse('team-detail', kwargs={"pk": t.pk}))
+
+        user_links = response.html.find(
+            'ul',
+            {"class": "member-list"}
+        ).findChildren('a')
+
+        self.assertEqual(
+            len(user_links),
+            1
+        )
+
+        response = response.click(user_links[0].text)
+
+        self.assertIn(
+            'Team Member 1',
+            response.html.find(
+                'h1', {"class": "form-title"}
+            ).text
+        )
