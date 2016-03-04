@@ -13,7 +13,11 @@
     {% for organisation in object_list %}
       <li><a class="main-list-item" href='{% url "organisation-detail" organisation.pk %}'>{{organisation.name}}</a>
         <ul class="list organisation-info">
-          <li>Total Teams: </li>
+          {% ifequal organisation.team_set.all|length 0 %}
+          <li>This organisation has no teams</li>
+          {% else %}
+          <li>Total teams: {{organisation.team_set.all|length}}</li>
+          {% endifequal %}
         </ul>
       </li>
     {% endfor %}
