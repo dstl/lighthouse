@@ -7,6 +7,12 @@ from apps.organisations.models import Organisation
 
 class TeamForm(forms.ModelForm):
 
+    error_both_fields = "You can't select an existing organisation and "
+    error_both_fields += "create a new one at the same time."
+
+    error_neither_field = "You must select an existing organisation or "
+    error_neither_field += "create a new one."
+
     #   We need an additional free text field, if the user wants to
     #   join the team to a new undefined organisation.
     #   TODO: Somehow pull this from the Organisation model instead?
@@ -36,19 +42,25 @@ class TeamForm(forms.ModelForm):
     #   to have *NOT* selected an organisation from the dropdown, and the
     #   default validation will throw an error in this case.
     def is_valid(self):
-
-        #   Do the normal validation
         valid = super(TeamForm, self).is_valid()
 
-        #   However, in this one single case we want to say that
-        #   the validation is valid.
-        if (valid is False and
-                len(self._errors.keys()) == 1 and
-                'organisation' in self._errors):
-            eo = self._errors['organisation']
-            if ('This field is required.' in eo and
-                    len(eo) == 1):
-                valid = True
+        if 'organisation' in self._errors.keys():
+            req_err = 'This field is required.' in self._errors['organisation']
+            neit_err = self.error_neither_field in self._errors['organisation']
+            both_err = self.error_both_fields in self._errors['organisation']
+
+            # This means we're good because the new org is in there
+            if req_err and not neit_err and not both_err:
+                self._errors['organisation'] = []
+                if len(self._errors.keys()) == 1:
+                    self._errors = {}
+                    valid = True
+            # This means we just need to show the neither error
+            elif neit_err:
+                self._errors['organisation'] = [self.error_neither_field]
+            # This means we just need to show the both error
+            elif both_err:
+                self._errors['organisation'] = [self.error_both_fields]
 
         return valid
 
@@ -61,16 +73,18 @@ class TeamForm(forms.ModelForm):
         #   We've been passed both org & new_org, *sigh*
         if ('organisation' in cleaned_data and
                 cleaned_data['new_organisation'] != ''):
-            raise forms.ValidationError(
-                "You can't select an existing " +
-                "organisation and create a new one at the same time.")
+                    raise forms.ValidationError({
+                            "organisation": [self.error_both_fields]
+                        }
+                    )
 
         #   We've been passed neither, *double sigh*
         if ('organisation' not in cleaned_data and
                 cleaned_data['new_organisation'] == ''):
-            raise forms.ValidationError(
-                "You must select an existing " +
-                "organisation or create a new one.")
+                    raise forms.ValidationError({
+                            "organisation": [self.error_neither_field]
+                        }
+                    )
 
         #   We've been passed a new organisation
         if ('organisation' not in cleaned_data and
