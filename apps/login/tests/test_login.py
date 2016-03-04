@@ -45,3 +45,63 @@ class UserWebTest(WebTest):
                 attrs={'class': 'error-summary-heading'}
             )
         )
+
+    #   Check that a link showing the user's slug appears in the top nav
+    #   bar
+    def test_slug_and_link_exists_in_nav(self):
+        #   Create the user
+        User(slug='user0001').save()
+
+        #   Login as the  user
+        response = self.app.get(reverse('login-view'))
+        response = response.click('user0001').follow()
+
+        #   Go to the profile page (any page would do)
+        response = self.app.get(
+            reverse(
+                'user-detail',
+                kwargs={'slug': 'user0001'}
+            )
+        )
+
+        #   Check that the slug is displayed at the top, that it has a link
+        #   and the link test is the user's slug
+        slug_div = response.html.find(
+                    'span',
+                    attrs={'data-slug': 'user0001'}
+                )
+        self.assertTrue(slug_div)
+        slug_link = slug_div.find('a')
+        self.assertTrue(slug_link)
+        slug_text = slug_link.text
+        self.assertEquals(slug_text, 'user0001')
+
+    #   Check that a link showing the user's username appears in the top nav
+    #   bar
+    def test_username_and_link_exists_in_nav(self):
+        #   Create the user
+        User(slug='user0001', username='User 0001').save()
+
+        #   Login as the  user
+        response = self.app.get(reverse('login-view'))
+        response = response.click('user0001').follow()
+
+        #   Go to the profile page (any page would do)
+        response = self.app.get(
+            reverse(
+                'user-detail',
+                kwargs={'slug': 'user0001'}
+            )
+        )
+
+        #   Check that the username is displayed at the top, that it has a link
+        #   and the link test is the user's slug
+        slug_div = response.html.find(
+                    'span',
+                    attrs={'data-slug': 'user0001'}
+                )
+        self.assertTrue(slug_div)
+        slug_link = slug_div.find('a')
+        self.assertTrue(slug_link)
+        slug_text = slug_link.text
+        self.assertEquals(slug_text, 'User 0001')
