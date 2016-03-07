@@ -6,6 +6,7 @@ from django.core.urlresolvers import reverse
 from .models import User
 from apps.teams.models import Team
 
+
 class UserDetail(DetailView):
     model = User
 
