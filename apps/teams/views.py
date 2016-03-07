@@ -51,7 +51,7 @@ class TeamJoin(TemplateView):
     def get(self, request, *args, **kwargs):
 
         #   If we are not logged in, send the user to the login page
-        if request.user is None:
+        if not self.request.user.is_authenticated():
             return redirect(reverse('home'))
 
         #   Grab the id of the user and team we are attempting to join
@@ -78,7 +78,7 @@ class TeamLeave(TemplateView):
     def get(self, request, *args, **kwargs):
 
         #   If we are not logged in, send the user to the login page
-        if request.user is None:
+        if not self.request.user.is_authenticated():
             return redirect(reverse('home'))
 
         #   Grab the id of the user and team we are attempting to join
