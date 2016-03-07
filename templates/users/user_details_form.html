@@ -131,6 +131,30 @@
     </p>
   </div>
 
+  {% if teams %}
+    <div class="form-group {% if show_teams_alert %}alert{% endif %}">
+      <label class="form-label-bold" for="teams">
+        Teams
+      </label>
+
+      {% if show_teams_alert %}
+        <span class="error-message">
+          Please supply at least one team you are a member of.
+        </span>
+      {% endif %}
+
+      <p class="form-hint">
+        Please check all the teams you are a member of.
+      </p>
+      {% for team in teams %}
+        <label for="team_{{team.id}}" class="block-label form-control">
+          <input id="team_{{team.id}}" type="checkbox" name="team" value="{{team.id}}" {% if team.checked %}checked{% endif %} />
+          <span class="heading-small">{{team.name}}</span> <sman class="font-xsmall">({{team.organisation.name}})</span><br />
+        </label>
+      {% endfor %}
+    </div>
+  {% endif %}
+
   <input type="submit" method="POST" value="Update details" class="button" />
 </form>
 
