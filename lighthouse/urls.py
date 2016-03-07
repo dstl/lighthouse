@@ -40,7 +40,13 @@ from apps.organisations.views import (
     OrganisationList,
 )
 
-from apps.teams.views import TeamCreate, TeamDetail, TeamList
+from apps.teams.views import (
+    TeamCreate,
+    TeamDetail,
+    TeamList,
+    TeamJoin,
+    TeamLeave,
+)
 from apps.login.views import LoginRequest, LoginUser, Logout
 from apps.home.views import Home
 
@@ -126,6 +132,12 @@ urlpatterns = [
         TeamCreate.as_view(),
         name='team-create',
     ),
+    url(
+        r'^teams/(?P<pk>\d+)/join/?$', TeamJoin.as_view(), name='team-join', ),
+    url(
+        r'^teams/(?P<pk>\d+)/leave/?$',
+        TeamLeave.as_view(),
+        name='team-leave', ),
     url(
         r'^teams/(?P<pk>\d+)/?$',
         TeamDetail.as_view(),
