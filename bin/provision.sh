@@ -4,7 +4,8 @@ dot="$(cd "$(dirname "$0")"; pwd)"
 cd "$dot/../"
 result=0
 
-. $dot/virtualenv.sh
+# Ensure we are in a virtualenv
+. ./bin/virtualenv.sh
 (( result+=$? ))
 
 ./manage.py migrate

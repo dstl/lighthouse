@@ -3,16 +3,19 @@
 result=0
 virtualenv_location="${VIRTUALENV_LOCATION:-$HOME/.venv/lighthouse}"
 
-# Create a virtual env
-virtualenv $virtualenv_location
-(( result += $? ))
+# Only create a virtualenv if we aren't in one
+if [[ -z "$VIRTUAL_ENV" ]]; then
+  # Create a virtual env
+  virtualenv $virtualenv_location
+  (( result += $? ))
 
-# Activate the virtual env
-. $virtualenv_location/bin/activate
-(( result += $? ))
+  # Activate the virtual env
+  . $virtualenv_location/bin/activate
+  (( result += $? ))
 
-# Install the requirements
-pip install -r requirements.txt
-(( result += $? ))
+  # If we've created a new virtualenv we should install dependencies
+  ./bin/pip-install.sh
+  (( result += $?))
+fi
 
 return $result
