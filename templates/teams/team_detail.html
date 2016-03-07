@@ -6,13 +6,24 @@
 <h1 class="form-title heading-xlarge">Team: {{team.name}}</h1>
 
 <p class="lede">
-  This team is in the <a href="{% url "organisation-detail" team.organisation.pk %}">{{team.organisation}}</a> organisation.
+  This team is in the <a href="{% url "organisation-detail" team.organisation.pk %}">{{team.organisation}}</a> organisation, it contains the following members.
 </p>
 
-<ul class="member-list">
+<ul class="list list-bullet member-list">
 	{% for member in team.user_set.all %}
-	<li><a href="{% url 'user-detail' member.slug %}">{{ member.username|default_if_none:member.slug }}</a></li>
+	<li><a class="main-list-item" href="{% url 'user-detail' member.slug %}">{{ member.username|default_if_none:member.slug }}</a></li>
 	{% endfor %}
 </ul>
 
+{% if request.user.slug %}
+<hr />
+{% if team_member %}
+  <a href="{% url "team-leave" team.pk %}" class="button">Leave Team</a>
+{% else %}
+  <a href="{% url "team-join" team.pk %}" class="button">Join Team</a>
+{% endif %}
+{% endif %}
+
+<hr />
+<a href="{% url "team-list" %}">Back to teams</a>
 {% endblock %}
