@@ -41,6 +41,14 @@
   </ul>
 </p>
 
+{% if user.teams.all %}
+  <h2 class="heading-large">Teams:</h2>
+  <p class="lede">
+    This user is a member of the following teams.
+  </p>
+  {% include "includes/team_list.html" with teams=user.teams.all show_organisation=True %}
+{% endif %}
+
 {% ifequal request.user.slug user.slug %}
   <hr />
   <a id="update_profile_link" href="{% url 'user-updateprofile' request.user.slug %}" class="button">Update your profile</a>
