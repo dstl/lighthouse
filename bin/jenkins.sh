@@ -11,6 +11,10 @@ export LIGHTHOUSE_DB="$JOB_NAME$BUILD_NUMBER"
 . ./bin/virtualenv.sh
 (( result+=$? ))
 
+# Install dependencies
+./bin/pip-install.sh
+(( result+=$? ))
+
 # Run the tests
 ./bin/test.sh
 (( result+=$? ))

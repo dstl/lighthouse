@@ -4,14 +4,8 @@ dot="$(cd "$(dirname "$0")"; pwd)"
 cd "$dot/../"
 result=0
 
-# Source a virtualenv if we aren't in one
-if [[ -z "$VIRTUAL_ENV" ]]; then
-  . ./bin/virtualenv.sh
-  (( result+=$? ))
-fi
-
-# Install the test requirements
-pip install -r requirements_test.txt
+# Ensure we are in a virtualenv
+. ./bin/virtualenv.sh
 (( result+=$? ))
 
 # Run the tests

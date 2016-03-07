@@ -4,13 +4,8 @@ dot="$(cd "$(dirname "$0")"; pwd)"
 cd "$dot/../"
 result=0
 
-# Source a virtualenv if we aren't in one
-if [[ -z "$VIRTUAL_ENV" ]]; then
-  . ./bin/virtualenv.sh
-  (( result+=$? ))
-fi
-
-pip install flake8
+# Ensure we are in a virtualenv
+. ./bin/virtualenv.sh
 (( result+=$? ))
 
 flake8 . --count --statistics --exclude="$VIRTUAL_ENV"
