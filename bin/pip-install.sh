@@ -1,6 +1,6 @@
 #!/bin/bash
 result=0
-download_location="${DOWNLOAD_LOCATION:-$HOME/pip_downloads}"
+download_location="${DOWNLOAD_LOCATION:-/opt/dist/pypi}"
 
 # Ensure we are in a virtualenv
 . ./bin/virtualenv.sh

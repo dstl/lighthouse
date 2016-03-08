@@ -1,6 +1,6 @@
 #!/bin/bash
 result=0
-download_location="${DOWNLOAD_LOCATION:-$HOME/pip_downloads}"
+download_location="${DOWNLOAD_LOCATION:-/opt/dist/pypi}"
 internet_access=${INTERNET_ACCESS:-true}
 
 if $internet_access; then
