@@ -9,6 +9,8 @@ from .models import User
 from apps.teams.models import Team
 from apps.organisations.models import Organisation
 
+import re
+
 
 class UserTest(TestCase):
     def setUp(self):
@@ -145,6 +147,100 @@ class UserWebTest(WebTest):
                 'a',
                 attrs={'id': 'update_profile_link'})
         self.assertFalse(button)
+
+    #   Test that a user can join an existing team when editing their
+    #   own profile
+    def test_adding_new_existing_team(self):
+        u = User(slug='user0001')
+        u.save()
+        o = Organisation(name='org0001')
+        o.save()
+        t = Team(name='team0001', organisation=o)
+        t.save()
+
+        #   Log in as user
+        form = self.app.get(reverse('login-view')).form
+        form['slug'] = 'user0001'
+        form.submit()
+
+        #   Go to the user's profile page and assert that the team is NOT
+        #   showing up in the list of teams they are a member of.
+        response = self.app.get(reverse(
+            'user-detail',
+            kwargs={'slug': 'user0001'}))
+        self.assertFalse(response.html.find('a', text=re.compile(r'team0001')))
+
+        #   Now go to the update profile page and check the first team
+        #   in the list of teams.
+        form = self.app.get(reverse(
+            'user-updateprofile',
+            kwargs={'slug': 'user0001'})).form
+        form.get('team', index=0).checked = True
+        form.submit()
+
+        #   Go back to the users profile page to see if the team is now
+        #   on the list of teams
+        response = self.app.get(reverse(
+            'user-detail',
+            kwargs={'slug': 'user0001'}))
+        self.assertTrue(response.html.find('a', text=re.compile(r'team0001')))
+
+    #   Test that the user can join a new team connecting it to an existsing
+    #   organisation
+    def test_adding_new_team_existing_organisation(self):
+        u = User(slug='user0001')
+        u.save()
+        o = Organisation(name='org0001')
+        o.save()
+
+        #   Log in as user
+        form = self.app.get(reverse('login-view')).form
+        form['slug'] = 'user0001'
+        form.submit()
+
+        #   Now go to the update profile page and check the first team
+        #   in the list of teams.
+        form = self.app.get(reverse(
+            'user-updateprofile',
+            kwargs={'slug': 'user0001'})).form
+        form['name'] = 'team0001'
+        form['organisation'].value = o.pk
+        form.submit()
+
+        #   Go back to the users profile page to see if the team is now
+        #   on the list of teams
+        response = self.app.get(reverse(
+            'user-detail',
+            kwargs={'slug': 'user0001'}))
+        self.assertTrue(response.html.find('a', text=re.compile(r'team0001')))
+
+    #   Test that the user can join a new team connecting it to an existsing
+    #   organisation
+    def test_adding_new_team_new_organisation(self):
+        u = User(slug='user0001')
+        u.save()
+
+        #   Log in as user
+        form = self.app.get(reverse('login-view')).form
+        form['slug'] = 'user0001'
+        form.submit()
+
+        #   Now go to the update profile page and check the first team
+        #   in the list of teams.
+        form = self.app.get(reverse(
+            'user-updateprofile',
+            kwargs={'slug': 'user0001'})).form
+        form['name'] = 'team0001'
+        form['new_organisation'] = 'org0001'
+        form.submit()
+
+        #   Go back to the users profile page to see if the team and
+        #   organisation is now on the list of teams
+        response = self.app.get(reverse(
+            'user-detail',
+            kwargs={'slug': 'user0001'}))
+        self.assertTrue(response.html.find('a', text=re.compile(r'team0001')))
+        self.assertTrue(response.html.find('a', text=re.compile(r'org0001')))
 
     def test_alert_for_missing_username(self):
         #   This user doesn't have a username
