@@ -2,24 +2,54 @@
 {% extends "layout.html" %}
 
 {% block grid_content %}
+<div class="grid-row">
+	<div class="column-two-thirds">
+		<h1 class="heading-xlarge">{{link.name}}</h1>
+        <div class="text">
+          <p class="lede">
+            {{link.description}}
+          </p>
+        </div>
+		<p>{{link.description}}</p>
+        <div class="text">
+			<a id="link_follow_button" class="button button-start" href="{% url "link-redirect" link.pk %}" target="_blank">
+				Go to tool
+			</a>
+			<div class="link-aside">
+				<a href="{% url "link-redirect" link.pk %}" target="_blank">
+					{{link.destination}}
+				</a>
+				<span class="link-hint font-xsmall">(will open the tool in a new window)</span>
+			</div>
+        </div>
 
-<h1>{{link.name}}</h1>
-<p id="link_owner">{{link.owner.username}}</p>
-<p>{{link.description}}</p>
-<p><a id="link_follow_button" href="{% url "link-redirect" link.pk %}">Go there</a></p>
-<p><a id="link_follow_anchor" href="{{link.destination}}">{{link.destination}}</a></p>
-{% if link.is_external %}
-<p>External tool</p>
-{% else %}
-<p>Internal tool</p>
-{% endif %}
-<ul>
-{% for category in link.categories.all %}
-	<li class="link-category">{{category|capfirst}}</li>
-{% endfor %}
-</ul>
-
-<h2>Usage</h2>
-<p id='usage-today'><em>{{link.usage_today}}</em> times used today</p>
+		<h2 class="heading-large">Usage</h2>
+		<p id='usage-today'><span class="stat-inline">{{link.usage_today}}</span> times used today</p>
+	</div>
+	<div class="column-third">
+		<h2 class="heading-large">Tool details</h2>
+		{% if link.is_external %}
+		<p id="link_owner">
+			{{link.name}} is an <strong id="is_external">external</strong> tool added by
+			<a href="{% url "user-detail" link.owner.slug %}">{{link.owner.username|default_if_none:link.owner.slug}}</a>.
+		</p>
+		{% else %}
+		<p id="link_owner">
+			{{link.name}} is an <strong id="is_external">internal</strong> tool owned by
+			<a href="{% url "user-detail" link.owner.slug %}">{{link.owner.username|default_if_none:link.owner.slug}}</a>.
+		</p>
+		{% endif %}
+		<h2 class="heading-large">Categories</h2>
+		{% if link.categories.all %}
+		<ul>
+		{% for category in link.categories.all %}
+			<li class="link-category">{{category|capfirst}}</li>
+		{% endfor %}
+		</ul>
+		{% else %}
+		<p>This link has not been categorised yet.</p>
+		{% endif %}
+	</div>
+</div>
 
 {% endblock %}

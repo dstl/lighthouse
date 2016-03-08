@@ -154,7 +154,10 @@ class LinkUsageWebTest(WebTest):
         detail_url = reverse('link-detail', kwargs={'pk': self.link.pk})
 
         response = self.app.get(detail_url)
-        usage_today = response.html.find(id='usage-today').find('em').text
+        usage_today = response.html.find(id='usage-today').find(
+            'span',
+            {"class": "stat-inline"}
+        ).text
         self.assertEquals(response.html.h1.text, 'Link Linkerly')
         self.assertEquals(usage_today, '0')
 
@@ -162,7 +165,10 @@ class LinkUsageWebTest(WebTest):
         response.click(linkid='link_follow_button').follow()
 
         response = self.app.get(detail_url)
-        usage_today = response.html.find(id='usage-today').find('em').text
+        usage_today = response.html.find(id='usage-today').find(
+            'span',
+            {"class": "stat-inline"}
+        ).text
         self.assertEquals(response.html.h1.text, 'Link Linkerly')
         self.assertEquals(usage_today, '1')
 
@@ -170,7 +176,10 @@ class LinkUsageWebTest(WebTest):
         detail_url = reverse('link-detail', kwargs={'pk': self.other_link.pk})
 
         response = self.app.get(detail_url)
-        usage_today = response.html.find(id='usage-today').find('em').text
+        usage_today = response.html.find(id='usage-today').find(
+            'span',
+            {"class": "stat-inline"}
+        ).text
         self.assertEquals(response.html.h1.text, 'Other Link')
         self.assertEquals(usage_today, '0')
 
@@ -178,7 +187,10 @@ class LinkUsageWebTest(WebTest):
         response.click(linkid='link_follow_button').follow()
 
         response = self.app.get(detail_url)
-        usage_today = response.html.find(id='usage-today').find('em').text
+        usage_today = response.html.find(id='usage-today').find(
+            'span',
+            {"class": "stat-inline"}
+        ).text
         self.assertEquals(response.html.h1.text, 'Other Link')
         self.assertEquals(usage_today, '0')
 
@@ -187,6 +199,9 @@ class LinkUsageWebTest(WebTest):
         interstitial.form.submit()
 
         response = self.app.get(detail_url)
-        usage_today = response.html.find(id='usage-today').find('em').text
+        usage_today = response.html.find(id='usage-today').find(
+            'span',
+            {"class": "stat-inline"}
+        ).text
         self.assertEquals(response.html.h1.text, 'Other Link')
         self.assertEquals(usage_today, '1')

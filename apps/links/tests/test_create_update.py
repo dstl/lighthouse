@@ -24,11 +24,11 @@ class LinkTest(WebTest):
         form['name'] = 'Google'
         form['destination'] = 'https://google.com'
         response = form.submit().follow()
-        response.mustcontain('<h1>Google</h1>')
+        self.assertIn('Google', response.html.find('h1').text)
 
-        self.assertEquals(
+        self.assertIn(
+            'Fake Fakerly',
             response.html.find(id='link_owner').text,
-            'Fake Fakerly'
         )
 
     def test_create_link_external(self):
@@ -44,12 +44,12 @@ class LinkTest(WebTest):
         form['destination'] = 'https://google.com'
         form['is_external'].select('True')
         response = form.submit().follow()
-        response.mustcontain('<h1>Google</h1>')
-        response.mustcontain('External')
+        self.assertIn('Google', response.html.find('h1').text)
+        self.assertIn('external', response.html.find(id="is_external").text)
 
-        self.assertEquals(
+        self.assertIn(
+            'Fake Fakerly',
             response.html.find(id='link_owner').text,
-            'Fake Fakerly'
         )
 
     def test_update_link_external(self):
@@ -76,8 +76,8 @@ class LinkTest(WebTest):
 
         form['is_external'].select('True')
         response = form.submit().follow()
-        response.mustcontain('<h1>Wikimapia</h1>')
-        response.mustcontain('External')
+        self.assertIn('Wikimapia', response.html.find('h1').text)
+        self.assertIn('external', response.html.find(id="is_external").text)
 
     def test_create_empty_link(self):
         form = self.app.get(reverse('link-create')).form
