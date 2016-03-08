@@ -1,0 +1,7 @@
+.stat {
+	font-weight:bold;
+	&-inline {
+		@extend .stat;
+		font-size:1em;
+	}
+}

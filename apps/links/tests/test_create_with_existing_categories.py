@@ -80,11 +80,11 @@ class CategorisedLinksWithCategoriesTest(WebTest):
 
         response = form.submit().follow()
 
-        response.mustcontain('<h1>Google Maps</h1>')
+        self.assertIn('Google Maps', response.html.find('h1').text)
 
-        self.assertEquals(
+        self.assertIn(
+            'Fake Fakerly',
             response.html.find(id='link_owner').text,
-            'Fake Fakerly'
         )
 
         # To find all the categories. then map to get `text`
@@ -107,11 +107,11 @@ class CategorisedLinksWithCategoriesTest(WebTest):
 
         response = form.submit().follow()
 
-        response.mustcontain('<h1>Google Maps</h1>')
+        self.assertIn('Google Maps', response.html.find('h1').text)
 
-        self.assertEquals(
+        self.assertIn(
+            'Fake Fakerly',
             response.html.find(id='link_owner').text,
-            'Fake Fakerly'
         )
 
         # To find all the categories. then map to get `text`

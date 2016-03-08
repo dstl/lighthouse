@@ -3,6 +3,8 @@
 // Sass variables, mixins and functions
 // https://github.com/alphagov/govuk_frontend_toolkit/tree/master/stylesheets
 
+$path: "/static/";
+
 // Settings (variables)
 @import "colours";                                // Colour variables
 @import "font_stack";                             // Font family variables
@@ -62,6 +64,7 @@
 @import "headings";
 @import "header";
 @import "footer";
+@import "typography";
 
 #content {
 	width:960px;
@@ -79,3 +82,11 @@
   }
 }
 
+.link-aside {
+  @include core-19();
+  display:inline-block;
+
+  .link-hint {
+    display:block;
+  }
+}
