@@ -3,8 +3,10 @@
 from django.http import HttpResponseRedirect
 from django.views.generic import DetailView, ListView, UpdateView
 from django.core.urlresolvers import reverse
+from django.db import models
 from .models import User
 from apps.teams.models import Team
+from apps.organisations.models import Organisation
 
 
 class UserDetail(DetailView):
@@ -78,3 +80,21 @@ class UserUpdateProfile(UpdateView):
 
 class UserList(ListView):
     model = User
+
+    def get_context_data(self, **kwargs):
+        context = super(UserList, self).get_context_data(**kwargs)
+
+        #   Get the 1st 10 teams ranked by number of members
+        teams = Team.objects.all().annotate(count=models.Count('user'))
+        context['show_more_teams_link'] = len(teams) > 20
+        context['teams'] = teams.order_by('-count', 'name')[:20]
+
+        #   Get the 1st 10 organisations ranked by number of teams
+        organisations = Organisation.objects.all().annotate(
+            count=models.Count('team')
+        )
+        context['show_more_organisations_link'] = len(organisations) > 20
+        context['organisations'] = organisations.order_by(
+            '-count', 'name')[:20]
+
+        return context
