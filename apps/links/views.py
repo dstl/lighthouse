@@ -1,14 +1,25 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
+
+import csv
+
 from django import forms
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect
-from django.views.generic import CreateView, DetailView, ListView, UpdateView
+from django.db.models import Count
+from django.http import HttpResponse, HttpResponseRedirect
+from django.utils import timezone
+from django.views.generic import (
+    CreateView,
+    DetailView,
+    ListView,
+    UpdateView,
+    View,
+)
 from taggit.models import Tag
 
 from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
 
-from .models import Link
+from .models import Link, LinkUsage
 
 
 class LinkDetail(DetailView):
@@ -136,3 +147,29 @@ class LinkList(ListView):
         context['filtered_categories'] = categories_to_filter
         context['filtered_types'] = types_to_filter
         return context
+
+
+class OverallLinkStats(ListView):
+    template_name = 'links/link_overall_stats.html'
+
+    def get_queryset(self):
+        return Link.objects.annotate(Count('usage')).order_by('-usage__count')
+
+
+class OverallLinkStatsCSV(View):
+    def get(self, request, *args, **kwargs):
+        date = timezone.now().strftime('%Y_%m_%d')
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = \
+            'attachment; filename="lighthouse_full_%s.csv"' % date
+
+        writer = csv.writer(response)
+        writer.writerow(['Date', 'User', 'Tool'])
+        for usage in LinkUsage.objects.all():
+            writer.writerow([
+                usage.start.strftime("%Y-%m-%d %H:%M:%S"),
+                usage.user,
+                usage.link
+            ])
+
+        return response

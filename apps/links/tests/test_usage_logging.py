@@ -1,5 +1,7 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
 
+import csv
+
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta, SU
 from unittest import mock
@@ -149,6 +151,7 @@ class LinkUsageWebTest(WebTest):
             owner=self.user,
             is_external=True,
         )
+        self.now = now()
 
     def test_internal_link_usage(self):
         detail_url = reverse('link-detail', kwargs={'pk': self.link.pk})
@@ -205,3 +208,70 @@ class LinkUsageWebTest(WebTest):
         ).text
         self.assertEquals(response.html.h1.text, 'Other Link')
         self.assertEquals(usage_today, '1')
+
+    def test_overall_stats_page(self):
+        self.link.register_usage(self.user)
+        self.other_link.register_usage(self.user)
+
+        with mock.patch('django.utils.timezone.now') as mock_now:
+            # register usage eight days ago
+            mock_now.return_value = self.now - relativedelta(days=8)
+            self.link.register_usage(self.user)
+
+            # register usage thirty-eight days ago
+            mock_now.return_value = self.now - relativedelta(days=38)
+            self.link.register_usage(self.user)
+
+        stats_url = reverse('link-overall-stats')
+        response = self.app.get(stats_url)
+
+        seven = response.html.find_all(class_='usage-seven-days')
+        self.assertEquals(seven[0].text, '1')
+        self.assertEquals(seven[1].text, '1')
+
+        thirty = response.html.find_all(class_='usage-thirty-days')
+        self.assertEquals(thirty[0].text, '2')
+        self.assertEquals(thirty[1].text, '1')
+
+        total = response.html.find_all(class_='usage-total')
+        self.assertEquals(total[0].text, '3')
+        self.assertEquals(total[1].text, '1')
+
+    def test_overall_stats_csv(self):
+        with mock.patch('django.utils.timezone.now') as mock_now:
+            # register usage at specific times
+            mock_now.return_value = make_aware(datetime(2016, 3, 1, 10, 0, 0))
+            self.link.register_usage(self.user)
+
+            mock_now.return_value = make_aware(datetime(2016, 3, 1, 11, 15, 0))
+            self.other_link.register_usage(self.user)
+
+            mock_now.return_value = make_aware(datetime(2016, 3, 1, 11, 16, 0))
+            self.link.register_usage(self.user)
+
+        stats_url = reverse('link-overall-stats-csv')
+        response = self.app.get(stats_url)
+        lines = response.body.decode().split("\r\n")
+        dialect = csv.Sniffer().sniff(response.body.decode())
+        reader = csv.DictReader(lines, dialect=dialect)
+
+        row = next(reader)
+        self.assertEquals(row, {
+            'User': 'user0001',
+            'Date': '2016-03-01 10:00:00',
+            'Tool': 'Link Linkerly',
+        })
+
+        row = next(reader)
+        self.assertEquals(row, {
+            'User': 'user0001',
+            'Date': '2016-03-01 11:15:00',
+            'Tool': 'Other Link',
+        })
+
+        row = next(reader)
+        self.assertEquals(row, {
+            'User': 'user0001',
+            'Date': '2016-03-01 11:16:00',
+            'Tool': 'Link Linkerly',
+        })

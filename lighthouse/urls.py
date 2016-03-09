@@ -26,6 +26,8 @@ from apps.links.views import (
     LinkList,
     LinkUpdate,
     LinkRedirect,
+    OverallLinkStats,
+    OverallLinkStatsCSV,
 )
 
 from apps.users.views import (
@@ -106,6 +108,16 @@ urlpatterns = [
         r'^links/new/?$',
         LinkCreate.as_view(),
         name='link-create',
+    ),
+    url(
+        r'^links/stats$',
+        OverallLinkStats.as_view(),
+        name='link-overall-stats',
+    ),
+    url(
+        r'^links/stats.csv$',
+        OverallLinkStatsCSV.as_view(),
+        name='link-overall-stats-csv',
     ),
     url(
         r'^organisations/?$',
