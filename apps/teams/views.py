@@ -8,6 +8,7 @@ from django.db import IntegrityError
 
 from .models import Team
 from .forms import TeamForm
+from apps.widgets.common import TopOrganisations, TopTeams
 
 
 class TeamList(ListView):
@@ -17,6 +18,11 @@ class TeamList(ListView):
     def get_context_data(self, **kwargs):
         context = super(TeamList, self).get_context_data(**kwargs)
         context['form'] = TeamForm
+
+        context['show_more_teams_link'], context['top_teams'] = TopTeams()
+        context['show_more_organisations_link'], \
+            context['top_organisations'] = TopOrganisations()
+
         return context
 
 

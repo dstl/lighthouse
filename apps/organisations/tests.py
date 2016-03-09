@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from django_webtest import WebTest
 from django.test import TestCase
 from django.db.utils import IntegrityError
-
+import re
 from .models import Organisation
 from apps.teams.models import Team
 
@@ -53,17 +53,21 @@ class OrganisationWebTest(WebTest):
 
     def test_create_new_organisation_from_list_view(self):
         form = self.app.get(reverse('organisation-list')).form
-        form['name'] = 'alpha'
+        form['name'] = 'org0001'
         response = form.submit()
         self.assertEquals(response.status_int, 302)
 
         response = self.app.get(reverse('organisation-list'))
-        response = response.click('alpha')
+        response = self.app.get(response.html.find(
+                'a',
+                text=re.compile(r'org0001')
+            ).attrs['href']
+        )
         org_name = response.html.find(
             'h1',
             attrs={'class': 'heading-xlarge'}
         ).text
-        self.assertEquals(org_name, 'Organisation: alpha')
+        self.assertEquals(org_name, 'Organisation: org0001')
 
     def test_cannot_create_duplicate_organisation(self):
         o = Organisation(name='alpha')
@@ -78,15 +82,19 @@ class OrganisationWebTest(WebTest):
         )
 
     def test_can_click_through_existing_organisation_link(self):
-        o = Organisation(name='alpha')
+        o = Organisation(name='org0001')
         o.save()
         response = self.app.get(reverse('organisation-list'))
-        response = response.click('alpha')
+        response = self.app.get(response.html.find(
+                'a',
+                text=re.compile(o.name + r'')
+            ).attrs['href']
+        )
         org_name = response.html.find(
             'h1',
             attrs={'class': 'heading-xlarge'}
         ).text
-        self.assertEquals(org_name, 'Organisation: alpha')
+        self.assertEquals(org_name, 'Organisation: ' + o.name)
 
     def test_show_number_of_teams_two(self):
         o = create_organisation(name='two teams', num_teams=2)
