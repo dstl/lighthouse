@@ -31,6 +31,9 @@ class TeamCreate(CreateView):
     form_class = TeamForm
 
     def get_success_url(self):
+        if 'success' in self.request.GET:
+            return self.request.GET.get('success')
+
         return reverse('team-list')
 
 

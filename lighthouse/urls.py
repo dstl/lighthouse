@@ -147,6 +147,11 @@ urlpatterns = [
         name='organisation-detail',
     ),
     url(
+        r'^organisations/(?P<org_id>\d+)/teams/new/?$',
+        TeamCreate.as_view(),
+        name='organisation-team-create',
+    ),
+    url(
         r'^teams/?$',
         TeamList.as_view(),
         name='team-list',
