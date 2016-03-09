@@ -3,40 +3,50 @@
 
 {% block grid_content %}
 
-  <h1 class="form-title heading-xlarge">Organisations</h1>
+  <div class="grid-row">
+    <div class="column-two-thirds">
+      <h1 class="form-title heading-xlarge">Organisations</h1>
 
-  <p class="lede">
-    These are the organisations currently registered with the system. Click on an organisation to view the teams in that organisation.
-  </p>
-
-  <ul class="list list-bullet organisation-list">
-    {% for organisation in object_list %}
-      <li><a class="main-list-item" href='{% url "organisation-detail" organisation.pk %}'>{{organisation.name}}</a>
-        <ul class="list organisation-info">
-          {% ifequal organisation.team_set.all|length 0 %}
-          <li>This organisation has no teams</li>
-          {% else %}
-          <li>Total teams: {{organisation.team_set.all|length}}</li>
-          {% endifequal %}
-        </ul>
-      </li>
-    {% endfor %}
-  </ul>
-
-  <hr />
-
-  <form method="post" action="{% url 'organisation-create' %}">
-    {% csrf_token %}
-    <div class="form-group">
-      <label class="form-label-bold" for="id_slug">
-        Create new organisation.
-      </label>
-      <p class="form-hint">
-        If an organisation isn't in the list above then you can add it here.
+      <p class="lede">
+        These are the organisations currently registered with the system. Click on an organisation to view the teams in that organisation.
       </p>
-      <input class="form-control" id="id_name" maxlength="256" name="name" type="text">
+
+      <ul class="list list-bullet organisation-list">
+        {% for organisation in object_list %}
+          <li><a class="main-list-item" href='{% url "organisation-detail" organisation.pk %}'>{{organisation.name}}</a>
+            <ul class="list organisation-info">
+              {% ifequal organisation.team_set.all|length 0 %}
+              <li>This organisation has no teams</li>
+              {% else %}
+              <li>Total teams: {{organisation.team_set.all|length}}</li>
+              {% endifequal %}
+            </ul>
+          </li>
+        {% endfor %}
+      </ul>
+
+      <hr />
+
+      <form method="post" action="{% url 'organisation-create' %}">
+        {% csrf_token %}
+        <div class="form-group">
+          <label class="form-label-bold" for="id_slug">
+            Create new organisation.
+          </label>
+          <p class="form-hint">
+            If an organisation isn't in the list above then you can add it here.
+          </p>
+          <input class="form-control" id="id_name" maxlength="256" name="name" type="text">
+        </div>
+        <input type="submit" method="POST" value="Add Organisation" class="button">
+      </form>
     </div>
-    <input type="submit" method="POST" value="Add Organisation" class="button">
-  </form>
+
+    <div class="column-one-third">
+      {% include "includes/top_organisations.html" %}
+      {% include "includes/top_teams.html" %}
+    </div>
+  </div>
+
 
 {% endblock %}

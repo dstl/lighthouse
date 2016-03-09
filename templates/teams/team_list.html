@@ -3,16 +3,25 @@
 
 {% block grid_content %}
 
-  <h1 class="form-title heading-xlarge">Teams</h1>
+<div class="grid-row">
+  <div class="column-two-thirds">
+    <h1 class="form-title heading-xlarge">Teams</h1>
 
-  <p class="lede">
-    These are the teams currently registered with the system. Click on a team to view the members in that team.
-  </p>
+    <p class="lede">
+      These are the teams currently registered with the system. Click on a team to view the members in that team.
+    </p>
 
-  {% include "includes/team_list.html" with teams=object_list show_organisation=True %}
+    {% include "includes/team_list.html" with teams=object_list show_organisation=True %}
+    <hr />
+    {% include "includes/team_form.html" %}
+  </div>
 
-  <hr />
+  <div class="column-one-third">
+    {% include "includes/top_organisations.html" %}
+    {% include "includes/top_teams.html" %}
+  </div>
+</div>
 
-  {% include "includes/team_form.html" %}
+
 
 {% endblock %}

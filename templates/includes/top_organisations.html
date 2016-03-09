@@ -1,0 +1,14 @@
+{# (c) Crown Owned Copyright, 2016. Dstl. #}
+{% if top_organisations %}
+  <div class="side-element-holder" id="organisations-holder">
+    <h2 class="heading-medium">"Top" Organisations</h2>
+    <ul class="list list-bullet">
+      {% for organisation in top_organisations %}
+        <li><a class="main-list-item" href='{% url "organisation-detail" organisation.pk %}'>{{organisation.name}}</a> ({{organisation.team_set.all|length}})</li>
+      {% endfor %}
+    </ul>
+    {% if show_more_organisations_link %}
+      <a href="{% url "organisation-list" %}">See all organisations</a>
+    {% endif %}
+  </div>
+{% endif %}
