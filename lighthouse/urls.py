@@ -24,8 +24,12 @@ from apps.links.views import (
     LinkDetail,
     LinkInterstitial,
     LinkList,
+    LinkStats,
+    LinkStatsCSV,
     LinkUpdate,
     LinkRedirect,
+    OverallLinkStats,
+    OverallLinkStatsCSV,
 )
 
 from apps.users.views import (
@@ -88,6 +92,16 @@ urlpatterns = [
         name='link-detail',
     ),
     url(
+        r'^links/(?P<pk>\d+)/stats$',
+        LinkStats.as_view(),
+        name='link-stats',
+    ),
+    url(
+        r'^links/(?P<pk>\d+)/stats.csv$',
+        LinkStatsCSV.as_view(),
+        name='link-stats-csv',
+    ),
+    url(
         r'^links/(?P<pk>\d+)/redirect/?$',
         LinkRedirect.as_view(),
         name='link-redirect',
@@ -106,6 +120,16 @@ urlpatterns = [
         r'^links/new/?$',
         LinkCreate.as_view(),
         name='link-create',
+    ),
+    url(
+        r'^links/stats$',
+        OverallLinkStats.as_view(),
+        name='link-overall-stats',
+    ),
+    url(
+        r'^links/stats.csv$',
+        OverallLinkStatsCSV.as_view(),
+        name='link-overall-stats-csv',
     ),
     url(
         r'^organisations/?$',

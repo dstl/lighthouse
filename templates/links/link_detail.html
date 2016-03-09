@@ -23,8 +23,12 @@
 			</div>
         </div>
 
-		<h2 class="heading-large">Usage</h2>
+		<h2 class="heading-large">Recent usage</h2>
 		<p id='usage-today'><span class="stat-inline">{{link.usage_today}}</span> times used today</p>
+		<p>
+			View <a href='{% url "link-stats" pk=link.pk %}'>full usage stats</a>
+			for this tool.
+		</p>
 	</div>
 	<div class="column-third">
 		<h2 class="heading-large">Tool details</h2>
