@@ -24,6 +24,8 @@ from apps.links.views import (
     LinkDetail,
     LinkInterstitial,
     LinkList,
+    LinkStats,
+    LinkStatsCSV,
     LinkUpdate,
     LinkRedirect,
     OverallLinkStats,
@@ -88,6 +90,16 @@ urlpatterns = [
         r'^links/(?P<pk>\d+)/?$',
         LinkDetail.as_view(),
         name='link-detail',
+    ),
+    url(
+        r'^links/(?P<pk>\d+)/stats$',
+        LinkStats.as_view(),
+        name='link-stats',
+    ),
+    url(
+        r'^links/(?P<pk>\d+)/stats.csv$',
+        LinkStatsCSV.as_view(),
+        name='link-stats-csv',
     ),
     url(
         r'^links/(?P<pk>\d+)/redirect/?$',

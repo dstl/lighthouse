@@ -7,6 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import timezone
+from django.utils.text import slugify
 from django.views.generic import (
     CreateView,
     DetailView,
@@ -147,6 +148,36 @@ class LinkList(ListView):
         context['filtered_categories'] = categories_to_filter
         context['filtered_types'] = types_to_filter
         return context
+
+
+class LinkStats(DetailView):
+    model = Link
+    template_name_suffix = '_stats'
+
+
+class LinkStatsCSV(DetailView):
+    model = Link
+
+    def get(self, request, *args, **kwargs):
+        link = self.get_object()
+        date = timezone.now().strftime('%Y_%m_%d')
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = \
+            'attachment; filename="lighthouse_%s_%s.csv"' % (
+                slugify(link.name),
+                date
+            )
+
+        writer = csv.writer(response)
+        writer.writerow(['Date', 'User', 'Tool'])
+        for usage in link.usage.all():
+            writer.writerow([
+                usage.start.strftime("%Y-%m-%d %H:%M:%S"),
+                usage.user,
+                usage.link
+            ])
+
+        return response
 
 
 class OverallLinkStats(ListView):

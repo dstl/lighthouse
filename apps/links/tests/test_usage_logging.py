@@ -209,6 +209,62 @@ class LinkUsageWebTest(WebTest):
         self.assertEquals(response.html.h1.text, 'Other Link')
         self.assertEquals(usage_today, '1')
 
+    def test_link_stats_page(self):
+        self.link.register_usage(self.user)
+
+        with mock.patch('django.utils.timezone.now') as mock_now:
+            # register usage eight days ago
+            mock_now.return_value = self.now - relativedelta(days=8)
+            self.link.register_usage(self.user)
+
+            # register usage thirty-eight days ago
+            mock_now.return_value = self.now - relativedelta(days=38)
+            self.link.register_usage(self.user)
+
+        stats_url = reverse('link-stats', kwargs={'pk': self.link.pk})
+        response = self.app.get(stats_url)
+
+        self.assertEquals(
+            response.html.find(class_='usage-seven-days').text,
+            '1'
+        )
+        self.assertEquals(
+            response.html.find(class_='usage-thirty-days').text,
+            '2'
+        )
+        self.assertEquals(
+            response.html.find(class_='usage-total').text,
+            '3'
+        )
+
+    def test_link_stats_csv(self):
+        with mock.patch('django.utils.timezone.now') as mock_now:
+            # register usage at a specific date
+            mock_now.return_value = make_aware(datetime(2016, 3, 1, 10, 0, 0))
+            self.link.register_usage(self.user)
+            mock_now.return_value = make_aware(datetime(2016, 3, 1, 11, 15, 0))
+            self.link.register_usage(self.user)
+
+        stats_url = reverse('link-stats-csv', kwargs={'pk': self.link.pk})
+        response = self.app.get(stats_url)
+        lines = response.body.decode().split("\r\n")
+        dialect = csv.Sniffer().sniff(response.body.decode())
+        reader = csv.DictReader(lines, dialect=dialect)
+
+        row = next(reader)
+        self.assertEquals(row, {
+            'User': 'user0001',
+            'Date': '2016-03-01 10:00:00',
+            'Tool': 'Link Linkerly',
+        })
+
+        row = next(reader)
+        self.assertEquals(row, {
+            'User': 'user0001',
+            'Date': '2016-03-01 11:15:00',
+            'Tool': 'Link Linkerly',
+        })
+
     def test_overall_stats_page(self):
         self.link.register_usage(self.user)
         self.other_link.register_usage(self.user)

@@ -1,0 +1,26 @@
+{# (c) Crown Owned Copyright, 2016. Dstl. #}
+{% extends "layout.html" %}
+
+{% block grid_content %}
+
+  <h1>Usage stats for {{link.name}}</h1>
+
+  <p>
+    Download <a href='{% url "link-stats" pk=link.pk %}'>full usage stats</a>
+    for this tool as a CSV file</a>.
+  </p>
+
+  <table>
+    <tr>
+      <th>Usage in the past 7 days</th>
+      <th>Usage in the past 30 days</th>
+      <th>Total usage</th>
+    </tr>
+    <tr>
+      <td class='usage-seven-days'>{{link.usage_past_seven_days}}</td>
+      <td class='usage-thirty-days'>{{link.usage_past_thirty_days}}</td>
+      <td class='usage-total'>{{link.usage.count}}</td>
+    </tr>
+  </table>
+
+{% endblock %}
