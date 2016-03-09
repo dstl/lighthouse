@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from django_webtest import WebTest
 from django.test import TestCase
 from django.db.utils import IntegrityError
-
+import re
 from .models import Team
 from apps.organisations.models import Organisation
 from apps.users.models import User
@@ -158,8 +158,14 @@ class TeamWebTest(WebTest):
         response = form.submit()
         self.assertEquals(response.status_int, 302)
 
+        #   Go get the list of teams so we can find the link of the team
+        #   we just added (we know the team name but not the id)
         response = self.app.get(reverse('team-list'))
-        response = response.click(team_name)
+        response = self.app.get(response.html.find(
+                'a',
+                text=re.compile(team_name + r'')
+            ).attrs['href']
+        )
         org_name = response.html.find(
             'h1',
             attrs={'class': 'heading-xlarge'}
@@ -173,7 +179,11 @@ class TeamWebTest(WebTest):
         t = Team(name=team_name, organisation=o)
         t.save()
         response = self.app.get(reverse('team-list'))
-        response = response.click(team_name)
+        response = self.app.get(response.html.find(
+                'a',
+                text=re.compile(team_name + r'')
+            ).attrs['href']
+        )
         org_name = response.html.find(
             'h1',
             attrs={'class': 'heading-xlarge'}
