@@ -31,12 +31,12 @@
 		{% if link.is_external %}
 		<p id="link_owner">
 			{{link.name}} is an <strong id="is_external">external</strong> tool added by
-			<a href="{% url "user-detail" link.owner.slug %}">{{link.owner.username|default_if_none:link.owner.slug}}</a>.
+			<a href="{% url "user-detail" link.owner.slug %}">{{link.owner.username|default:link.owner.slug}}</a>.
 		</p>
 		{% else %}
 		<p id="link_owner">
 			{{link.name}} is an <strong id="is_external">internal</strong> tool owned by
-			<a href="{% url "user-detail" link.owner.slug %}">{{link.owner.username|default_if_none:link.owner.slug}}</a>.
+			<a href="{% url "user-detail" link.owner.slug %}">{{link.owner.username|default:link.owner.slug}}</a>.
 		</p>
 		{% endif %}
 		<h2 class="heading-large">Categories</h2>
