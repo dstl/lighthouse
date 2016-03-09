@@ -1,6 +1,10 @@
 {# (c) Crown Owned Copyright, 2016. Dstl. #}
 <h2 class="form-title heading-large">Create a new team</h2>
+{% if organisation %}
+<form method="post" action="{% url 'organisation-team-create' org_id=organisation.id %}">
+{% else %}
 <form method="post" action="{% url 'team-create' %}">
+{% endif %}
   {% csrf_token %}
   {% if form.errors %}
   <div class="error-summary">
@@ -19,7 +23,6 @@
     </ul>
   </div>
   {% endif %}
-
   {% include "includes/team_form_inner.html" %}
 
   <input type="submit" method="POST" value="Create team" class="button">

@@ -3,7 +3,11 @@
 
 {% block grid_content %}
 
+{% if organisation %}
+<h1 class="form-title heading-xlarge">Organisation: {{organisation.name}}</h1>
+{% else %}
 <h1 class="form-title heading-xlarge">Teams</h1>
+{% endif %}
 
 {% include "includes/team_form.html" %}
 

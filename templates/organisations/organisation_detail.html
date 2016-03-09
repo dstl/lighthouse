@@ -10,7 +10,7 @@
     This Organisation contains the following teams.
   </p>
   {% include "includes/team_list.html" with teams=teams show_organisation=False %}
-  <form method="post" action="{% url 'organisation-team-create' org_id=organisation.id %}?success={{ request.path }}">
+  <form method="post" action="{% url 'organisation-team-create' org_id=organisation.id %}">
     {% csrf_token %}
     <h2 class="heading-medium">Add a new team to this organisation</h2>
     <p class="form-hint">

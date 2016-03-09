@@ -24,10 +24,10 @@ class OrganisationDetailWebTest(WebTest):
         )), 2)
         self.assertIsNotNone(new_team_input)
 
-        return response
+        return response, o
 
     def test_can_add_new_team(self):
-        response = self.test_new_team_input_visible()
+        response, o = self.test_new_team_input_visible()
 
         form = response.form
         form['name'] = 'The Newest Team'
