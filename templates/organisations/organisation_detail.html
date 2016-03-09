@@ -9,9 +9,7 @@
   <p class="lede">
     This Organisation contains the following teams.
   </p>
-  <ul class="list list-bullet team-list">
-    {% include "includes/team_list.html" with teams=teams show_organisation=False %}
-  </ul>
+  {% include "includes/team_list.html" with teams=teams show_organisation=False %}
 {% else %}
   <p class="lede">
     This Organisation contains no teams, maybe you can add some?
