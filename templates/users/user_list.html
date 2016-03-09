@@ -2,10 +2,44 @@
 {% extends "layout.html" %}
 
 {% block grid_content %}
-  <ol>
-    {% for user in object_list %}
-      <li><a href='{% url "user-detail" user.slug %}'>{{user.slug}}</a></li>
-    {% endfor %}
-  </ol>
 
+  <div class="column-two-thirds">
+    <h1 class="heading-xlarge">Users</h1>
+
+    <p class="lede">
+      These are the users currently registered with the system. Click on a user to view more information.
+    </p>
+
+    <ul class="list list-bullet user-list">
+      {% for user in object_list %}
+        <li><a class="main-list-item" href='{% url "user-detail" user.slug %}'>{{user.slug}}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="column-one-third">
+    <div class="side-element-holder" id="organisations-holder">
+      <h2 class="heading-large">Organisations</h2>
+      <ul class="list list-bullet">
+        {% for organisation in organisations %}
+          <li><a class="main-list-item" href='{% url "organisation-detail" organisation.pk %}'>{{organisation.name}}</a> ({{organisation.team_set.all|length}})</li>
+        {% endfor %}
+      </ul>
+      {% if show_more_organisations_link %}
+        <a href="{% url "organisation-list" %}">See all organisations</a>
+      {% endif %}
+    </div>
+
+    <div class="side-element-holder" id="teams-holder">
+      <h2 class="heading-large">Teams</h2>
+      <ul class="list list-bullet">
+        {% for team in teams %}
+          <li><a class="main-list-item" href='{% url "team-detail" team.pk %}'>{{team.name}}</a> ({{team.user_set.all|length}})</li>
+        {% endfor %}
+      </ul>
+      {% if show_more_teams_link %}
+        <a href="{% url "team-list" %}">See all teams</a>
+      {% endif %}
+    </div>
+  </div>
 {% endblock %}
