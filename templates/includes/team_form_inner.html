@@ -13,6 +13,12 @@
   <input class="form-control" id="{{ form.name.id_for_label }}" maxlength="256" name="name" type="text" value="{{ form.name.value|default_if_none:"" }}">
 </div>
 
+{% if organisation %}
+<div class="form-group">
+  <label id="organisation_label" class="form-label-bold">This team will be part of the "{{organisation.name}}" organisation.</label>
+  <input type="hidden" name="organisation" value="{{ organisation.id }}" />
+</div>
+{% else %}
 <div class="form-group{% if form.organisation.errors %} error{% endif %}" id="{{ form.organisation.id_for_label }}_group">
   <label id="existing-organisations-label" class="form-label-bold">
     To which organisation does this team belong?
@@ -51,3 +57,4 @@
     <input class="form-control radio-free-text" id="{{ form.new_organisation.id_for_label }}" maxlength="256" name="new_organisation" type="text" value="{{ form.new_organisation.value|default_if_none:"" }}">
   </label>
 </div>
+{% endif %}

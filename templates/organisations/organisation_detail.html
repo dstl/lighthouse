@@ -9,9 +9,25 @@
   <p class="lede">
     This Organisation contains the following teams.
   </p>
-  <ul class="list list-bullet team-list">
-    {% include "includes/team_list.html" with teams=teams show_organisation=False %}
-  </ul>
+  {% include "includes/team_list.html" with teams=teams show_organisation=False %}
+  <form method="post" action="{% url 'organisation-team-create' org_id=organisation.id %}">
+    {% csrf_token %}
+    <h2 class="heading-medium">Add a new team to this organisation</h2>
+    <p class="form-hint">
+      If there's a team missing from this organisation you can create it here
+      and it will be automatically added to the list above.
+    </p>
+    <input type="hidden" name="organisation" value="{{organisation.id}}">
+    <div class="form-group">
+      <label for="id_new_team" class="form-label-bold">
+        What is this team called?
+      </label>
+      <input class="form-control" type="text" id="id_new_team" name="name">
+    </div>
+    <div class="form-group">
+      <button class="button" type="submit">Create team</button>
+    </div>
+  </form>
 {% else %}
   <p class="lede">
     This Organisation contains no teams, maybe you can add some?

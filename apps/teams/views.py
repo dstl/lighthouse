@@ -7,6 +7,7 @@ from django.shortcuts import redirect
 from django.db import IntegrityError
 
 from .models import Team
+from apps.organisations.models import Organisation
 from .forms import TeamForm
 from apps.widgets.common import TopOrganisations, TopTeams
 
@@ -30,7 +31,20 @@ class TeamCreate(CreateView):
     model = Team
     form_class = TeamForm
 
+    def get_context_data(self, **kwargs):
+        context = super(TeamCreate, self).get_context_data(**kwargs)
+
+        if 'org_id' in self.kwargs:
+            org_id = int(self.kwargs['org_id'])
+            context['organisation'] = Organisation.objects.get(id=org_id)
+
+        return context
+
     def get_success_url(self):
+        if 'org_id' in self.kwargs:
+            org_id = int(self.kwargs['org_id'])
+            return reverse('organisation-detail', kwargs={"pk": org_id})
+
         return reverse('team-list')
 
 
