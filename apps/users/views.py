@@ -171,7 +171,8 @@ class UserUpdateProfile(UpdateView):
         #   teams section
         submit_action = form.data.get('submit_action')
         if (submit_action is not None and submit_action is not ''):
-            if submit_action == 'Save and add a new team':
+            if submit_action in ['Save and add a new team',
+                                 'Save and manage team membership']:
                 return HttpResponseRedirect(
                     reverse(
                         'user-update-teams',
