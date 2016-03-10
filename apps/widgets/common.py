@@ -6,7 +6,7 @@ from apps.teams.models import Team
 from apps.organisations.models import Organisation
 
 
-#   Passing context in by assignemnt
+#   Passing context in by assignment
 def TopOrganisations():
 
     #   Get the 'top' 20 organisations ranked by number of teams

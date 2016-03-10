@@ -164,6 +164,12 @@ class LinkUsageWebTest(WebTest):
         self.assertEquals(response.html.h1.text, 'Link Linkerly')
         self.assertEquals(usage_today, '0')
 
+        #   Check that this link *doesn't* appear in the 'top tools' widget
+        user_response = self.app.get(
+            reverse('user-detail', kwargs={'slug': self.user.slug})
+        )
+        self.assertIsNone(user_response.html.find(id='top_links_for_user'))
+
         # going to the tool registers usage
         response.click(linkid='link_follow_button').follow()
 
@@ -175,6 +181,15 @@ class LinkUsageWebTest(WebTest):
         self.assertEquals(response.html.h1.text, 'Link Linkerly')
         self.assertEquals(usage_today, '1')
 
+        #   Check that this link does appear in the 'top tools' widget
+        user_response = self.app.get(
+            reverse('user-detail', kwargs={'slug': self.user.slug})
+        )
+        self.assertEquals(
+            user_response.html.find(id='top_links_for_user').find('a').text,
+            'Link Linkerly'
+        )
+
     def test_external_link_usage(self):
         detail_url = reverse('link-detail', kwargs={'pk': self.other_link.pk})
 
@@ -185,6 +200,12 @@ class LinkUsageWebTest(WebTest):
         ).text
         self.assertEquals(response.html.h1.text, 'Other Link')
         self.assertEquals(usage_today, '0')
+
+        #   Check that this link *doesn't* appear in the 'top tools' widget
+        user_response = self.app.get(
+            reverse('user-detail', kwargs={'slug': self.user.slug})
+        )
+        self.assertIsNone(user_response.html.find(id='top_links_for_user'))
 
         # going to the interstitial page does not register usage
         response.click(linkid='link_follow_button').follow()
@@ -208,6 +229,15 @@ class LinkUsageWebTest(WebTest):
         ).text
         self.assertEquals(response.html.h1.text, 'Other Link')
         self.assertEquals(usage_today, '1')
+
+        #   Check that this link does appear in the 'top tools' widget
+        user_response = self.app.get(
+            reverse('user-detail', kwargs={'slug': self.user.slug})
+        )
+        self.assertEquals(
+            user_response.html.find(id='top_links_for_user').find('a').text,
+            'Other Link'
+        )
 
     def test_link_stats_page(self):
         self.link.register_usage(self.user)
