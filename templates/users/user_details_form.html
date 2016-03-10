@@ -4,6 +4,7 @@
 {% block grid_content %}
 
 <h1 class="form-title heading-xlarge">Update profile</h1>
+<h2 class="heading-medium">Your personal details</h2>
 
 <p class="lede">
   Anytime you need to update your information you can do that here.
@@ -12,7 +13,7 @@
 
 {% if show_username_alert %}
 <div class="error-summary" role="group">
-  <h1 class="heading-medium error-summary-heading">Please add a username</h1>
+  <h3 class="heading-medium error-summary-heading">Please add a username</h3>
   <p>
     To help people find you on the system you need to add a username. The more information you can add to help people contact you the better.
   </p>
@@ -24,7 +25,7 @@
 
 {% if show_extra_details_alert %}
 <div class="alert-summary" role="group">
-  <h1 class="heading-medium alert-summary-heading">Please add additional information</h1>
+  <h3 class="heading-medium alert-summary-heading">Please add additional information</h3>
   <p>
     The system works best when it's easy to find other people, and it's easy for them to find you. It's not required but it's helpful to add as much information as possible.
   </p>
@@ -131,41 +132,7 @@
     </p>
   </div>
 
-  <div class="form-group {% if show_teams_alert %}alert{% endif %}">
-    {% if show_teams_alert %}
-      <span class="error-message">
-        Please supply at least one team you are a member of.
-      </span>
-    {% endif %}
-
-    {% if teams %}
-      <div class="form-group">
-        <label class="form-label-bold" for="teams">
-          Teams
-        </label>
-
-        <p class="form-hint">
-          Please check all the teams you are a member of.
-        </p>
-        {% for team in teams %}
-          <label for="team_{{team.id}}" class="block-label form-control">
-            <input id="team_{{team.id}}" type="checkbox" name="team" value="{{team.id}}" {% if team.checked %}checked{% endif %} />
-            <span class="heading-small">{{team.name}}</span> <sman class="font-xsmall">({{team.organisation.name}})</span><br />
-          </label>
-        {% endfor %}
-      </div>
-    {% endif %}
-
-    <div class="form-group">
-      <label class="form-label-bold" for="teams">
-        <h2 class="bold-medium">Or create a new team.</h2>
-      </label>
-      {% include "includes/team_form_inner.html" %}
-    </div>
-  </div>
-
-
-  <input type="submit" method="POST" name="submit_action" value="Save and add a new team" class="button" />
+  <input type="submit" method="POST" name="submit_action" value="Save and add another team" class="button" />
   <input type="submit" method="POST" name="submit_action" value="Save and finish" class="button" />
 </form>
 

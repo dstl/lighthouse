@@ -1,0 +1,52 @@
+{# (c) Crown Owned Copyright, 2016. Dstl. #}
+{% extends "layout.html" %}
+
+{% block grid_content %}
+
+<h1 class="form-title heading-xlarge">Update profile</h1>
+<h2 class="heading-medium">Manage team membership</h2>
+
+<p class="lede">
+  You can be a member of as many teams as you like, and each team is part of
+  an organisation. Here, you can join or leave teams by checking or unchecking
+  the boxes next to the team names, or create whole new teams to join.
+</p>
+
+<form method="post" action="{% url 'user-updateprofile' slug=user.slug %}">
+  {% csrf_token %}
+  <div class="form-group {% if show_teams_alert %}alert{% endif %}">
+    {% if show_teams_alert %}
+      <span class="error-message">
+        Please supply at least one team you are a member of.
+      </span>
+    {% endif %}
+
+    {% if teams %}
+      <div class="form-group">
+        <label class="form-label-bold" for="teams">
+          Teams
+        </label>
+
+        <p class="form-hint">
+          Please check all the teams of which you are a member.
+        </p>
+        {% for team in teams %}
+          <label for="team_{{team.id}}" class="block-label form-control">
+            <input id="team_{{team.id}}" type="checkbox" name="team" value="{{team.id}}" {% if team.checked %}checked{% endif %} />
+            <span class="heading-small">{{team.name}}</span> <span class="font-xsmall">({{team.organisation.name}})</span><br />
+          </label>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <div class="form-group">
+      <label class="form-label-bold" for="teams">
+        <h2 class="bold-medium">Create a new team.</h2>
+      </label>
+      {% include "includes/team_form_inner.html" %}
+    </div>
+  </div>
+  <input type="submit" name="submit_action" id="save-add-new-team" value="Save and add a new team" class="button" />
+  <input type="submit" name="submit_action" value="Save and finish" class="button" />
+</form>
+{% endblock %}

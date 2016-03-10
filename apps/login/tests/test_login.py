@@ -23,7 +23,7 @@ class UserWebTest(WebTest):
         #   We should now be on the user needs to add information page
         self.assertEquals(
             response.html.find(
-                'h1',
+                'h3',
                 attrs={'class': 'error-summary-heading'}
             ).text,
             'Please add a username'
@@ -45,7 +45,7 @@ class UserWebTest(WebTest):
         #   Make sure we *don't* have an error summary heading
         self.assertFalse(
             response.html.find(
-                'h1',
+                'h3',
                 attrs={'class': 'error-summary-heading'}
             )
         )
