@@ -44,7 +44,7 @@
 		</p>
 		{% endif %}
 		<h2 class="heading-large">Categories</h2>
-		{% if link.categories.all %}
+		{% if link.categories.count %}
 		<ul>
 		{% for category in link.categories.all %}
 			<li class="link-category">{{category|capfirst}}</li>

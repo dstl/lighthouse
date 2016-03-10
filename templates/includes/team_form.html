@@ -9,11 +9,11 @@
   {% if form.errors %}
   <div class="error-summary">
     <h2 class="heading-medium error-summary-heading">Your team could not be saved</h2>
-    {% ifequal form.errors.items|length 1 %}
-    <p>There is a problem which needs solving before your team can be saved</p>
+    {% if form.errors.items|length == 1 %}
+      <p>There is a problem which needs solving before your team can be saved</p>
     {% else %}
-    <p>There are a few problems that need solving before your team can be saved</p>
-    {% endifequal %}
+      <p>There are a few problems that need solving before your team can be saved</p>
+    {% endif %}
     <ul class="form-error-list error-summary-list">
       {% for key,value in form.errors.items %}
         {% for error in value %}
