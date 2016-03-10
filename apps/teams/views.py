@@ -9,7 +9,6 @@ from django.db import IntegrityError
 from .models import Team
 from apps.organisations.models import Organisation
 from .forms import TeamForm
-from apps.organisations.models import Organisation
 
 
 class TeamList(ListView):
