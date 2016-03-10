@@ -28,6 +28,7 @@ from apps.links.views import (
     LinkStatsCSV,
     LinkUpdate,
     LinkRedirect,
+    LinkUsageAPI,
     OverallLinkStats,
     OverallLinkStatsCSV,
 )
@@ -177,6 +178,12 @@ urlpatterns = [
         r'^teams/(?P<pk>\d+)/?$',
         TeamDetail.as_view(),
         name='team-detail',
+    ),
+
+    url(
+        r'^api/links/(?P<pk>\d+)/usage',
+        LinkUsageAPI.as_view(),
+        name='api-link-usage',
     ),
 ]
 urlpatterns += staticfiles_urlpatterns()
