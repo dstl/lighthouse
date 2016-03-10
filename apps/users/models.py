@@ -35,3 +35,10 @@ class User(models.Model):
 
     def __str__(self):
         return self.slug
+
+    def top_links(self):
+        from apps.links.models import Link
+        #   Get the 'top' links/tools for the selected users
+        return Link.objects.filter(usage__user=self).annotate(
+            linkusagecount=models.Count('usage')
+        ).order_by('-linkusagecount', 'name')
