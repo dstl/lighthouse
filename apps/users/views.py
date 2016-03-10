@@ -6,7 +6,6 @@ from django.core.urlresolvers import reverse
 from .models import User
 from apps.teams.models import Team
 from apps.organisations.models import Organisation
-from apps.widgets.common import TopOrganisations, TopTeams
 
 
 class UserDetail(DetailView):
@@ -159,9 +158,7 @@ class UserList(ListView):
     def get_context_data(self, **kwargs):
         context = super(UserList, self).get_context_data(**kwargs)
 
-        context['show_more_teams_link'], context['top_teams'] = TopTeams()
-
-        context['show_more_organisations_link'], \
-            context['top_organisations'] = TopOrganisations()
+        context['top_teams'] = Team.with_most_members()
+        context['top_organisations'] = Organisation.with_most_teams()
 
         return context

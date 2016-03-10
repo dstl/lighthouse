@@ -12,6 +12,12 @@ class Team(models.Model):
     class Meta:
         ordering = ["name"]
 
+    @classmethod
+    def with_most_members(cls):
+        return Team.objects.all().annotate(
+            count=models.Count('user')
+        ).filter(count__gte=1).order_by('-count', 'name')
+
     def get_absolute_url(self):
         return reverse('team-detail', kwargs={'pk': self.pk})
 

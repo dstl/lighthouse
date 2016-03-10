@@ -10,6 +10,12 @@ class Organisation(models.Model):
     class Meta:
         ordering = ["name"]
 
+    @classmethod
+    def with_most_teams(cls):
+        return Organisation.objects.all().annotate(
+                count=models.Count('team')
+            ).filter(count__gte=1).order_by('-count', 'name')
+
     def get_absolute_url(self):
         return reverse('organisation-detail', kwargs={'pk': self.pk})
 

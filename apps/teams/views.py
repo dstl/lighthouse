@@ -8,7 +8,7 @@ from django.db import IntegrityError
 
 from .models import Team
 from .forms import TeamForm
-from apps.widgets.common import TopOrganisations, TopTeams
+from apps.organisations.models import Organisation
 
 
 class TeamList(ListView):
@@ -19,9 +19,8 @@ class TeamList(ListView):
         context = super(TeamList, self).get_context_data(**kwargs)
         context['form'] = TeamForm
 
-        context['show_more_teams_link'], context['top_teams'] = TopTeams()
-        context['show_more_organisations_link'], \
-            context['top_organisations'] = TopOrganisations()
+        context['top_teams'] = Team.with_most_members()
+        context['top_organisations'] = Organisation.with_most_teams()
 
         return context
 
