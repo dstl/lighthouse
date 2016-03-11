@@ -9,19 +9,19 @@ from apps.organisations.models import Organisation
 
 class UserTest(TestCase):
     def setUp(self):
-        u = User(slug='user0001')
+        u = User(slug='user0001com', original_slug='user@0001.com')
         u.save()
 
     def test_can_create_user(self):
-        u = User(slug='user0002')
+        u = User(slug='user0002com', original_slug='user@0002.com')
         u.save()
         self.assertTrue(u.slug)
 
     def test_cannot_create_duplicate_user(self):
-        u = User(slug='user0002')
+        u = User(slug='user0002com', original_slug='user@0002.com')
         u.save()
         self.assertTrue(u.slug)
-        u = User(slug='user0001')
+        u = User(slug='user0001com', original_slug='user@0001.com')
         with self.assertRaises(IntegrityError):
             u.save()
 

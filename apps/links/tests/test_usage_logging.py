@@ -283,14 +283,14 @@ class LinkUsageWebTest(WebTest):
 
         row = next(reader)
         self.assertEquals(row, {
-            'User': 'user0001',
+            'User': 'user0001com',
             'Date': '2016-03-01 10:00:00',
             'Tool': 'Link Linkerly',
         })
 
         row = next(reader)
         self.assertEquals(row, {
-            'User': 'user0001',
+            'User': 'user0001com',
             'Date': '2016-03-01 11:15:00',
             'Tool': 'Link Linkerly',
         })
@@ -343,21 +343,21 @@ class LinkUsageWebTest(WebTest):
 
         row = next(reader)
         self.assertEquals(row, {
-            'User': 'user0001',
+            'User': 'user0001com',
             'Date': '2016-03-01 10:00:00',
             'Tool': 'Link Linkerly',
         })
 
         row = next(reader)
         self.assertEquals(row, {
-            'User': 'user0001',
+            'User': 'user0001com',
             'Date': '2016-03-01 11:15:00',
             'Tool': 'Other Link',
         })
 
         row = next(reader)
         self.assertEquals(row, {
-            'User': 'user0001',
+            'User': 'user0001com',
             'Date': '2016-03-01 11:16:00',
             'Tool': 'Link Linkerly',
         })

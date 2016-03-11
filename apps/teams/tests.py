@@ -23,7 +23,8 @@ def create_team(name, num_members=0, usernames={}):
             username = 'Team Member %d' % (x + 1)
 
         u = User(
-            slug='teammember%d' % (x + 1)
+            slug='teammember%d' % (x + 1),
+            original_slug='teammember%d' % (x + 1),
         )
 
         if username is not None:
@@ -300,12 +301,12 @@ class TeamWebTest(WebTest):
         o.save()
         t = Team(name="team0001", organisation=o)
         t.save()
-        User(slug='user0001').save()
+        User(slug='user0001com', original_slug='user@0001.com').save()
         # u.teams.add(t).save()
 
         #   Now we need to log in as that user.
         form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0001'
+        form['slug'] = 'user0001com'
         form.submit().follow()
 
         #   Now go visit the team page...
@@ -337,14 +338,14 @@ class TeamWebTest(WebTest):
         o.save()
         t = Team(name="team0001", organisation=o)
         t.save()
-        u = User(slug='user0001')
+        u = User(slug='user0001com', original_slug='user@0001.com')
         u.save()
         u.teams.add(t)
         u.save()
 
         #   Now we need to log in as that user.
         form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0001'
+        form['slug'] = 'user0001com'
         form.submit().follow()
 
         #   Now go visit the team page...
@@ -376,12 +377,12 @@ class TeamWebTest(WebTest):
         o.save()
         t = Team(name="team0001", organisation=o)
         t.save()
-        u = User(slug='user0001')
+        u = User(slug='user0001com', original_slug='user@0001.com')
         u.save()
 
         #   Now we need to log in as that user.
         form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0001'
+        form['slug'] = 'user0001com'
         form.submit().follow()
 
         #   Assert that a link to the team doesn't exists (because we are

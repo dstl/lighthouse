@@ -19,20 +19,20 @@ class UserWebTest(WebTest):
     def test_create_new_user(self):
         #   got to the login form, and enter a user ID, this will sign us up.
         form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0001'
+        form['slug'] = 'user@0001.com'
         response = form.submit().follow()
 
         #   Now go to the user profile page
         response = self.app.get(
             reverse(
                 'user-detail',
-                kwargs={'slug': 'user0001'}
+                kwargs={'slug': 'user0001com'}
             )
         )
         #   Check that we have the user slug in the name in the nav bar
         self.assertTrue(
             response.html.find(
                 'span',
-                attrs={'data-slug': 'user0001'}
+                attrs={'data-slug': 'user0001com'}
             )
         )
