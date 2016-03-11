@@ -23,3 +23,11 @@ class Team(models.Model):
 
     def __str__(self):
         return self.name
+
+    def top_links(self):
+        from apps.links.models import Link
+        return Link.objects.filter(
+            usage__user__in=self.user_set.all()
+        ).annotate(
+            linkusagecount=models.Count('usage')
+        ).order_by('-linkusagecount', 'name')

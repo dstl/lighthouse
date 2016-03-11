@@ -9,7 +9,6 @@ def create_team(name, num_members=0, usernames={}):
     o.save()
     t = Team(name=name, organisation=o)
     t.save()
-    # pdb.set_trace()
     for x in range(0, num_members):
         if x in usernames.keys():
             username = usernames[x]
