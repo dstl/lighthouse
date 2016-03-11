@@ -161,7 +161,8 @@ class LinkTest(WebTest):
         response = form.submit()
 
         self.assertEquals(
-            reverse('link-detail', kwargs={'pk': existing_link.pk}),
+            'http://localhost:80%s' % reverse(
+                'link-detail', kwargs={'pk': existing_link.pk}),
             response.location
         )
 

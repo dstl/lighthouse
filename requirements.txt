@@ -1,6 +1,6 @@
 beautifulsoup4==4.4.1               # MIT
 django-webtest==1.7.8               # MIT
-Django==1.9.1                       # 3-clause BSD
+Django==1.8.11                      # 3-clause BSD
 psycopg2==2.6.1                     # GNU LGPL
 six==1.10.0                         # MIT
 waitress==0.8.10                    # ZPL

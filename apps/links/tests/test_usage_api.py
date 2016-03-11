@@ -38,7 +38,10 @@ class LinkUsageAPITest(TestCase):
             reverse('api-link-usage', kwargs={'pk': self.link.pk})
         )
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), expected_response)
+        self.assertJSONEqual(
+            response.content.decode('utf8'),
+            expected_response
+        )
 
     def test_cannot_update_usage_without_user(self):
         self.assertEquals(self.link.usage_total(), 0)
