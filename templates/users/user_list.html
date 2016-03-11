@@ -12,7 +12,7 @@
 
     <ul class="list list-bullet user-list">
       {% for user in object_list %}
-        <li><a class="main-list-item" href='{% url "user-detail" user.slug %}'>{{user.slug}}</a></li>
+        <li><a class="main-list-item" href='{% url "user-detail" user.slug %}'>{{user.username|default:user.original_slug}}</a></li>
       {% endfor %}
     </ul>
   </div>
