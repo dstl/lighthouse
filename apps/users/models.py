@@ -12,7 +12,7 @@ def slug_default():
 
 class User(models.Model):
     slug = models.SlugField(max_length=256, unique=True, default=slug_default)
-    original_slug = models.CharField(max_length=256, blank=True, null=True)
+    original_slug = models.CharField(max_length=256, blank=False, null=False)
     username = models.CharField(max_length=256, blank=True, null=True)
     best_way_to_find = models.CharField(max_length=1024, blank=True, null=True)
     best_way_to_contact = models.CharField(
