@@ -26,18 +26,18 @@ class CategorisedLinksWithCategoriesUpdateTest(WebTest):
             reverse('link-edit', kwargs={'pk': self.existing_link.pk})).form
 
         self.assertTrue(form.get('categories', index=1).checked)
-        self.assertEquals(
+        self.assertIn(
+            'Social',
             form.html.findAll(
                 'label', {'class': 'link-category-label'}
             )[0].text,
-            'Social'
         )
         self.assertTrue(form.get('categories', index=1).checked)
-        self.assertEquals(
+        self.assertIn(
+            'Imagery',
             form.html.findAll(
                 'label', {'class': 'link-category-label'}
             )[1].text,
-            'Imagery'
         )
         self.assertEquals(form.get('categories', index=2).value, '')
 

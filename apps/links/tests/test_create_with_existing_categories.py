@@ -36,12 +36,12 @@ class CategorisedLinksWithCategoriesTest(WebTest):
         self.assertEquals(form['destination'].value, '')
 
         category_label_values = [
-            element.text for element in
+            element.text.strip() for element in
             form.html.findAll('label', {"class": "link-category-label"})
         ]
 
         category_input_values = [
-            element.get('value') for element in
+            element.get('value').strip() for element in
             form.html.findAll('input', {"class": "link-category-checkbox"})
         ]
 
@@ -61,18 +61,18 @@ class CategorisedLinksWithCategoriesTest(WebTest):
         form['destination'] = 'https://google.com'
 
         self.assertFalse(form.get('categories', index=0).checked)
-        self.assertEquals(
+        self.assertIn(
+            'Social',
             form.html.findAll(
                 'label', {'class': 'link-category-label'}
             )[0].text,
-            'Social'
         )
         self.assertFalse(form.get('categories', index=1).checked)
-        self.assertEquals(
+        self.assertIn(
+            'Imagery',
             form.html.findAll(
                 'label', {'class': 'link-category-label'}
             )[1].text,
-            'Imagery'
         )
         self.assertEquals(form.get('categories', index=2).value, '')
 
@@ -127,24 +127,24 @@ class CategorisedLinksWithCategoriesTest(WebTest):
         form = self.app.get(reverse('link-create')).form
 
         self.assertFalse(form.get('categories', index=0).checked)
-        self.assertEquals(
+        self.assertIn(
+            'Social',
             form.html.findAll(
                 'label', {'class': 'link-category-label'}
             )[0].text,
-            'Social'
         )
         self.assertFalse(form.get('categories', index=1).checked)
-        self.assertEquals(
+        self.assertIn(
+            'Imagery',
             form.html.findAll(
                 'label', {'class': 'link-category-label'}
             )[1].text,
-            'Imagery'
         )
         self.assertFalse(form.get('categories', index=2).checked)
-        self.assertEquals(
+        self.assertIn(
+            'Mapping',
             form.html.findAll(
                 'label', {'class': 'link-category-label'}
             )[2].text,
-            'Mapping'
         )
         self.assertEquals(form.get('categories', index=3).value, '')
