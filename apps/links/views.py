@@ -5,7 +5,7 @@ import csv
 from django import forms
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.utils import timezone
 from django.utils.text import slugify
 from django.views.generic import (
@@ -21,6 +21,7 @@ from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
 
 from .models import Link, LinkUsage
+from apps.users.models import User
 
 
 class LinkDetail(DetailView):
@@ -39,6 +40,42 @@ class LinkRedirect(DetailView):
 
         self.object.register_usage(request.user)
         return redirect(self.object.destination)
+
+
+class LinkUsageAPI(DetailView):
+    model = Link
+
+    # TODO (probably)
+    # - there is no authentication
+    # - there is no way to discover link IDs
+    # - there is no way to discover user slugs
+
+    def get(self, request, *args, **kwargs):
+        """ Return the usage stats as JSON """
+        link = self.get_object()
+        response = []
+        for use in link.usage.all():
+            response.append({
+                'user': use.user.slug,
+                'date': use.start,
+            })
+        return JsonResponse(response, safe=False)
+
+    def post(self, request, *args, **kwargs):
+        """ Add new usage stat """
+        # user param is required
+        if 'user' not in request.POST:
+            return JsonResponse({'error': 'user required'}, status=400)
+
+        # user must exist
+        try:
+            user = User.objects.get(slug=request.POST.get('user'))
+        except User.DoesNotExist:
+            return JsonResponse({'error': 'no such user'}, status=400)
+
+        link = self.get_object()
+        link.register_usage(user)
+        return JsonResponse({'status': 'ok'}, status=201)
 
 
 class LinkInterstitial(DetailView):
