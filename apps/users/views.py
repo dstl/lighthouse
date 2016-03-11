@@ -12,6 +12,40 @@ class UserDetail(DetailView):
     model = User
 
 
+class UserUpdateProfileTeams(UpdateView):
+    model = User
+    fields = [
+                'username',
+                'best_way_to_find',
+                'best_way_to_contact',
+                'phone',
+                'email'
+            ]
+    template_name = 'users/user_details_teams_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            UserUpdateProfileTeams,
+            self
+        ).get_context_data(**kwargs)
+
+        #   We want to grab all the teams so we can display a bunch of
+        #   checkboxes allowing the user to join those teams
+        if self.request.user.is_authenticated():
+            teams = Team.objects.all()
+            for team in teams:
+                team.checked = False
+                for us in self.request.user.teams.all():
+                    if team.id == us.id:
+                        team.checked = True
+
+            context['teams'] = teams
+
+        context['organisations'] = Organisation.objects.all()
+
+        return context
+
+
 class UserUpdateProfile(UpdateView):
     model = User
     fields = [
@@ -137,10 +171,11 @@ class UserUpdateProfile(UpdateView):
         #   teams section
         submit_action = form.data.get('submit_action')
         if (submit_action is not None and submit_action is not ''):
-            if submit_action == 'Save and add a new team':
+            if submit_action in ['Save and add a new team',
+                                 'Save and manage team membership']:
                 return HttpResponseRedirect(
                     reverse(
-                        'user-updateprofile',
+                        'user-update-teams',
                         kwargs={
                             'slug': self.request.user.slug
                         }

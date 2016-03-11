@@ -35,6 +35,7 @@ from apps.links.views import (
 from apps.users.views import (
     UserDetail,
     UserUpdateProfile,
+    UserUpdateProfileTeams,
     UserList,
 )
 
@@ -70,6 +71,11 @@ urlpatterns = [
         r'^users/?$',
         UserList.as_view(),
         name='user-list',
+    ),
+    url(
+        r'^users/(?P<slug>[\w-]+)/update-profile/teams/?$',
+        UserUpdateProfileTeams.as_view(),
+        name='user-update-teams',
     ),
     url(
         r'^users/(?P<slug>[\w-]+)/update-profile/?$',

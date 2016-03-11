@@ -55,6 +55,7 @@
     {% if request.user == user %}
       <hr />
       <a id="update_profile_link" href="{% url 'user-updateprofile' request.user.slug %}" class="button">Update your profile</a>
+      <a href="{% url 'user-update-teams' request.user.slug %}" class="button">Manage team membership</a>
     {% endif %}
 
   </div>

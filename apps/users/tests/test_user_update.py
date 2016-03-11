@@ -66,7 +66,7 @@ class UserWebTest(WebTest):
         #   Now go to the update profile page and check the first team
         #   in the list of teams.
         form = self.app.get(reverse(
-            'user-updateprofile',
+            'user-update-teams',
             kwargs={'slug': 'user0001'})).form
         form.get('team', index=0).checked = True
         form.submit()
@@ -94,7 +94,7 @@ class UserWebTest(WebTest):
         #   Now go to the update profile page and check the first team
         #   in the list of teams.
         form = self.app.get(reverse(
-            'user-updateprofile',
+            'user-update-teams',
             kwargs={'slug': 'user0001'})).form
         form['name'] = 'team0001'
         form['organisation'].value = o.pk
@@ -118,10 +118,9 @@ class UserWebTest(WebTest):
         form['slug'] = 'user0001'
         form.submit()
 
-        #   Now go to the update profile page and check the first team
-        #   in the list of teams.
+        #   Now go to the update profile "teams" page and add a new team
         form = self.app.get(reverse(
-            'user-updateprofile',
+            'user-update-teams',
             kwargs={'slug': 'user0001'})).form
         form['name'] = 'team0001'
         form['new_organisation'] = 'org0001'
@@ -152,7 +151,7 @@ class UserWebTest(WebTest):
         #   Check that we have an error summary at the top
         self.assertTrue(
             response.html.find(
-                'h1',
+                'h3',
                 attrs={'class': 'error-summary-heading'}
             )
         )
@@ -166,7 +165,7 @@ class UserWebTest(WebTest):
 
         def find_alert(response):
             return response.html.find(
-                        'h1',
+                        'h3',
                         attrs={'class': 'alert-summary-heading'}
                         )
 
