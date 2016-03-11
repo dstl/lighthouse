@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.views.generic.base import TemplateView, View
 from apps.users.models import User
 from django.contrib.auth import authenticate, login, logout
+from django.utils.text import slugify
 
 
 #   This is the function that actually logs a user in, if they exists then
@@ -16,7 +17,7 @@ def LogUserIn(self, request, slug):
 
     #   See if we an authenticate the user
     try:
-        user = authenticate(slug=slug)
+        user = authenticate(slug=slugify(slug))
     except:
         user = None
 
@@ -56,9 +57,16 @@ def LogUserIn(self, request, slug):
         if slug == '' or slug is None:
             return reverse('home')
 
-        new_user = User(slug=slug)
+        #   We could add the act of slugifying onto the user object itself
+        #   to make it self cleaning. But at this code is going to be
+        #   refactored here anyway, when we start logging the user in via
+        #   LDAP (or whatever), I don't want something somewhere else effecting
+        #   the values. i.e. we change this code here, but the User object
+        #   is still mutating the value.
+        #   TODO: Refactor this code for the proper login code.
+        new_user = User(slug=slugify(slug), original_slug=slug)
         new_user.save()
-        user = authenticate(slug=slug)
+        user = authenticate(slug=new_user.slug)
         login(request, user)
         return reverse(
                 'user-updateprofile',
