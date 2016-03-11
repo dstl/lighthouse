@@ -11,7 +11,7 @@
 
 <ul class="list list-bullet member-list">
 	{% for member in team.user_set.all %}
-	<li><a class="main-list-item" href="{% url 'user-detail' member.slug %}">{{ member.username|default:member.slug }}</a></li>
+	<li><a class="main-list-item" href="{% url 'user-detail' member.slug %}">{{ member.username|default:member.original_slug }}</a></li>
 	{% endfor %}
 </ul>
 
