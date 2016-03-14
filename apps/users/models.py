@@ -14,13 +14,18 @@ class User(models.Model):
     slug = models.SlugField(max_length=256, unique=True, default=slug_default)
     original_slug = models.CharField(max_length=256, blank=False, null=False)
     username = models.CharField(max_length=256, blank=True, null=True)
-    best_way_to_find = models.CharField(max_length=1024, blank=True, null=True)
+    best_way_to_find = models.CharField(
+        max_length=1024,
+        blank=True,
+        null=True,
+        default='')
     best_way_to_contact = models.CharField(
         max_length=1024,
         blank=True,
-        null=True)
-    phone = models.CharField(max_length=256, blank=True, null=True)
-    email = models.CharField(max_length=256, blank=True, null=True)
+        null=True,
+        default='')
+    phone = models.CharField(max_length=256, blank=True, null=True, default='')
+    email = models.CharField(max_length=256, blank=True, null=True, default='')
     last_login = models.DateTimeField(blank=True, null=True)
 
     teams = models.ManyToManyField(Team)
