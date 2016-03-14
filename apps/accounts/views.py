@@ -12,6 +12,7 @@ from django.views.generic import (
     ListView,
     TemplateView,
     UpdateView,
+    View,
 )
 from django.views.generic.edit import FormView
 
@@ -20,6 +21,7 @@ from .models import User
 from apps.access import LoginRequiredMixin
 from apps.organisations.models import Organisation
 from apps.teams.models import Team
+from apps.links.models import Link
 
 
 class LoginView(FormView):
@@ -350,3 +352,21 @@ class UserList(LoginRequiredMixin, ListView):
         context['total_users_in_db'] = User.objects.count()
 
         return context
+
+
+class UserFavouritesAdd(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        link_id = request.POST.get('link_id')
+        link = Link.objects.get(pk=link_id)
+        link_url = reverse('link-detail', kwargs={'pk': link_id})
+        request.user.favourites.add(link)
+        return HttpResponseRedirect(link_url)
+
+
+class UserFavouritesRemove(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        link_id = request.POST.get('link_id')
+        link = Link.objects.get(pk=link_id)
+        link_url = reverse('link-detail', kwargs={'pk': link_id})
+        request.user.favourites.remove(link)
+        return HttpResponseRedirect(link_url)

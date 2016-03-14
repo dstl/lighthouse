@@ -58,6 +58,8 @@ from apps.accounts.views import (
     UserList,
     UserUpdateProfile,
     UserUpdateProfileTeams,
+    UserFavouritesAdd,
+    UserFavouritesRemove,
 )
 
 
@@ -98,6 +100,16 @@ urlpatterns = [
         r'^users/(?P<slug>[\w-]+)/?$',
         UserDetail.as_view(),
         name='user-detail',
+    ),
+    url(
+        r'^users/(?P<slug>[\w-]+)/favourites/add/?$',
+        UserFavouritesAdd.as_view(),
+        name='user-favourites-add',
+    ),
+    url(
+        r'^users/(?P<slug>[\w-]+)/favourites/remove/?$',
+        UserFavouritesRemove.as_view(),
+        name='user-favourites-remove',
     ),
     url(
         r'^links/?$',

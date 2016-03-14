@@ -63,6 +63,7 @@ class User(PermissionsMixin, AbstractBaseUser):
     django user model) we also use a slug. Also don't split the user's name
     into first/last for no real reason.
     """
+    from apps.links.models import Link
 
     userid = models.CharField(max_length=256, unique=True)
     slug = models.SlugField(max_length=256, unique=True)
@@ -77,6 +78,7 @@ class User(PermissionsMixin, AbstractBaseUser):
     phone = models.CharField(max_length=256, blank=True, default='')
     email = models.CharField(max_length=256, blank=True, default='')
     teams = models.ManyToManyField(Team)
+    favourites = models.ManyToManyField(Link)
 
     objects = UserManager()
 
