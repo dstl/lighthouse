@@ -27,7 +27,7 @@
 </div>
 {% endif %}
 
-<form method="post" action="">
+<form id="organisation_form" method="post" action="">
   {% csrf_token %}
   <div class="form-group">
     <label class="form-label-bold" for="id_slug">
@@ -36,10 +36,11 @@
     <p class="form-hint">
       If an organisation isn't in the list above then you can add it here.
     </p>
-    <input class="form-control" id="id_name" maxlength="256" name="name" type="text">
+    <input class="form-control" id="id_name" maxlength="256" name="name" type="text" tabindex="1" autofocus="true">
   </div>
   <input type="submit" method="POST" value="Add Organisation" class="button">
 </form>
+<script>document.forms['organisation_form'].elements['id_name'].focus()</script>
 
 <hr />
 
