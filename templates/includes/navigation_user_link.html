@@ -1,0 +1,14 @@
+{# (c) Crown Owned Copyright, 2016. Dstl. #}
+{% if no_username %}
+  <span class="user_id" data-slug="{{request.user.slug}}"><a href="{% url 'user-updateprofile' request.user.slug %}"><img class="notification" src="/static/assets/error-bell.png" />{{display_name}}</a></span> | <a href="{% url 'logout' %}">Logout</a>
+{% else %}
+  {% if request.user.teams.count > 0 %}
+    {% if request.user.best_way_to_find == '' or request.user.best_way_to_contact == '' or request.user.phone == '' or request.user.email == '' %}
+      <span class="user_id" data-slug="{{request.user.slug}}"><a href="{% url 'user-updateprofile' request.user.slug %}"><img class="notification" src="/static/assets/alert-bell.png" />{{display_name}}</a></span> | <a href="{% url 'logout' %}">Logout</a>
+    {% else %}
+      <span class="user_id" data-slug="{{request.user.slug}}"><a href="{% url 'user-detail' request.user.slug %}">{{display_name}}</a></span> | <a href="{% url 'logout' %}">Logout</a>
+    {% endif %}
+  {% else %}
+    <span class="user_id" data-slug="{{request.user.slug}}"><a href="{% url 'user-update-teams' request.user.slug %}"><img class="notification" src="/static/assets/error-bell.png" />{{display_name}}</a></span> | <a href="{% url 'logout' %}">Logout</a>
+  {% endif %}
+{% endif %}

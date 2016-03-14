@@ -12,9 +12,23 @@
   the boxes next to the team names, or create whole new teams to join.
 </p>
 
+{% if request.user.teams.count = 0 %}
+  <div class="error-summary" role="group">
+    <h3 class="heading-medium error-summary-heading">Please add additional team information</h3>
+    <p>
+      Before you start diving into the site you should let the system know which
+      teams you're a member of. If you don't see the teams listen (or there are
+      no teams listed) then you can add them right here.
+    </p>
+    <p>
+      Thank you.
+    </p>
+  </div>
+{% endif %}
+
 <form method="post" action="{% url 'user-updateprofile' slug=user.slug %}">
   {% csrf_token %}
-  <div class="form-group {% if show_teams_alert %}alert{% endif %}">
+  <div class="form-group {% if request.user.teams.count = 0 %}error{% endif %}">
     {% if show_teams_alert %}
       <span class="error-message">
         Please supply at least one team you are a member of.
