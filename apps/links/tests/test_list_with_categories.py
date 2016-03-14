@@ -1,6 +1,6 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
 from django.core.urlresolvers import reverse
-from .common import generate_fake_links, make_user, check_user
+from .common import generate_fake_links, make_user, login_user
 
 from django_webtest import WebTest
 
@@ -35,7 +35,7 @@ class ListLinksWithCategoriesTest(WebTest):
         self.el6.categories.add('mapping')
         self.el6.save()
 
-        self.assertTrue(check_user(self, self.logged_in_user))
+        self.assertTrue(login_user(self, self.logged_in_user))
 
     def test_all_categories_appear(self):
         response = self.app.get(reverse('link-list'))

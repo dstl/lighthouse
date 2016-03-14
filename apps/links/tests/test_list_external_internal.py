@@ -1,6 +1,6 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
 from django.core.urlresolvers import reverse
-from .common import make_user, check_user
+from .common import make_user, login_user
 from .common import generate_fake_links
 
 from django_webtest import WebTest
@@ -60,7 +60,7 @@ class ListLinksWithExternalityTest(WebTest):
         self.el7.categories.add('mapping')
         self.el7.save()
 
-        self.assertTrue(check_user(self, self.logged_in_user))
+        self.assertTrue(login_user(self, self.logged_in_user))
 
     def test_external_internal_printed(self):
         response = self.app.get(reverse('link-list'))
