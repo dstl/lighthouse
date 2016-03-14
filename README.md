@@ -23,3 +23,9 @@ Web application for finding useful tools, data and techniques
   10. In your web browser, navigate to http://10.10.11.10:3000 (or http://lighthouse.dev:3000 if your
       hosts file is set up for this)
   11. You should see the Lighthouse homepage.
+
+### Run the tests
+
+    pip install -r requirements_test.txt
+
+    ./manage.py test
