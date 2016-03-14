@@ -15,11 +15,11 @@ Web application for finding useful tools, data and techniques
   directory you prefer to store the environment
   6. Load the env using `source ~/lighthouse/bin/activate` - you should now see
   `(env)` at the start of your prompt.
-  7. Install the Python dependencies using `pip install -r requirements`
+  7. Install the Python dependencies using `pip install -r requirements.txt`
   8. Migrate the database using `python manage.py migrate` (Postgres will be
       running already)
   9. Run the server using `python manage.py runserver 0.0.0.0:3000` or whatever
   port you prefer, as long as the same IP is used.
-  10. In your web browser, navigate to 10.10.11.10:3000 (or `lighthouse.dev` if your
+  10. In your web browser, navigate to http://10.10.11.10:3000 (or http://lighthouse.dev:3000 if your
       hosts file is set up for this)
   11. You should see the Lighthouse homepage.
