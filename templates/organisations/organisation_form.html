@@ -27,7 +27,7 @@
 </div>
 {% endif %}
 
-<form method="post" action="">
+<form id="organisation_form" method="post" action="">
   {% csrf_token %}
   <div class="form-group">
     <label class="form-label-bold" for="id_slug">
@@ -40,6 +40,7 @@
   </div>
   <input type="submit" method="POST" value="Add Organisation" class="button">
 </form>
+<script>document.forms['organisation_form'].elements['id_name'].focus()</script>
 
 <hr />
 

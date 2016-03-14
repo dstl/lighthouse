@@ -27,7 +27,7 @@
 
       <hr />
 
-      <form method="post" action="{% url 'organisation-create' %}">
+      <form method="post" id="organisation_form" action="{% url 'organisation-create' %}">
         {% csrf_token %}
         <div class="form-group">
           <label class="form-label-bold" for="id_slug">
@@ -40,6 +40,7 @@
         </div>
         <input type="submit" method="POST" value="Add Organisation" class="button">
       </form>
+      <script>document.forms['organisation_form'].elements['id_name'].focus()</script>
     </div>
 
     <div class="column-one-third">
