@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from django_webtest import WebTest
 
 from .common import create_organisation
+from apps.links.tests.common import generate_fake_links
 
 
 class OrganisationDetailWebTest(WebTest):
@@ -115,3 +116,116 @@ class OrganisationDetailWebTest(WebTest):
 
         self.assertEqual(len(team_list_items), 4)
         self.assertIn('The Newest Team 2', team_list_items[3].text)
+
+    def test_list_top_tools_ordered(self):
+        # Create an organistion with two teams and two members in each team.
+        o = create_organisation(
+            name='Two members two teams top orgs', num_teams=2, num_members=2
+        )
+
+        t1 = o.team_set.all()[0]
+        t2 = o.team_set.all()[1]
+
+        user1 = t1.user_set.all()[0]
+        user2 = t2.user_set.all()[0]
+
+        (self.el1, self.el2,
+         self.el3, self.el4,
+         self.el5, self.el6,
+         self.el7, self.el8,
+         self.el9, self.el10) = generate_fake_links(
+            user1,
+            count=10,
+            is_external=True
+        )
+
+        # Register a user from each team as having used various tools to
+        # increase the aggregate from values across teams.
+        # 16 times for existing link 8
+        for i in range(0, 6):
+            self.el8.register_usage(user1)
+        for i in range(0, 10):
+            self.el8.register_usage(user2)
+
+        # 13 times for existing link 4
+        for i in range(0, 8):
+            self.el4.register_usage(user1)
+        for i in range(0, 5):
+            self.el4.register_usage(user2)
+
+        # 9 times for existing link 1
+        for i in range(0, 4):
+            self.el1.register_usage(user1)
+        for i in range(0, 5):
+            self.el1.register_usage(user2)
+
+        # 8 times for existing link 3
+        for i in range(0, 5):
+            self.el3.register_usage(user1)
+        for i in range(0, 3):
+            self.el3.register_usage(user2)
+
+        # 4 times for existing link 9
+        for i in range(0, 3):
+            self.el9.register_usage(user1)
+        for i in range(0, 1):
+            self.el9.register_usage(user2)
+
+        # 3 times for existing link 10
+        for i in range(0, 2):
+            self.el10.register_usage(user1)
+        for i in range(0, 1):
+            self.el10.register_usage(user2)
+
+        response = self.app.get(reverse(
+            'organisation-detail',
+            kwargs={"pk": o.pk}
+        ))
+
+        tools_list = response.html.find(id="top_links_list")
+        tools_list_items = tools_list.findChildren('a')
+
+        self.assertEqual(
+            len(tools_list_items),
+            5
+        )
+        self.assertIn(
+            self.el8.name,
+            tools_list_items[0].text
+        )
+        self.assertIn(
+            self.el4.name,
+            tools_list_items[1].text
+        )
+        self.assertIn(
+            self.el1.name,
+            tools_list_items[2].text
+        )
+        self.assertIn(
+            self.el3.name,
+            tools_list_items[3].text
+        )
+        self.assertIn(
+            self.el9.name,
+            tools_list_items[4].text
+        )
+        self.assertNotIn(
+            self.el10.name,
+            tools_list.text
+        )
+        self.assertNotIn(
+            self.el2.name,
+            tools_list.text
+        )
+        self.assertNotIn(
+            self.el5.name,
+            tools_list.text
+        )
+        self.assertNotIn(
+            self.el6.name,
+            tools_list.text
+        )
+        self.assertNotIn(
+            self.el7.name,
+            tools_list.text
+        )

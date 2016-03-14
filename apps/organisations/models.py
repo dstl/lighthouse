@@ -21,3 +21,17 @@ class Organisation(models.Model):
 
     def __str__(self):
         return self.name
+
+    def top_links(self):
+        from apps.links.models import Link
+        from apps.users.models import User
+
+        all_organisation_users = User.objects.filter(
+            teams__in=self.team_set.all()
+        ).distinct()
+
+        return Link.objects.filter(
+            usage__user__in=all_organisation_users
+        ).annotate(
+            linkusagecount=models.Count('usage')
+        ).order_by('-linkusagecount', 'name')
