@@ -42,7 +42,6 @@ class TeamWebTest(WebTest):
 
     def test_show_number_of_members_none(self):
         t = create_team(name='no members', num_members=0)
-        # pdb.set_trace()
         response = self.app.get(reverse('team-list'))
 
         self.assertIn(
