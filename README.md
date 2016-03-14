@@ -15,7 +15,7 @@ Web application for finding useful tools, data and techniques
   directory you prefer to store the environment
   6. Load the env using `source ~/lighthouse/bin/activate` - you should now see
   `(env)` at the start of your prompt.
-  7. Install the Python dependencies using `pip install -r requirements`
+  7. Install the Python dependencies using `pip install -r requirements.txt`
   8. Migrate the database using `python manage.py migrate` (Postgres will be
       running already)
   9. Run the server using `python manage.py runserver 0.0.0.0:3000` or whatever
