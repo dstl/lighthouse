@@ -5,7 +5,7 @@ Web application for finding useful tools, data and techniques
 
 ### On a Virtual Machine (recommended)
 
-  1. Head to [dstl-infrastructure](/digi2al/dstl-infrastructure)
+  1. Head to [dstl-infrastructure](https://github.com/livestax/dstl-infrastructure)
   2. Follow the instructions to set up the virtual machine (VM)
   3. Run `vagrant ssh` to `ssh` onto the VM
   4. `cd /opt/lighthouse` and you'll be in the NFS-mounted folder which you
