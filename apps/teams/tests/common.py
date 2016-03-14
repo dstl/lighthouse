@@ -17,7 +17,8 @@ def create_team(name, num_members=0, usernames={}):
             username = 'Team Member %d' % (x + 1)
 
         u = User(
-            slug='teammember%d' % (x + 1)
+            slug='teammember%d' % (x + 1),
+            original_slug='teammember%d' % (x + 1),
         )
 
         if username is not None:

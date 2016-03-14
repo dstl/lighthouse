@@ -13,7 +13,7 @@ class AuthBackendTest(TestCase):
         self.assertIsNone(user)
 
     def test_user_exists(self):
-        u1 = User(slug='user0001')
+        u1 = User(slug='user0001com', original_slug='user@0001.com')
         u1.save()
 
         auth = SuperBasicAuth()
