@@ -1,7 +1,7 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
 from django.core.urlresolvers import reverse
 from apps.links.models import Link
-from .common import make_user, check_user
+from .common import make_user, login_user
 
 from django_webtest import WebTest
 
@@ -9,7 +9,7 @@ from django_webtest import WebTest
 class CategorisedLinksWithCategoriesTest(WebTest):
     def setUp(self):
         self.logged_in_user = make_user()
-        self.assertTrue(check_user(self, self.logged_in_user))
+        self.assertTrue(login_user(self, self.logged_in_user))
 
         existing_link = Link(
             name='Tweetbot',

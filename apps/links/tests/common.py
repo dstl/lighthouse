@@ -32,7 +32,7 @@ def make_user():
     return user
 
 
-def check_user(owner, user):
+def login_user(owner, user):
 
     #   Log in as user
     form = owner.app.get(reverse('login-view')).form

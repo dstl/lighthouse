@@ -38,7 +38,9 @@ class LinkRedirect(DetailView):
                 reverse('link-interstitial', kwargs={'pk': self.object.pk})
             )
 
+        # if request.user is not None:
         self.object.register_usage(request.user)
+
         return redirect(self.object.destination)
 
 

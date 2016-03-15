@@ -13,7 +13,7 @@ from django.utils.timezone import now, make_aware
 from django_webtest import WebTest
 
 from ..models import Link
-from .common import make_user, check_user
+from .common import make_user, login_user
 
 
 class LinkUsageModelTest(TestCase):
@@ -137,7 +137,7 @@ class LinkUsageModelTest(TestCase):
 class LinkUsageWebTest(WebTest):
     def setUp(self):
         self.user = make_user()
-        self.assertTrue(check_user(self, self.user))
+        self.assertTrue(login_user(self, self.user))
 
         self.link = Link.objects.create(
             name='Link Linkerly',
