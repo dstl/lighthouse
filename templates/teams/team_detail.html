@@ -8,7 +8,12 @@
     <h1 class="form-title heading-xlarge">Team: {{team.name}}</h1>
 
     <p class="lede">
-      This team is in the <a href="{% url "organisation-detail" team.organisation.pk %}">{{team.organisation}}</a> organisation, it contains the following members.
+      This team is in the <a href="{% url "organisation-detail" team.organisation.pk %}">{{team.organisation}}</a> organisation,
+      {% if team.user_set.count > 0 %}
+        it contains the following members.
+      {% else %}
+        it doesn't contain any members at the moment. You can use the "Join Team" button below to be the first.
+      {% endif %}
     </p>
 
     <ul class="list list-bullet member-list">
@@ -30,17 +35,21 @@
     <a href="{% url "team-list" %}">Back to teams</a>
   </div>
 
-  {% if team.top_links|length > 0 %}
   <div class="column-one-third">
     <div class="side-element-holder" id="top_links_for_team">
-      <h2 class="heading-medium">"Top" Tools used by team</h2>
-      <ul class="list list-bullet" id="top_links_list">
-        {% for link in team.top_links|slice:":5" %}
-          <li><a class="main-list-item" href='{% url "link-detail" link.pk %}'>{{link.name}}</a> ({{link.linkusagecount}})</li>
-        {% endfor %}
-      </ul>
+      <h2 class="heading-medium">"Top" Tools used by this team</h2>
+      {% if team.top_links|length > 0 %}
+        <ul class="list list-bullet" id="top_links_list">
+          {% for link in team.top_links|slice:":5" %}
+            <li><a class="main-list-item" href='{% url "link-detail" link.pk %}'>{{link.name}}</a> ({{link.linkusagecount}})</li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>
+          We do not currently have enough data to display tools used by this team.
+        </p>
+      {% endif %}
     </div>
   </div>
-  {% endif %}
 </div>
 {% endblock %}

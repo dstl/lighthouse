@@ -7,23 +7,35 @@
     <div class="column-two-thirds">
       <h1 class="form-title heading-xlarge">Organisations</h1>
 
-      <p class="lede">
-        These are the organisations currently registered with the system. Click on an organisation to view the teams in that organisation.
-      </p>
+      {% if total_organisations_in_db > 0 %}
+        <p class="lede">
+          These are the organisations currently registered with the system. Click on an organisation to view the teams in that organisation.
+        </p>
 
-      <ul class="list list-bullet organisation-list">
-        {% for organisation in object_list %}
-          <li><a class="main-list-item" href='{% url "organisation-detail" organisation.pk %}'>{{organisation.name}}</a>
-            <ul class="list organisation-info">
-              {% ifequal organisation.team_set.all|length 0 %}
-              <li>This organisation has no teams</li>
-              {% else %}
-              <li>Total teams: {{organisation.team_set.all|length}}</li>
-              {% endifequal %}
-            </ul>
-          </li>
-        {% endfor %}
-      </ul>
+        <ul class="list list-bullet organisation-list">
+          {% for organisation in object_list %}
+            <li><a class="main-list-item" href='{% url "organisation-detail" organisation.pk %}'>{{organisation.name}}</a>
+              <ul class="list organisation-info">
+                {% ifequal organisation.team_set.all|length 0 %}
+                <li>This organisation has no teams</li>
+                {% else %}
+                <li>Total teams: {{organisation.team_set.all|length}}</li>
+                {% endifequal %}
+              </ul>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <div class="alert-summary" role="group">
+          <h3 class="heading-medium alert-summary-heading">No organisations added yet.</h3>
+          <p>
+            Hey there, it doesn't look like any organisations have been added to the system yet. That means you're a super early adopter!
+          </p>
+          <p>
+            Use the form below to add the 1st organisation, you trendsetter!
+          </p>
+        </div>
+      {% endif %}
 
       <hr />
 
