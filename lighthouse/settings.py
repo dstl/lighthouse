@@ -11,6 +11,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
+import sys
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -41,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'haystack',
     'apps.home',
     'apps.login',
     'apps.links',
@@ -172,3 +174,16 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 LOGIN_URL = '/login'
+
+# Search
+WHOOSH_INDEX = os.path.join(os.path.dirname(__file__), 'whoosh_index')
+if 'test' in sys.argv:
+    WHOOSH_INDEX = os.path.join(os.path.dirname(__file__), 'whoosh_test_index')
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': WHOOSH_INDEX,
+    },
+}
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'

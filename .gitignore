@@ -7,3 +7,7 @@ sass/CACHE
 
 # Splinter & Phantom
 ghostdriver.log
+
+# search
+lighthouse/whoosh_index
+lighthouse/whoosh_test_index

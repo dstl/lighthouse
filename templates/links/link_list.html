@@ -4,9 +4,14 @@
 {% block grid_content %}
 <h1 class="heading-large">Search for tools</h1>
 
+<form action='/search/' method='get'>
+  <input type='text' name='q'>
+  <button>Search</button>
+</form>
+
 <div class="grid-row">
   <div id="categories-filter" class="column-third">
-    <form method="get" action="">
+    <form method="get" action="" id="list-results">
       <h2 class="filter-controls-header heading-medium heading-snug-top">Tool categories</h2>
       {# Category filters #}
       <div class="form-group">

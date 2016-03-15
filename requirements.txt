@@ -1,4 +1,5 @@
 beautifulsoup4==4.4.1               # MIT
+django-haystack==2.4.1              # 3-clause BSD
 django-webtest==1.7.8               # MIT
 Django==1.8.11                      # 3-clause BSD
 psycopg2==2.6.1                     # GNU LGPL
@@ -11,3 +12,4 @@ django-taggit==0.18.0               # BSD
 django-compressor==2.0              # MIT
 django-libsass==0.6.0               # BSD
 python-dateutil==2.5.0              # Simplified BSD
+Whoosh==2.7.2                       # 2-clause BSD
