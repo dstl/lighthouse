@@ -35,7 +35,7 @@
 		</p>
 		<ul id="usage-by-users">
 			{% for user in link.top_users_thirty_days|slice:":5" %}
-			<li>{{user.username|default:user.slug}} has used the tool {{user.link_usage_count}} times</li>
+			<li><a href="{% url "user-detail" user.slug %}">{{user.username|default:user.slug}}</a> has used the tool {{user.link_usage_count}} times</li>
 			{% endfor %}
 		</ul>
 	</div>
