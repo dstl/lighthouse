@@ -41,6 +41,25 @@ def LogUserIn(self, request, slug):
                     kwargs={'slug': user.slug}
                 )
 
+        #   If they don't have a team, bounce them to add one
+        if user.teams.count() == 0:
+            return reverse(
+                    'user-update-teams',
+                    kwargs={'slug': user.slug}
+                )
+
+        #   If they have a username and teams, yay go them! But, they may
+        #   not have added any extra information yet, we should probably
+        #   nag them into doing that.
+        if (user.best_way_to_find == '' or
+                user.best_way_to_contact == '' or
+                user.phone == '' or
+                user.email == ''):
+            return reverse(
+                    'user-updateprofile',
+                    kwargs={'slug': user.slug}
+                )
+
         if 'next' in request.GET:
             return self.request.GET.get('next')
 

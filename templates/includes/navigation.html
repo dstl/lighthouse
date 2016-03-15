@@ -3,9 +3,9 @@
   <div id="user-details">
     {% if request.user.is_authenticated %}
       {% if request.user.username %}
-        <span class="user_id" data-slug="{{request.user.slug}}"><a href="{% url 'user-detail' request.user.slug %}">{{request.user.username}}</a></span> | <a href="{% url 'logout' %}">Logout</a>
+        {% include "includes/navigation_user_link.html" with display_name=request.user.username no_username=False %}
       {% else %}
-        <span class="user_id" data-slug="{{request.user.slug}}"><a href="{% url 'user-detail' request.user.slug %}">{{request.user.original_slug}}</a></span> | <a href="{% url 'logout' %}">Logout</a>
+        {% include "includes/navigation_user_link.html" with display_name=request.user.original_slug no_username=True %}
       {% endif %}
     {% else %}
       <a href="{% url 'login-view' %}">Login</a>

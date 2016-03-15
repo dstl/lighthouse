@@ -133,7 +133,9 @@
   </div>
 
   <input type="submit" name="submit_action" value="Save and manage team membership" class="button" />
-  <input type="submit" name="submit_action" value="Save and finish" class="button" />
+  {% if request.user.teams.count > 0 %}
+    <input type="submit" name="submit_action" value="Save and finish" class="button" />
+  {% endif %}
 </form>
 
 {% endblock %}

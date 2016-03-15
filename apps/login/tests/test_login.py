@@ -4,6 +4,8 @@ from django.core.urlresolvers import reverse
 from django_webtest import WebTest
 
 from apps.users.models import User
+from apps.organisations.models import Organisation
+from apps.teams.models import Team
 
 
 class UserWebTest(WebTest):
@@ -20,6 +22,22 @@ class UserWebTest(WebTest):
         form['slug'] = 'user0001com'
         response = form.submit().follow()
 
+        #   Check that the error icon is being shown.
+        self.assertEquals(
+            response.html.find(
+                'img', attrs={'class': 'notification'}
+            ).attrs['src'],
+            '/static/assets/error-bell.png'
+        )
+
+        #   Check that the link in the nav is heading to the right place
+        self.assertEquals(
+            response.html.find(
+                'span', attrs={'data-slug': u.slug}
+            ).find('a').attrs['href'],
+            '/users/' + str(u.slug) + '/update-profile'
+        )
+
         #   We should now be on the user needs to add information page
         self.assertEquals(
             response.html.find(
@@ -29,11 +47,10 @@ class UserWebTest(WebTest):
             'Please add a username'
         )
 
-    #   Meanwhile a user who has a username will end up *not* on the
-    #   udpate profile page (and even if they do it won't have any error
-    #   alert waiting for them)
-    def test_user_has_username_redirected(self):
-        #   This user does have a username
+    #   Meanwhile a user who has a username but no teams will end up
+    #   at the page asking for them to enter additional team information
+    def test_user_has_username_but_no_teams_redirected(self):
+        #   This user has a username
         u = User(
             slug='user0001com',
             original_slug='user@0001.com',
@@ -46,12 +63,77 @@ class UserWebTest(WebTest):
         form['slug'] = 'user0001com'
         response = form.submit().follow()
 
-        #   Make sure we *don't* have an error summary heading
-        self.assertFalse(
+        #   Check that the error icon is being shown.
+        self.assertEquals(
+            response.html.find(
+                'img', attrs={'class': 'notification'}
+            ).attrs['src'],
+            '/static/assets/error-bell.png'
+        )
+
+        #   Check that the link in the nav is heading to the right place
+        self.assertEquals(
+            response.html.find(
+                'span', attrs={'data-slug': u.slug}
+            ).find('a').attrs['href'],
+            '/users/' + str(u.slug) + '/update-profile/teams'
+        )
+
+        #   Make sure we *don't* have an alert summary heading
+        self.assertEquals(
             response.html.find(
                 'h3',
                 attrs={'class': 'error-summary-heading'}
-            )
+            ).text,
+            'Please add additional team information'
+        )
+
+    #   A user may have username, teams but still missing the extra information
+    #   they will get an alert bell notification and link to update their
+    #   profile.
+    def test_user_has_username_teams_no_extra_info_redirected(self):
+        #   This user has a username and teams
+        o = Organisation(name='org0001')
+        o.save()
+        t = Team(name='team0001', organisation=o)
+        t.save()
+        u = User(
+            slug='user0001com',
+            original_slug='user@0001.com',
+            username='User 0001'
+        )
+        u.save()
+        u.teams.add(t)
+        u.save()
+
+        #   Log in as user
+        form = self.app.get(reverse('login-view')).form
+        form['slug'] = 'user0001com'
+        response = form.submit().follow()
+
+        #   Check that the alert icon is being shown.
+        self.assertEquals(
+            response.html.find(
+                'img', attrs={'class': 'notification'}
+            ).attrs['src'],
+            '/static/assets/alert-bell.png'
+        )
+
+        #   Check that the link in the nav is heading to the right place
+        self.assertEquals(
+            response.html.find(
+                'span', attrs={'data-slug': 'user0001com'}
+            ).find('a').attrs['href'],
+            '/users/user0001com/update-profile'
+        )
+
+        #   Make sure we *don't* have an alert summary heading
+        self.assertEquals(
+            response.html.find(
+                'h3',
+                attrs={'class': 'alert-summary-heading'}
+            ).text,
+            'Please add additional information'
         )
 
     #   Check that a link showing the user's slug appears in the top nav
