@@ -5,91 +5,104 @@
 <h1 class="heading-large">Search for tools</h1>
 
 <div class="grid-row">
-  <div id="categories-filter" class="column-third">
-    <form method="get" action="">
-      <h2 class="filter-controls-header heading-medium heading-snug-top">Tool categories</h2>
-      {# Category filters #}
-      <div class="form-group">
-        <input type="submit" value="Filter using selections below" class="button" />
-      </div>
-      <div class="form-group">
-        {% for category in categories %}
-        <label for="categories-filter-{{ category.name }}" class="block-label block-label-small">
-          <h3>{{ category.name|capfirst }}</h3>
-          <input type="checkbox" id="categories-filter-{{ category.name }}" value="{{ category.name }}" name="categories" {% if category.name in filtered_categories %}checked="checked"{% endif %} />
-        </label>
+  {% if total_links_in_db > 0 %}
+    <div id="categories-filter" class="column-third">
+      <form method="get" action="">
+        <h2 class="filter-controls-header heading-medium heading-snug-top">Tool categories</h2>
+        {# Category filters #}
+        <div class="form-group">
+          <input type="submit" value="Filter using selections below" class="button" />
+        </div>
+        <div class="form-group">
+          {% for category in categories %}
+          <label for="categories-filter-{{ category.name }}" class="block-label block-label-small">
+            <h3>{{ category.name|capfirst }}</h3>
+            <input type="checkbox" id="categories-filter-{{ category.name }}" value="{{ category.name }}" name="categories" {% if category.name in filtered_categories %}checked="checked"{% endif %} />
+          </label>
+          {% endfor %}
+        </div>
+        <div class="form-group">
+          {# Internal/external filters #}
+          <label for="types-filter-external" class="block-label block-label-small">
+            <h3>External</h3>
+            <input type="checkbox" id="types-filter-external" value="external" name="types" {% if 'external' in filtered_types %}checked="checked"{% endif %} />
+          </label>
+          <label for="types-filter-internal" class="block-label block-label-small">
+            <h3>Internal</h3>
+            <input type="checkbox" id="types-filter-internal" value="internal" name="types" {% if 'internal' in filtered_types %}checked="checked"{% endif %} />
+          </label>
+        </div>
+        <div class="form-group">
+          <input type="submit" value="Filter" class="button" />
+        </div>
+      </form>
+    </div>
+    <div class="column-two-thirds">
+      {% if object_list %}
+      <h2 id="tools-header" class="link-list-header heading-medium heading-snug-top">Showing page {{ page_obj.number }} of {{ paginator.num_pages }}</h2>
+      {% else %}
+      <h2 id="tools-header">No results found.</h2>
+      {% endif %}
+      {% if object_list %}
+      <ol>
+        {% for link in object_list %}
+          <li class="link-list-item">
+            <h3 class="inline"><a href='{% url "link-detail" link.pk %}'>{{ link.name }}</a></h3>
+            <p>{{ link.description }}</p>
+            <span class="categories">
+              {% if link.is_external %}
+              <span class="external is-external-label">External</span>
+              {% else %}
+              <span class="internal is-external-label">Internal</span>
+              {% endif %}
+            </span>
+          </li>
         {% endfor %}
+      </ol>
+      {% else %}
+      <div id="no-results-message">
+        <p class="heading-small">
+          None of the published tools match the filters you applied.
+          <br>
+          Try removing some, or being less specific.
+        </p>
       </div>
-      <div class="form-group">
-        {# Internal/external filters #}
-        <label for="types-filter-external" class="block-label block-label-small">
-          <h3>External</h3>
-          <input type="checkbox" id="types-filter-external" value="external" name="types" {% if 'external' in filtered_types %}checked="checked"{% endif %} />
-        </label>
-        <label for="types-filter-internal" class="block-label block-label-small">
-          <h3>Internal</h3>
-          <input type="checkbox" id="types-filter-internal" value="internal" name="types" {% if 'internal' in filtered_types %}checked="checked"{% endif %} />
-        </label>
-      </div>
-      <div class="form-group">
-        <input type="submit" value="Filter" class="button" />
-      </div>
-    </form>
-  </div>
-  <div class="column-two-thirds">
-    {% if object_list %}
-    <h2 id="tools-header" class="link-list-header heading-medium heading-snug-top">Showing page {{ page_obj.number }} of {{ paginator.num_pages }}</h2>
-    {% else %}
-    <h2 id="tools-header">No results found.</h2>
-    {% endif %}
-    {% if object_list %}
-    <ol>
-      {% for link in object_list %}
-        <li class="link-list-item">
-          <h3 class="inline"><a href='{% url "link-detail" link.pk %}'>{{ link.name }}</a></h3>
-          <p>{{ link.description }}</p>
-          <span class="categories">
-            {% if link.is_external %}
-            <span class="external is-external-label">External</span>
+      {% endif %}
+      <hr>
+
+      {% if paginator.num_pages > 1 %}
+        <ol class="pagination">
+          {% if page_obj.has_previous %}
+              <li><a class="button" id="page-link-prev" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+          {% else %}
+              <li><span class="button button-disabled">Previous</span></li>
+          {% endif %}
+          {% for page in paginator.page_range %}
+            {% if page == page_obj.number %}
+              <li><span class="button button-disabled">{{ page }}</span></li>
             {% else %}
-            <span class="internal is-external-label">Internal</span>
+              <li><a href='?page={{ page }}' class="button">{{ page }}</a></li>
             {% endif %}
-          </span>
-        </li>
-      {% endfor %}
-    </ol>
-    {% else %}
-    <div id="no-results-message">
-      <p class="heading-small">
-        None of the published tools match the filters you applied.
-        <br>
-        Try removing some, or being less specific.
+          {% endfor %}
+          {% if page_obj.has_next %}
+              <li><a class="button" id="page-link-next" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+          {% else %}
+              <li><span class="button button-disabled">Next</span></li>
+          {% endif %}
+        </ol>
+      {% endif %}
+    </div>
+  {% else %}
+    <div class="alert-summary" role="group">
+      <h3 class="heading-medium alert-summary-heading">No tools added yet.</h3>
+      <p>
+        Hey there, it doesn't look like any tools have been added to the system yet. That means you're a super early adopter!
+      </p>
+      <p>
+        To get started you can add the 1st tool here: <a href="{% url 'link-create' %}">Add a new tool</a>.
       </p>
     </div>
-    {% endif %}
-    <hr>
+  {% endif %}
 
-    {% if paginator.num_pages > 1 %}
-      <ol class="pagination">
-        {% if page_obj.has_previous %}
-            <li><a class="button" id="page-link-prev" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
-        {% else %}
-            <li><span class="button button-disabled">Previous</span></li>
-        {% endif %}
-        {% for page in paginator.page_range %}
-          {% if page == page_obj.number %}
-            <li><span class="button button-disabled">{{ page }}</span></li>
-          {% else %}
-            <li><a href='?page={{ page }}' class="button">{{ page }}</a></li>
-          {% endif %}
-        {% endfor %}
-        {% if page_obj.has_next %}
-            <li><a class="button" id="page-link-next" href="?page={{ page_obj.next_page_number }}">Next</a></li>
-        {% else %}
-            <li><span class="button button-disabled">Next</span></li>
-        {% endif %}
-      </ol>
-    {% endif %}
-  </div>
 </div>
 {% endblock %}

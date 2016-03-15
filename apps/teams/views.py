@@ -21,6 +21,7 @@ class TeamList(ListView):
 
         context['top_teams'] = Team.with_most_members()
         context['top_organisations'] = Organisation.with_most_teams()
+        context['total_teams_in_db'] = Team.objects.count()
 
         return context
 

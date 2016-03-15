@@ -186,6 +186,7 @@ class LinkList(ListView):
         context['categories'] = Tag.objects.all()
         context['filtered_categories'] = categories_to_filter
         context['filtered_types'] = types_to_filter
+        context['total_links_in_db'] = Link.objects.count()
         return context
 
 

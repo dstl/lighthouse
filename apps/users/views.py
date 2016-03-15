@@ -204,5 +204,6 @@ class UserList(ListView):
 
         context['top_teams'] = Team.with_most_members()
         context['top_organisations'] = Organisation.with_most_teams()
+        context['total_users_in_db'] = User.objects.count()
 
         return context
