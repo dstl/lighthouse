@@ -168,7 +168,11 @@ class LinkUsageWebTest(WebTest):
         user_response = self.app.get(
             reverse('user-detail', kwargs={'slug': self.user.slug})
         )
-        self.assertIsNone(user_response.html.find(id='top_links_for_user'))
+        self.assertIsNone(
+            user_response.html.find(
+                id='top_links_for_user'
+            ).find('a', text='Link Linkerly')
+        )
 
         # going to the tool registers usage
         response.click(linkid='link_follow_button').follow()
@@ -185,9 +189,10 @@ class LinkUsageWebTest(WebTest):
         user_response = self.app.get(
             reverse('user-detail', kwargs={'slug': self.user.slug})
         )
-        self.assertEquals(
-            user_response.html.find(id='top_links_for_user').find('a').text,
-            'Link Linkerly'
+        self.assertTrue(
+            user_response.html.find(
+                id='top_links_for_user'
+            ).find('a', text='Link Linkerly')
         )
 
     def test_external_link_usage(self):
@@ -205,7 +210,11 @@ class LinkUsageWebTest(WebTest):
         user_response = self.app.get(
             reverse('user-detail', kwargs={'slug': self.user.slug})
         )
-        self.assertIsNone(user_response.html.find(id='top_links_for_user'))
+        self.assertIsNone(
+            user_response.html.find(
+                id='top_links_for_user'
+            ).find('a', text='Other Link')
+        )
 
         # going to the interstitial page does not register usage
         response.click(linkid='link_follow_button').follow()
@@ -234,9 +243,10 @@ class LinkUsageWebTest(WebTest):
         user_response = self.app.get(
             reverse('user-detail', kwargs={'slug': self.user.slug})
         )
-        self.assertEquals(
-            user_response.html.find(id='top_links_for_user').find('a').text,
-            'Other Link'
+        self.assertTrue(
+            user_response.html.find(
+                id='top_links_for_user'
+            ).find('a', text='Other Link')
         )
 
     def test_link_stats_page(self):
