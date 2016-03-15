@@ -15,12 +15,15 @@
     <nav id="proposition-menu">
       <a href="/" id="proposition-name">Lighthouse</a>
 
-      <ul id="proposition-links">
-        <li><a href="{% url 'link-list' %}">All tools</a></li>
-        <li><a href="{% url 'user-list' %}">All users</a></li>
-        <li><a href="{% url 'link-create' %}">Add a new tool</a></li>
-        <li><a href="{% url 'link-overall-stats' %}">Tool stats</a></li>
-      </ul>
+      {% if request.user.is_authenticated %}
+        <ul id="proposition-links">
+          <li><a href="{% url 'link-list' %}">All tools</a></li>
+          <li><a href="{% url 'user-list' %}">All users</a></li>
+          <li><a href="{% url 'link-create' %}">Add a new tool</a></li>
+          <li><a href="{% url 'link-overall-stats' %}">Tool stats</a></li>
+        </ul>
+      {% endif %}
+      
     </nav>
   </div>
 </div>
