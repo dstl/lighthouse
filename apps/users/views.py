@@ -57,6 +57,14 @@ class UserUpdateProfile(UpdateView):
             ]
     template_name = 'users/user_details_form.html'
 
+    # Only show this form if it's for the currently logged in user.
+    def get(self, request, *args, **kwargs):
+        if (self.request.user.slug != kwargs['slug']):
+            return HttpResponseRedirect(
+                reverse('user-detail', kwargs={'slug': kwargs['slug']})
+            )
+        return super(UserUpdateProfile, self).get(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super(UserUpdateProfile, self).get_context_data(**kwargs)
         if (
