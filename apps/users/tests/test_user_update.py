@@ -256,3 +256,40 @@ class UserWebTest(WebTest):
                 attrs={'class': 'alert-summary-heading'}
             )
         )
+
+    def test_can_see_own_update_profile_page(self):
+        #   Create the user
+        User(slug='user0001com', original_slug='user@0001.com').save()
+
+        #   Log in as user
+        form = self.app.get(reverse('login-view')).form
+        form['slug'] = 'user0001com'
+        form.submit()
+
+        #   Go view the update profile page, it should be a form
+        response = self.app.get(reverse(
+            'user-updateprofile',
+            kwargs={'slug': 'user0001com'}))
+
+        self.assertEquals(
+            response.html.find('h1', attrs={'class': 'form-title'}).text,
+            'Update profile'
+        )
+
+    def test_cant_see_other_update_profile_page(self):
+        #   Create the users
+        User(slug='user0001com', original_slug='user@0001.com').save()
+        User(slug='user0002com', original_slug='user@0002.com').save()
+
+        #   Log in as 1st user.
+        form = self.app.get(reverse('login-view')).form
+        form['slug'] = 'user0001com'
+        form.submit()
+
+        #   Try to go to the update profile page for the 2nd user.
+        response = self.app.get(reverse(
+            'user-updateprofile',
+            kwargs={'slug': 'user0002com'}))
+
+        #   We should be getting a redirect :)
+        self.assertEquals(response.status_int, 302)
