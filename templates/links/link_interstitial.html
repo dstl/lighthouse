@@ -14,10 +14,11 @@
 <div class="form-group">
   <form method='get' action='{% url "link-redirect" link.pk %}'>
     <input type='hidden' name='redirect' value='redirect'>
+    <a id="cancel_button" href="{% url "link-detail" link.pk %}" class="button button-secondary">Cancel</a>
     <button type='submit' id='confirm_redirect_button' class='button'
             data-href='{{link.destination}}'>Yes, take me</button>
   </form>
-  <a id="cancel_button" href="{% url "link-detail" link.pk %}" class="button button-secondary">Cancel</a>
+
 </div>
 </main>
 
