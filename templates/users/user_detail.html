@@ -6,50 +6,54 @@
 <div class="grid-row">
   <div class="column-two-thirds">
 
-    <h1 class="form-title heading-xlarge">User:
-    {% if user.username %}
-      {{user.username}}
+    <h1 class="form-title heading-xlarge">User: {{ user.username|default:user.original_slug }}</h1>
+
+    {% if user.best_way_to_find or user.best_way_to_contact or user.phone or user.email %}
+      <p class="lede">
+        Hey there, welcome to this users page. Here's some handy information should
+        you wish to contact them...
+      </p>
+
+      {% if user.best_way_to_find %}
+        <h3 class="heading-medium">The best way to find this user is:</h3>
+        <div class="panel panel-border-wide">
+          <p>
+            {{user.best_way_to_find}}
+          </p>
+        </div>
+      {% endif %}
+
+      {% if user.best_way_to_contact %}
+        <h3 class="heading-medium">The best way to contact this user is:</h3>
+        <div class="panel panel-border-wide">
+          <p>
+            {{user.best_way_to_contact}}
+          </p>
+        </div>
+      {% endif %}
+
+      <p>
+        <ul>
+          {% if user.phone %}<li>Phone: {{user.phone}}</li>{% endif %}
+          {% if user.email %}<li>email: <a href="mailto:{{user.email}}">{{user.email}}</a></li>{% endif %}
+        </ul>
+      </p>
     {% else %}
-      {{user.slug}}
-    {% endif %}
-    </h1>
-
-    <p class="lede">
-      Hey there, welcome to this users page. Here's some handy information should
-      you wish to contact them...
-    </p>
-
-    {% if user.best_way_to_find %}
-      <h3 class="heading-medium">The best way to find this user is:</h3>
-      <div class="panel panel-border-wide">
-        <p>
-          {{user.best_way_to_find}}
-        </p>
-      </div>
+      <p class="lede">
+        This user hasn't added any contact information yet. Maybe you should ask them to (if you know how to get hold of them).
+      </p>
     {% endif %}
 
-    {% if user.best_way_to_contact %}
-      <h3 class="heading-medium">The best way to contact this user is:</h3>
-      <div class="panel panel-border-wide">
-        <p>
-          {{user.best_way_to_contact}}
-        </p>
-      </div>
-    {% endif %}
-
-    <p>
-      <ul>
-        {% if user.phone %}<li>Phone: {{user.phone}}</li>{% endif %}
-        {% if user.email %}<li>email: <a href="mailto:{{user.email}}">{{user.email}}</a></li>{% endif %}
-      </ul>
-    </p>
-
+    <h2 class="heading-large">Teams:</h2>
     {% if user.teams.count %}
-      <h2 class="heading-large">Teams:</h2>
       <p class="lede">
         This user is a member of the following teams.
       </p>
       {% include "includes/team_list.html" with teams=user.teams.all show_organisation=True %}
+    {% else %}
+    <p class="lede">
+      This user is a not a member of any teams at this time.
+    </p>
     {% endif %}
 
     {% if request.user == user %}
