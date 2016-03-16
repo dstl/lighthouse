@@ -1,0 +1,17 @@
+// (c) Crown Owned Copyright, 2016. Dstl.
+table.stats_table {
+  td, th {
+    padding-left: 20px;
+  }
+  td:nth-child(1),
+  th:nth-child(1) {
+    padding-left: 0;
+  }
+  td.usage-thirty-days {
+    background: #ffffdd;
+    font-weight: bold;
+  }
+  th.usage-seven-days {
+    background: #ffffdd;
+  }
+}

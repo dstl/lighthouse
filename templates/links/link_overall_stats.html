@@ -3,26 +3,29 @@
 
 {% block grid_content %}
 
-  <h1>Tool usage stats</h1>
+<div class="grid-row">
+
+  <h1 class="form-title heading-xlarge">Tool usage stats</h1>
 
   {% if object_list|length > 0 %}
+
     <p>
-      Download <a href='{% url "link-overall-stats-csv" %}'>all usage stats</a>
+      Here are all the usage stats for tools, sorted by most used in the last <strong>30 days</strong>, you can explore further by downloading <a href='{% url "link-overall-stats-csv" %}'>all usage stats</a>
       as a CSV file.
     </p>
 
-    <table>
+    <table class="stats_table">
       <tr>
         <th>Name</th>
+        <th class='usage-seven-days'>Usage in the past 30 days</th>
         <th>Usage in the past 7 days</th>
-        <th>Usage in the past 30 days</th>
         <th>Total usage</th>
       </tr>
       {% for link in object_list %}
         <tr>
           <td><a href='{% url "link-detail" link.pk %}'>{{link.name}}</a></td>
-          <td class='usage-seven-days'>{{link.usage_past_seven_days}}</td>
           <td class='usage-thirty-days'>{{link.usage_past_thirty_days}}</td>
+          <td class='usage-seven-days'>{{link.usage_past_seven_days}}</td>
           <td class='usage-total'>{{link.usage.count}}</td>
         </tr>
       {% endfor %}
@@ -36,5 +39,7 @@
       </p>
     </div>
   {% endif %}
+
+</div>
 
 {% endblock %}
