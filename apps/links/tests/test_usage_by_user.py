@@ -1,5 +1,4 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
-# from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from unittest import mock
 
