@@ -21,9 +21,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-ALLOWED_HOSTS = []
+# Default to showing debug pages on error. Set the environment variable to any
+# other value to turn it off (which we want in production).
+DEBUG = os.getenv('LIGHTHOUSE_DEBUG', 'True') == 'True'
+# Default to an empty array (for development and test), but otherwise read from
+# an environment variable.
+ALLOWED_HOSTS = os.getenv('LIGHTHOUSE_ALLOWED_HOSTS', '').split(',')
 
 
 # default for use in development, separate from actual production key
