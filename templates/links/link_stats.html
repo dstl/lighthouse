@@ -6,7 +6,8 @@
   <h1>Usage stats for {{link.name}}</h1>
 
   <p>
-    Download <a href='{% url "link-stats" pk=link.pk %}'>full usage stats</a>
+    Download
+    <a href='{% url "link-stats-csv" pk=link.pk %}'>full usage stats</a>
     for this tool as a CSV file</a>.
   </p>
 
