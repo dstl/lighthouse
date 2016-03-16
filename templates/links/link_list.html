@@ -4,11 +4,6 @@
 {% block grid_content %}
 <h1 class="heading-large">Search for tools</h1>
 
-<form action='/search/' method='get'>
-  <input type='text' name='q'>
-  <button>Search</button>
-</form>
-
 <div class="grid-row">
   {% if total_links_in_db > 0 %}
   <div id="categories-filter" class="column-third">
@@ -43,6 +38,10 @@
       </form>
     </div>
     <div class="column-two-thirds">
+      <form class="form-group two-thirds-inline-search-form" action='/search/' method='get'>
+        <input class="form-control search-box" type='text' name='q'>
+        <button class="button search-button" type="submit">Search</button>
+      </form>
       {% if object_list %}
       <h2 id="tools-header" class="link-list-header heading-medium heading-snug-top">Showing page {{ page_obj.number }} of {{ paginator.num_pages }}</h2>
       {% else %}

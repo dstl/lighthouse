@@ -2,26 +2,29 @@
 {% extends "layout.html" %}
 
 {% block grid_content %}
-  <h1>Search</h1>
-  <form method="get" action=".">
-    <table>
-    {{ form.as_table }}
-    <tr>
-    <td>&nbsp;</td>
-    <td>
-    <input type="submit" value="Search">
-    </td>
-    </tr>
-    </table>
+  <h1 class="heading-large">Search for tools</h1>
+  <form class="form-group two-thirds-inline-search-form" action='/search/' method='get'>
+    <input class="form-control search-box" type="text" value="{{ form.q.value }}" name='q'>
+    <button class="button search-button" type="submit">Search</button>
   </form>
 
   {% if query %}
     {% if page.object_list %}
-      <h2>Results</h2>
+      <h2 class="heading-medium">Results</h2>
 
       <ul id='search-results'>
         {% for result in page.object_list %}
-          <li><a href="{{ result.object.get_absolute_url }}">{{ result.object.name }}</a></li>
+          <li class="link-list-item">
+            <h3 class="inline"><a href="{{ result.object.get_absolute_url }}">{{ result.object.name }}</a></h3>
+            <p>{{ result.object.description }}</p>
+            <span class="categories">
+              {% if result.object.is_external %}
+              <span class="external is-external-label">External</span>
+              {% else %}
+              <span class="internal is-external-label">Internal</span>
+              {% endif %}
+            </span>
+          </li>
         {% endfor %}
       </ul>
 
