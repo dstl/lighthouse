@@ -11,4 +11,7 @@ result=0
 ./manage.py migrate
 (( result+=$? ))
 
+./manage.py rebuild_index
+(( result+=$? ))
+
 exit $result
