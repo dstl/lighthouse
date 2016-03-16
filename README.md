@@ -29,3 +29,21 @@ Web application for finding useful tools, data and techniques
     pip install -r requirements_test.txt
 
     ./manage.py test
+
+## Backup and restore
+
+All data in a running lighthouse instance is kept in PostgreSQL. To back up
+the data, on the database machine run:
+
+    pg_dump lighthouse > backup.`date +%F`.sql
+
+Don't forget to move the backup file off the machine.
+
+If/when you need to restore the database from a backup, copy the most recent
+backup file onto the database machine, and run:
+
+    psql lighthouse < backup.*.sql
+
+With both commands, if you have overridden the database name (using the
+`LIGHTHOUSE_DB` environment variable), you will need to replace `lighthouse`
+with that.
