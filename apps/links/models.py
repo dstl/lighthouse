@@ -13,7 +13,7 @@ from taggit.managers import TaggableManager
 
 class LinkUsage(models.Model):
     link = models.ForeignKey('Link', related_name='usage')
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, related_name='usage')
     start = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -69,6 +69,16 @@ class Link(models.Model):
     def usage_total(self):
         """ All usage ever """
         return self.usage.count()
+
+    def top_users_thirty_days(self):
+        today = timezone.now().replace(hour=0, minute=0, second=0)
+        month_ago = today - timedelta(days=30)
+        return User.objects.filter(
+            usage__link=self,
+            usage__start__gt=month_ago
+        ).annotate(
+            link_usage_count=models.Count('usage')
+        ).order_by('-link_usage_count', 'slug')
 
     def __str__(self):
         return self.name

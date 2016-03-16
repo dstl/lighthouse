@@ -29,6 +29,15 @@
 			View <a href='{% url "link-stats" pk=link.pk %}'>full usage stats</a>
 			for this tool.
 		</p>
+		<h3 class="heading-medium">Who uses this tool?</h3>
+		<p>
+			In the last 30 days, the tool has been used by the following people.
+		</p>
+		<ul id="usage-by-users">
+			{% for user in link.top_users_thirty_days|slice:":5" %}
+			<li><a href="{% url "user-detail" user.slug %}">{{user.username|default:user.slug}}</a> has used the tool {{user.link_usage_count}} times</li>
+			{% endfor %}
+		</ul>
 	</div>
 	<div class="column-third">
 		<h2 class="heading-large">Tool details</h2>
