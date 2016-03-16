@@ -82,7 +82,7 @@ class ListLinksWithCategoriesTest(WebTest):
 
         response = self.app.get(reverse('link-list'))
 
-        form = response.form
+        form = response.forms['list-results']
 
         self.assertEquals(
             form.get('categories', index=0).id, 'categories-filter-mapping'
@@ -90,7 +90,7 @@ class ListLinksWithCategoriesTest(WebTest):
         form.get('categories', index=0).checked = True
 
         response = form.submit()
-        form = response.form
+        form = response.forms['list-results']
 
         self.assertEquals(
             len(response.html.findAll('li', {'class': 'link-list-item'})),
@@ -129,7 +129,7 @@ class ListLinksWithCategoriesTest(WebTest):
 
         response = self.app.get(reverse('link-list'))
 
-        form = response.form
+        form = response.forms['list-results']
 
         self.assertEquals(
             form.get('categories', index=0).id, 'categories-filter-mapping'
@@ -142,7 +142,7 @@ class ListLinksWithCategoriesTest(WebTest):
         form.get('categories', index=2).checked = True
 
         response = form.submit()
-        form = response.form
+        form = response.forms['list-results']
 
         self.assertEquals(
             len(response.html.findAll('li', {'class': 'link-list-item'})),

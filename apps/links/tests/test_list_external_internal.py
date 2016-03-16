@@ -119,7 +119,7 @@ class ListLinksWithExternalityTest(WebTest):
     def test_external_checkboxes_filter(self):
         response = self.app.get(reverse('link-list'))
 
-        form = response.form
+        form = response.forms['list-results']
 
         self.assertEquals(
             form.get('types', index=0).id, 'types-filter-external'
@@ -127,7 +127,7 @@ class ListLinksWithExternalityTest(WebTest):
         form.get('types', index=0).checked = True
 
         response = form.submit()
-        form = response.form
+        form = response.forms['list-results']
 
         self.assertEquals(
             len(response.html.findAll('li', {'class': 'link-list-item'})),
@@ -174,7 +174,7 @@ class ListLinksWithExternalityTest(WebTest):
     def test_internal_checkboxes_filter(self):
         response = self.app.get(reverse('link-list'))
 
-        form = response.form
+        form = response.forms['list-results']
 
         self.assertEquals(
             form.get('types', index=1).id, 'types-filter-internal'
@@ -182,7 +182,7 @@ class ListLinksWithExternalityTest(WebTest):
         form.get('types', index=1).checked = True
 
         response = form.submit()
-        form = response.form
+        form = response.forms['list-results']
 
         self.assertEquals(
             len(response.html.findAll('li', {'class': 'link-list-item'})),
@@ -221,7 +221,7 @@ class ListLinksWithExternalityTest(WebTest):
     def test_internal_and_external_checkboxes_filter(self):
         response = self.app.get(reverse('link-list'))
 
-        form = response.form
+        form = response.forms['list-results']
 
         self.assertEquals(
             form.get('types', index=0).id, 'types-filter-external'
@@ -234,7 +234,7 @@ class ListLinksWithExternalityTest(WebTest):
         form.get('types', index=1).checked = True
 
         response = form.submit()
-        form = response.form
+        form = response.forms['list-results']
 
         self.assertEquals(
             len(response.html.findAll('li', {'class': 'link-list-item'})),

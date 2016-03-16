@@ -3,7 +3,12 @@
 import csv
 
 from django import forms
-from django.contrib.auth.mixins import LoginRequiredMixin
+
+# TODO — restore this next line and retire .mixins once we are back at django
+#        1.9 or above
+# from django.contrib.auth.mixins import LoginRequiredMixin
+from .mixins import LoginRequiredMixin
+
 from django.db.models import Count
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.utils import timezone

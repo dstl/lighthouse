@@ -31,7 +31,7 @@ class ListLinksWithNoResultsTest(WebTest):
     def test_no_results_message(self):
         response = self.app.get(reverse('link-list'))
 
-        form = response.form
+        form = response.forms['list-results']
 
         self.assertEquals(
             form.get('categories', index=0).id, 'categories-filter-social'
@@ -44,7 +44,7 @@ class ListLinksWithNoResultsTest(WebTest):
         form.get('types', index=0).checked = True
 
         response = form.submit()
-        form = response.form
+        form = response.forms['list-results']
 
         tools_list_result_header = response.html.find(id="tools-header")
 
