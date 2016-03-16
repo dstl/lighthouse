@@ -371,3 +371,75 @@ class LinkUsageWebTest(WebTest):
             'Date': '2016-03-01 11:16:00',
             'Tool': 'Link Linkerly',
         })
+
+    def test_usage_detail_page_three_periods(self):
+        self.assertEquals(self.link.usage_total(), 0)
+        self.assertEquals(self.other_link.usage_total(), 0)
+
+        # register usage today
+        self.link.register_usage(self.user)
+
+        with mock.patch('django.utils.timezone.now') as mock_now:
+            # register usage one day ago (last 7 days)
+            mock_now.return_value = self.now - timedelta(days=1)
+            self.link.register_usage(self.user)
+
+            # register usage eight day ago (last 30 days)
+            mock_now.return_value = self.now - timedelta(days=8)
+            self.link.register_usage(self.user)
+
+        detail_url = reverse('link-detail', kwargs={'pk': self.link.pk})
+        response = self.app.get(detail_url)
+
+        usage_today = response.html.find(id='usage-today').find(
+            'span',
+            {"class": "stat-inline"}
+        ).text
+        self.assertEquals(usage_today, '1')
+        self.assertNotIn(
+            '1 times',
+            response.html.find(id='usage-today').text
+        )
+
+        usage_today = response.html.find(id='usage-seven-days').find(
+            'span',
+            {"class": "stat-inline"}
+        ).text
+        self.assertEquals(usage_today, '2')
+        self.assertIn(
+            '2 times',
+            response.html.find(id='usage-seven-days').text
+        )
+
+        usage_today = response.html.find(id='usage-thirty-days').find(
+            'span',
+            {"class": "stat-inline"}
+        ).text
+        self.assertEquals(usage_today, '3')
+        self.assertIn(
+            '3 times',
+            response.html.find(id='usage-thirty-days').text
+        )
+
+    def test_usage_detail_page_plurals(self):
+        self.assertEquals(self.link.usage_total(), 0)
+        self.assertEquals(self.other_link.usage_total(), 0)
+
+        # register usage today
+        self.link.register_usage(self.user)
+
+        detail_url = reverse('link-detail', kwargs={'pk': self.link.pk})
+        response = self.app.get(detail_url)
+
+        self.assertNotIn(
+            '1 times',
+            response.html.find(id='usage-today').text
+        )
+        self.assertNotIn(
+            '1 times',
+            response.html.find(id='usage-seven-days').text
+        )
+        self.assertNotIn(
+            '1 times',
+            response.html.find(id='usage-thirty-days').text
+        )

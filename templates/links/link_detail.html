@@ -24,7 +24,9 @@
         </div>
 
 		<h2 class="heading-large">Recent usage</h2>
-		<p id='usage-today'><span class="stat-inline">{{link.usage_today}}</span> times used today</p>
+		<p id='usage-today'>Used <span class="stat-inline">{{link.usage_today}}</span> time{{ link.usage_today|pluralize }} today.</p>
+		<p id='usage-seven-days'>Used <span class="stat-inline">{{link.usage_past_seven_days}}</span> time{{ link.usage_past_seven_days|pluralize }} in the last seven days.</p>
+		<p id='usage-thirty-days'>Used <span class="stat-inline">{{link.usage_past_thirty_days}}</span> time{{ link.usage_past_thirty_days|pluralize }} in the last thirty days.</p>
 		<p>
 			View <a href='{% url "link-stats" pk=link.pk %}'>full usage stats</a>
 			for this tool.
