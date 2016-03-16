@@ -229,7 +229,11 @@ class OverallLinkStats(ListView):
     template_name = 'links/link_overall_stats.html'
 
     def get_queryset(self):
-        return Link.objects.annotate(Count('usage')).order_by('-usage__count')
+        return sorted(
+            Link.objects.annotate(Count('usage')),
+            key=lambda o: (o.usage_past_thirty_days()),
+            reverse=True
+        )
 
 
 class OverallLinkStatsCSV(View):
