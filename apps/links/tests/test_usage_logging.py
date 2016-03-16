@@ -396,15 +396,50 @@ class LinkUsageWebTest(WebTest):
             {"class": "stat-inline"}
         ).text
         self.assertEquals(usage_today, '1')
+        self.assertNotIn(
+            '1 times',
+            response.html.find(id='usage-today').text
+        )
 
         usage_today = response.html.find(id='usage-seven-days').find(
             'span',
             {"class": "stat-inline"}
         ).text
         self.assertEquals(usage_today, '2')
+        self.assertIn(
+            '2 times',
+            response.html.find(id='usage-seven-days').text
+        )
 
         usage_today = response.html.find(id='usage-thirty-days').find(
             'span',
             {"class": "stat-inline"}
         ).text
         self.assertEquals(usage_today, '3')
+        self.assertIn(
+            '3 times',
+            response.html.find(id='usage-thirty-days').text
+        )
+
+    def test_usage_detail_page_plurals(self):
+        self.assertEquals(self.link.usage_total(), 0)
+        self.assertEquals(self.other_link.usage_total(), 0)
+
+        # register usage today
+        self.link.register_usage(self.user)
+
+        detail_url = reverse('link-detail', kwargs={'pk': self.link.pk})
+        response = self.app.get(detail_url)
+
+        self.assertNotIn(
+            '1 times',
+            response.html.find(id='usage-today').text
+        )
+        self.assertNotIn(
+            '1 times',
+            response.html.find(id='usage-seven-days').text
+        )
+        self.assertNotIn(
+            '1 times',
+            response.html.find(id='usage-thirty-days').text
+        )
