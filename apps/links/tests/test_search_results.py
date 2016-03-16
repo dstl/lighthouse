@@ -38,14 +38,14 @@ class LinkSearchResults(WebTest):
         response = self.app.get(search_url)
         results = response.html.find(id='search-results').findAll('li')
         self.assertEquals(len(results), 1)
-        self.assertEquals(results[0].text, 'Google')
+        self.assertIn('Google', results[0].text)
 
     def test_search_for_second_shows_one(self):
         search_url = '%s?q=email' % reverse('haystack_search')
         response = self.app.get(search_url)
         results = response.html.find(id='search-results').findAll('li')
         self.assertEquals(len(results), 1)
-        self.assertEquals(results[0].text, 'Google Mail')
+        self.assertIn('Google Mail', results[0].text)
 
     def test_search_for_flibble_shows_none(self):
         search_url = '%s?q=flibble' % reverse('haystack_search')
