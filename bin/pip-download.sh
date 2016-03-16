@@ -1,7 +1,7 @@
 #!/bin/bash
 result=0
 download_location="${DOWNLOAD_LOCATION:-$HOME/pip_downloads}"
-internet_access=${INTERNET_ACCESS:-true}
+internet_access=${INTERNET_ACCESS:-/bin/true}
 
 if $internet_access; then
   # Ensure our download location exists
