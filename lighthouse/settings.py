@@ -24,7 +24,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Default to showing debug pages on error. Set the environment variable to any
 # other value to turn it off (which we want in production).
 DEBUG = os.getenv('LIGHTHOUSE_DEBUG', 'True') == 'True'
-ALLOWED_HOSTS = []
+# Default to an empty array (for development and test), but otherwise read from
+# an environment variable.
+ALLOWED_HOSTS = os.getenv('LIGHTHOUSE_ALLOWED_HOSTS', '').split(',')
 
 
 # default for use in development, separate from actual production key
