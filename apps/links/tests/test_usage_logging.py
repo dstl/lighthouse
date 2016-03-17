@@ -321,15 +321,15 @@ class LinkUsageWebTest(WebTest):
         stats_url = reverse('link-overall-stats')
         response = self.app.get(stats_url)
 
-        seven = response.html.find_all(class_='usage-seven-days')
+        seven = response.html.find_all('td', class_='usage-seven-days')
         self.assertEquals(seven[0].text, '1')
         self.assertEquals(seven[1].text, '1')
 
-        thirty = response.html.find_all(class_='usage-thirty-days')
+        thirty = response.html.find_all('td', class_='usage-thirty-days')
         self.assertEquals(thirty[0].text, '2')
         self.assertEquals(thirty[1].text, '1')
 
-        total = response.html.find_all(class_='usage-total')
+        total = response.html.find_all('td', class_='usage-total')
         self.assertEquals(total[0].text, '3')
         self.assertEquals(total[1].text, '1')
 
