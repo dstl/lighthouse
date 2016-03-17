@@ -8,7 +8,7 @@ result=0
 . ./bin/virtualenv.sh
 (( result+=$? ))
 
-flake8 . --count --statistics --exclude="$VIRTUAL_ENV"
+flake8 . --count --statistics --exclude="$VIRTUAL_ENV" --builtins=FileNotFoundError
 (( result+=$? ))
 
 exit $result

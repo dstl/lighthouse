@@ -1,0 +1,14 @@
+.markdown-content {
+	h1 {
+		@extend .heading-xlarge;
+	}
+	h2 {
+		@extend .heading-large;
+	}
+	h3 {
+		@extend .heading-medium;
+	}
+	h4 {
+		@extend .heading-small;
+	}
+}

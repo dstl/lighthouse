@@ -67,6 +67,7 @@ $path: "/static/";
 @import "footer";
 @import "table";
 @import "typography";
+@import "markdown-content";
 
 #content {
 	width:960px;
@@ -92,3 +93,17 @@ $path: "/static/";
     display:block;
   }
 }
+
+#footer .footer-meta {
+  font-size:16px;
+
+
+  .footer-meta-inner {
+    @include media (mobile) {
+      text-align:center;
+      width:100%;
+    }
+    width:74%
+  }
+}
+
