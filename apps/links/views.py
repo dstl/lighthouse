@@ -8,7 +8,10 @@ from apps.access import LoginRequiredMixin
 from django.db.models import Count
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.utils import timezone
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from django.utils.text import slugify
+from django.views.generic.detail import SingleObjectMixin
 from django.views.generic import (
     CreateView,
     DetailView,
@@ -45,7 +48,13 @@ class LinkRedirect(DetailView):
         return redirect(self.object.destination)
 
 
-class LinkUsageAPI(DetailView):
+class APIBase(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super(APIBase, self).dispatch(request, *args, **kwargs)
+
+
+class LinkUsageAPI(SingleObjectMixin, APIBase):
     model = Link
 
     # TODO (probably)
@@ -64,8 +73,10 @@ class LinkUsageAPI(DetailView):
             })
         return JsonResponse(response, safe=False)
 
+    @method_decorator(csrf_exempt)
     def post(self, request, *args, **kwargs):
         """ Add new usage stat """
+
         # user param is required
         if 'user' not in request.POST:
             return JsonResponse({'error': 'user required'}, status=400)
