@@ -13,3 +13,4 @@ django-compressor==2.0              # MIT
 django-libsass==0.6.0               # BSD
 python-dateutil==2.5.0              # Simplified BSD
 Whoosh==2.7.2                       # 2-clause BSD
+Markdown==2.6.5                     # 3-clause BSD

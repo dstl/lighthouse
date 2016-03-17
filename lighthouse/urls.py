@@ -55,6 +55,7 @@ from apps.teams.views import (
 )
 from apps.login.views import LoginRequest, LoginUser, Logout
 from apps.home.views import Home
+from apps.staticpages.views import StaticPageView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -189,6 +190,12 @@ urlpatterns = [
     url(
         r'^search/',
         include('haystack.urls'),
+    ),
+
+    url(
+        r'^(?P<slug>\w+)/?$',
+        StaticPageView.as_view(),
+        name='static-page'
     ),
 ]
 urlpatterns += staticfiles_urlpatterns()
