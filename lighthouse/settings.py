@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'apps.teams',
     'apps.users',
     'apps.govuk_template',
+    'apps.search',
 
     'taggit',
 

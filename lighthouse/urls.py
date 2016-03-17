@@ -56,6 +56,7 @@ from apps.teams.views import (
 from apps.login.views import LoginRequest, LoginUser, Logout
 from apps.home.views import Home
 from apps.staticpages.views import StaticPageView
+from apps.search.views import SearchStats
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -188,8 +189,14 @@ urlpatterns = [
     ),
 
     url(
-        r'^search/',
-        include('haystack.urls'),
+        r'^search',
+        include('apps.search.urls'),
+    ),
+
+    url(
+        r'^search/stats/?$',
+        SearchStats.as_view(),
+        name='search-stats',
     ),
 
     url(
