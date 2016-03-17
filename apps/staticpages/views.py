@@ -2,6 +2,7 @@
 # apps/staticpages/views.py
 from django.views.generic.base import TemplateView
 from django.conf import settings
+from django.http import Http404
 import markdown
 import codecs
 import os
@@ -20,11 +21,14 @@ class StaticPageView(TemplateView):
             'pages',
             '%s.md' % slug
         )
-        input_file = codecs.open(
-            file,
-            mode="r",
-            encoding="utf-8"
-        )
+        try:
+            input_file = codecs.open(
+                file,
+                mode="r",
+                encoding="utf-8"
+            )
+        except FileNotFoundError:
+            raise Http404("Static page '%s' does not exist" % slug)
         text = input_file.read()
         html = markdown.markdown(text)
         context['html_content'] = html
