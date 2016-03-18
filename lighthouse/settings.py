@@ -139,6 +139,8 @@ USE_L10N = True
 
 USE_TZ = True
 
+STATIC_ROOT = os.getenv('LIGHTHOUSE_STATIC_LOCATION', 'static')
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     os.path.join(BASE_DIR, "apps/govuk_frontend_toolkit/stylesheets"),
