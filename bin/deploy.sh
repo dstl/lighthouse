@@ -14,4 +14,7 @@ result=0
 ./manage.py rebuild_index --noinput
 (( result+=$? ))
 
+./manage.py collectstatic --noinput
+(( result+=$? ))
+
 exit $result
