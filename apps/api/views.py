@@ -1,12 +1,17 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
 
+import os
+
+from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import View
+from django.views.generic import View, RedirectView
 from django.views.generic.detail import SingleObjectMixin
 
 from apps.links.models import Link
+from apps.staticpages.views import StaticPageViewBase
 from apps.users.models import User
 
 
@@ -14,6 +19,29 @@ class APIBase(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super(APIBase, self).dispatch(request, *args, **kwargs)
+
+
+class APIDocView(StaticPageViewBase):
+    template_name = 'api/documentation.html'
+
+    def get_markdown_directory(self):
+        return os.path.join(
+            settings.BASE_DIR,
+            'apps',
+            'api',
+            'documentation',
+        )
+
+
+class APIHome(APIDocView):
+    slug = 'index'
+
+
+class APIDocHomeRedirect(RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        # implemented as method not as `url` instance
+        # variable to avoid circular import problem
+        return reverse('api-home')
 
 
 class LinkUsageAPI(SingleObjectMixin, APIBase):

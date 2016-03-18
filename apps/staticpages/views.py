@@ -8,28 +8,41 @@ import codecs
 import os
 
 
-class StaticPageView(TemplateView):
-    template_name = 'staticpages/static.html'
+class StaticPageViewBase(TemplateView):
+    slug = None
 
-    def get_context_data(self, **kwargs):
-        context = super(StaticPageView, self).get_context_data(**kwargs)
-        slug = kwargs['slug']
-        file = os.path.join(
+    def get_markdown_directory(self):
+        return os.path.join(
             settings.BASE_DIR,
             'apps',
             'staticpages',
             'pages',
-            '%s.md' % slug
         )
+
+    def get_markdown_filename(self):
+        return os.path.join(
+            self.get_markdown_directory(),
+            '%s.md' % self.slug
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super(StaticPageViewBase, self).get_context_data(**kwargs)
+        if not self.slug:
+            self.slug = kwargs['slug']
+        filename = self.get_markdown_filename()
         try:
             input_file = codecs.open(
-                file,
+                filename,
                 mode="r",
                 encoding="utf-8"
             )
         except FileNotFoundError:
-            raise Http404("Static page '%s' does not exist" % slug)
+            raise Http404
         text = input_file.read()
         html = markdown.markdown(text)
         context['html_content'] = html
         return context
+
+
+class StaticPageView(StaticPageViewBase):
+    template_name = 'staticpages/static.html'
