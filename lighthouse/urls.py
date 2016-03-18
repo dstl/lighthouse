@@ -28,7 +28,6 @@ from apps.links.views import (
     LinkStatsCSV,
     LinkUpdate,
     LinkRedirect,
-    LinkUsageAPI,
     OverallLinkStats,
     OverallLinkStatsCSV,
 )
@@ -182,9 +181,8 @@ urlpatterns = [
     ),
 
     url(
-        r'^api/links/(?P<pk>\d+)/usage',
-        LinkUsageAPI.as_view(),
-        name='api-link-usage',
+        r'^api/',
+        include('apps.api.urls'),
     ),
 
     url(
