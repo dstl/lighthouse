@@ -4,10 +4,17 @@ from django_webtest import WebTest
 import re
 
 from apps.organisations.models import Organisation
+from apps.users.models import User
 
 
 class OrganisationCreateWebTest(WebTest):
     def test_cannot_create_nameless_organisation(self):
+        #   Create and log in a user
+        User(slug='user0001com', original_slug='user@0001.com').save()
+        form = self.app.get(reverse('login-view')).form
+        form['slug'] = 'user0001com'
+        form.submit().follow()
+
         form = self.app.get(reverse('organisation-create')).form
         response = form.submit()
         form = response.context['form']
@@ -17,6 +24,12 @@ class OrganisationCreateWebTest(WebTest):
         )
 
     def test_create_new_organisation_from_list_view(self):
+        #   Create and log in a user
+        User(slug='user0001com', original_slug='user@0001.com').save()
+        form = self.app.get(reverse('login-view')).form
+        form['slug'] = 'user0001com'
+        form.submit().follow()
+
         form = self.app.get(reverse('organisation-list')).form
         form['name'] = 'org0001'
         response = form.submit()
@@ -35,6 +48,12 @@ class OrganisationCreateWebTest(WebTest):
         self.assertEquals(org_name, 'Organisation: org0001')
 
     def test_cannot_create_duplicate_organisation(self):
+        #   Create and log in a user
+        User(slug='user0001com', original_slug='user@0001.com').save()
+        form = self.app.get(reverse('login-view')).form
+        form['slug'] = 'user0001com'
+        form.submit().follow()
+
         o = Organisation(name='alpha')
         o.save()
         form = self.app.get(reverse('organisation-list')).form

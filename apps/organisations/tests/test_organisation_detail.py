@@ -4,10 +4,17 @@ from django_webtest import WebTest
 
 from .common import create_organisation
 from apps.links.tests.common import generate_fake_links
+from apps.users.models import User
 
 
 class OrganisationDetailWebTest(WebTest):
     def test_new_team_input_visible(self):
+        #   Create and log in a user
+        User(slug='user0001com', original_slug='user@0001.com').save()
+        form = self.app.get(reverse('login-view')).form
+        form['slug'] = 'user0001com'
+        form.submit().follow()
+
         o = create_organisation(name='two teams', num_teams=2)
         response = self.app.get(
             reverse(
@@ -118,6 +125,12 @@ class OrganisationDetailWebTest(WebTest):
         self.assertIn('The Newest Team 2', team_list_items[3].text)
 
     def test_list_top_tools_ordered(self):
+        #   Create and log in a user
+        User(slug='user0001com', original_slug='user@0001.com').save()
+        form = self.app.get(reverse('login-view')).form
+        form['slug'] = 'user0001com'
+        form.submit().follow()
+
         # Create an organistion with two teams and two members in each team.
         o = create_organisation(
             name='Two members two teams top orgs', num_teams=2, num_members=2

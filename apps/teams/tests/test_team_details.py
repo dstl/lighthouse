@@ -4,10 +4,17 @@ from django.core.urlresolvers import reverse
 from django_webtest import WebTest
 from .common import create_team
 from apps.links.tests.common import generate_fake_links
+from apps.users.models import User
 
 
 class TeamToolUsageTests(WebTest):
     def test_list_top_tools_ordered(self):
+        #   Create and log in a user
+        User(slug='user0001com', original_slug='user@0001.com').save()
+        form = self.app.get(reverse('login-view')).form
+        form['slug'] = 'user0001com'
+        form.submit().follow()
+
         t = create_team(
             name='Two members top teams', num_members=2
         )

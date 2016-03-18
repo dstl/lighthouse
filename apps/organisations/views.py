@@ -5,9 +5,10 @@ from django.core.urlresolvers import reverse
 from .models import Organisation
 from apps.teams.models import Team
 from .forms import OrganisationForm
+from apps.access import LoginRequiredMixin
 
 
-class OrganisationList(ListView):
+class OrganisationList(LoginRequiredMixin, ListView):
     model = Organisation
 
     #   We're also going to jam the for on the list view page.
@@ -21,7 +22,7 @@ class OrganisationList(ListView):
         return context
 
 
-class OrganisationCreate(CreateView):
+class OrganisationCreate(LoginRequiredMixin, CreateView):
     model = Organisation
     form_class = OrganisationForm
 
@@ -29,7 +30,7 @@ class OrganisationCreate(CreateView):
         return reverse('organisation-list')
 
 
-class OrganisationDetail(DetailView):
+class OrganisationDetail(LoginRequiredMixin, DetailView):
     model = Organisation
 
     def get_context_data(self, **kwargs):

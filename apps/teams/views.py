@@ -5,13 +5,14 @@ from django.views.generic.base import TemplateView
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.db import IntegrityError
+from apps.access import LoginRequiredMixin
 
 from .models import Team
 from apps.organisations.models import Organisation
 from .forms import TeamForm
 
 
-class TeamList(ListView):
+class TeamList(LoginRequiredMixin, ListView):
     model = Team
 
     #   We're also going to jam the for on the list view page.
@@ -26,7 +27,7 @@ class TeamList(ListView):
         return context
 
 
-class TeamCreate(CreateView):
+class TeamCreate(LoginRequiredMixin, CreateView):
     model = Team
     form_class = TeamForm
 
@@ -47,7 +48,7 @@ class TeamCreate(CreateView):
         return reverse('team-list')
 
 
-class TeamDetail(DetailView):
+class TeamDetail(LoginRequiredMixin, DetailView):
     model = Team
 
     def get_context_data(self, **kwargs):
@@ -65,7 +66,7 @@ class TeamDetail(DetailView):
         return context
 
 
-class TeamJoin(TemplateView):
+class TeamJoin(LoginRequiredMixin, TemplateView):
 
     def get(self, request, *args, **kwargs):
 
@@ -92,7 +93,7 @@ class TeamJoin(TemplateView):
         return redirect(reverse('team-detail', kwargs={'pk': team_id}))
 
 
-class TeamLeave(TemplateView):
+class TeamLeave(LoginRequiredMixin, TemplateView):
 
     def get(self, request, *args, **kwargs):
 
