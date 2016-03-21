@@ -56,7 +56,10 @@ from apps.teams.views import (
 from apps.login.views import LoginRequest, LoginUser, Logout
 from apps.home.views import Home
 from apps.staticpages.views import StaticPageView
-from apps.search.views import SearchStats
+from apps.search.views import (
+    SearchStats,
+    SearchStatsCSV
+)
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -192,6 +195,12 @@ urlpatterns = [
         r'^search/stats/?$',
         SearchStats.as_view(),
         name='search-stats',
+    ),
+
+    url(
+        r'^search/stats.csv$',
+        SearchStatsCSV.as_view(),
+        name='search-stats-csv',
     ),
 
     url(
