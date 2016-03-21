@@ -7,6 +7,7 @@ from apps.organisations.models import Organisation
 from .common import create_organisation
 from apps.users.models import User
 
+
 class OrganisationListWebTest(WebTest):
     def test_can_click_through_existing_organisation_link(self):
         #   Create and log in a user
