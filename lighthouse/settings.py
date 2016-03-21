@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'haystack',
+    'apps.access',
     'apps.home',
     'apps.login',
     'apps.links',

@@ -6,13 +6,14 @@ from django.core.urlresolvers import reverse
 from .models import User
 from apps.teams.models import Team
 from apps.organisations.models import Organisation
+from apps.access import LoginRequiredMixin
 
 
-class UserDetail(DetailView):
+class UserDetail(LoginRequiredMixin, DetailView):
     model = User
 
 
-class UserUpdateProfileTeams(UpdateView):
+class UserUpdateProfileTeams(LoginRequiredMixin, UpdateView):
     model = User
     fields = [
                 'username',
@@ -46,7 +47,7 @@ class UserUpdateProfileTeams(UpdateView):
         return context
 
 
-class UserUpdateProfile(UpdateView):
+class UserUpdateProfile(LoginRequiredMixin, UpdateView):
     model = User
     fields = [
                 'username',
@@ -204,7 +205,7 @@ class UserUpdateProfile(UpdateView):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class UserList(ListView):
+class UserList(LoginRequiredMixin, ListView):
     model = User
 
     def get_context_data(self, **kwargs):

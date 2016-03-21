@@ -5,10 +5,17 @@ import re
 
 from apps.organisations.models import Organisation
 from .common import create_organisation
+from apps.users.models import User
 
 
 class OrganisationListWebTest(WebTest):
     def test_can_click_through_existing_organisation_link(self):
+        #   Create and log in a user
+        User(slug='user0001com', original_slug='user@0001.com').save()
+        form = self.app.get(reverse('login-view')).form
+        form['slug'] = 'user0001com'
+        form.submit().follow()
+
         o = Organisation(name='org0001')
         o.save()
         response = self.app.get(reverse('organisation-list'))
@@ -24,6 +31,12 @@ class OrganisationListWebTest(WebTest):
         self.assertEquals(org_name, 'Organisation: ' + o.name)
 
     def test_show_number_of_teams_two(self):
+        #   Create and log in a user
+        User(slug='user0001com', original_slug='user@0001.com').save()
+        form = self.app.get(reverse('login-view')).form
+        form['slug'] = 'user0001com'
+        form.submit().follow()
+
         o = create_organisation(name='two teams', num_teams=2)
         response = self.app.get(reverse('organisation-list'))
 
@@ -37,6 +50,12 @@ class OrganisationListWebTest(WebTest):
         )
 
     def test_show_number_of_teams_none(self):
+        #   Create and log in a user
+        User(slug='user0001com', original_slug='user@0001.com').save()
+        form = self.app.get(reverse('login-view')).form
+        form['slug'] = 'user0001com'
+        form.submit().follow()
+
         o = create_organisation(name='no teams', num_teams=0)
         response = self.app.get(reverse('organisation-list'))
 
