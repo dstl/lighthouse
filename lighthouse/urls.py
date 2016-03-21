@@ -189,14 +189,14 @@ urlpatterns = [
     ),
 
     url(
-        r'^search',
-        include('apps.search.urls'),
-    ),
-
-    url(
         r'^search/stats/?$',
         SearchStats.as_view(),
         name='search-stats',
+    ),
+
+    url(
+        r'^search',
+        include('apps.search.urls'),
     ),
 
     url(

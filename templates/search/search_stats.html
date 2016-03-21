@@ -5,4 +5,19 @@
 
   <h1>Search stats</h1>
 
+  <table id="search-queries">
+    <tr>
+      <th>Search term</th>
+      <th>Time of search</th>
+      <th>Number of results</th>
+    </tr>
+    {% for query in object_list %}
+    <tr>
+      <td class='search-term'>{{query.term}}</td>
+      <td class='results'>{{query.results_length}}</td>
+      <td class='search-time'>{{query.when|date:"d/m/Y, H:i"}}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
 {% endblock %}
