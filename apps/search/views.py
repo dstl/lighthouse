@@ -1,8 +1,10 @@
 import csv
+from datetime import timedelta
 
 from haystack.views import SearchView
 from django.views.generic import ListView, View
 from django.http import HttpResponse
+from django.db.models import Count
 from django.utils import timezone
 from .models import SearchQuery, SearchTerm
 
@@ -13,6 +15,34 @@ class SearchStats(ListView):
 
     def get_queryset(self):
         return SearchQuery.objects.order_by('-when')[:20]
+
+    def get_context_data(self, **kwargs):
+        context = super(SearchStats, self).get_context_data(**kwargs)
+        today = timezone.now().replace(hour=0, minute=0, second=0)
+        month_ago = today - timedelta(days=30)
+
+        queries_last_30_days = SearchQuery.objects.filter(
+            when__gt=month_ago
+        ).values(
+            'term',
+            'term__query'
+        )
+        top_queries = queries_last_30_days.annotate(
+            total_searches=Count('term')
+        )
+
+        top_queries = top_queries.order_by('-total_searches')
+        context['top_searches'] = top_queries[:10]
+        context['top_unfulfilled_searches'] = queries_last_30_days.exclude(
+            results_length__gt=0
+        ).values(
+            'term',
+            'term__query'
+        ).annotate(
+            total_searches=Count('term')
+        ).order_by('-total_searches')
+
+        return context
 
 
 class SearchStatsCSV(View):

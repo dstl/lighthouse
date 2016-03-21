@@ -32,6 +32,13 @@ class LinkSearchResults(WebTest):
             owner=cls.user,
             is_external=True,
         )
+        cls.other_link = Link.objects.create(
+            name='Google Chat',
+            destination='https://chat.google.com',
+            description='Internet chat',
+            owner=cls.user,
+            is_external=True,
+        )
 
     def setUp(self):
         self.assertTrue(login_user(self, self.user))
@@ -44,18 +51,18 @@ class LinkSearchResults(WebTest):
             response = self.app.get(search_url)
 
         results = response.html.find(id='search-results').findAll('li')
-        self.assertEquals(len(results), 2)
+        self.assertEquals(len(results), 3)
 
         response = self.app.get(reverse('search-stats'))
         search_queries_table = response.html.find(
             None,
-            {"id": "search-queries"}
+            {"id": "latest-20-searches"}
         )
         search_queries_rows = search_queries_table.findChildren('tr')
         self.assertEquals(len(search_queries_rows), 2)
 
         self.assertIn('google', search_queries_rows[1].text)
-        self.assertIn('2', search_queries_rows[1].text)
+        self.assertIn('3', search_queries_rows[1].text)
         self.assertIn('01/03/2016, 10:00', search_queries_rows[1].text)
 
     def test_search_for_first_shows_one(self):
@@ -86,7 +93,7 @@ class LinkSearchResults(WebTest):
             self.assertIsNone(response.html.find(id='search-results'))
 
             mock_now.return_value = make_aware(datetime(2016, 3, 1, 10, 2, 0))
-            search_url = '%s?q=email' % reverse('search')
+            search_url = '%s?q=chat' % reverse('search')
             response = self.app.get(search_url)
 
         results = response.html.find(id='search-results').findAll('li')
@@ -95,12 +102,12 @@ class LinkSearchResults(WebTest):
         response = self.app.get(reverse('search-stats'))
         search_queries_table = response.html.find(
             None,
-            {"id": "search-queries"}
+            {"id": "latest-20-searches"}
         )
         search_queries_rows = search_queries_table.findChildren('tr')
         self.assertEquals(len(search_queries_rows), 3)
 
-        self.assertIn('email', search_queries_rows[1].text)
+        self.assertIn('chat', search_queries_rows[1].text)
         self.assertIn('1', search_queries_rows[1].text)
         self.assertIn('01/03/2016, 10:02', search_queries_rows[1].text)
 
@@ -139,6 +146,6 @@ class LinkSearchResults(WebTest):
         self.assertEquals(row, {
             'User': 'user0001com',
             'Date': '2016-03-01 10:02:00',
-            'Term': 'email',
+            'Term': 'chat',
             'Number of Results': '1',
         })
