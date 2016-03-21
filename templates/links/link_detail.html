@@ -40,6 +40,25 @@
 			<li><a href="{% url "user-detail" user.slug %}">{{user.username|default:user.slug}}</a> has used the tool {{user.link_usage_count}} times</li>
 			{% endfor %}
 		</ul>
+
+    <p>
+			In the last 30 days, the tool has been used by the following teams.
+		</p>
+		<ul id="usage-by-teams">
+			{% for t in link.top_teams_thirty_days|slice:":5" %}
+        <li><a href="{% url "team-detail" t.team.pk %}">{{t.team.name}}</a> have collectively used the tool {{t.link_usage_count}} times</li>
+			{% endfor %}
+		</ul>
+
+    <p>
+			In the last 30 days, the tool has been used by the following organisations.
+		</p>
+		<ul id="usage-by-organisations">
+			{% for o in link.top_organisations_thirty_days|slice:":5" %}
+        <li><a href="{% url "organisation-detail" o.organisation.pk %}">{{o.organisation.name}}</a> have collectively used the tool {{o.link_usage_count}} times</li>
+			{% endfor %}
+		</ul>
+
 	</div>
 	<div class="column-third">
 		<h2 class="heading-large">Tool details</h2>
