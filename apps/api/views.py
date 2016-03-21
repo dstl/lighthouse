@@ -67,6 +67,8 @@ class LinkUsageAPI(SingleObjectMixin, APIBase):
     def post(self, request, *args, **kwargs):
         """ Add new usage stat """
 
+        link = self.get_object()
+
         # user param is required
         if 'user' not in request.POST:
             return JsonResponse({'error': 'user required'}, status=400)
@@ -77,6 +79,5 @@ class LinkUsageAPI(SingleObjectMixin, APIBase):
         except User.DoesNotExist:
             return JsonResponse({'error': 'no such user'}, status=400)
 
-        link = self.get_object()
         link.register_usage(user)
         return JsonResponse({'status': 'ok'}, status=201)

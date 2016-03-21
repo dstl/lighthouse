@@ -42,6 +42,14 @@ class LinkUsageAPITest(LiveServerTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), expected_response)
 
+    def test_cannot_get_invalid_link(self):
+        link_api_url = '%s%s' % (
+            self.live_server_url,
+            reverse('api-link-usage', kwargs={'pk': self.link.pk + 1000}),
+        )
+        response = requests.get(link_api_url)
+        self.assertEqual(response.status_code, 404)
+
     def test_cannot_update_usage_without_user(self):
         self.assertEquals(self.link.usage_total(), 0)
 
