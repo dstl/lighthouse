@@ -139,11 +139,14 @@ USE_L10N = True
 
 USE_TZ = True
 
+STATIC_ROOT = os.getenv('LIGHTHOUSE_STATIC_ROOT', None)
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     os.path.join(BASE_DIR, "apps/govuk_frontend_toolkit/stylesheets"),
     os.path.join(BASE_DIR, "apps/govuk_frontend_toolkit/images"),
     os.path.join(BASE_DIR, "apps/govuk_elements/public/sass"),
+    os.path.join(BASE_DIR, "sass"),
 ]
 
 STATICFILES_FINDERS = [
