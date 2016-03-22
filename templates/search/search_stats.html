@@ -1,0 +1,67 @@
+{# (c) Crown Owned Copyright, 2016. Dstl. #}
+{% extends "layout.html" %}
+
+{% block grid_content %}
+
+  <h1 class="heading-large">Search stats</h1>
+
+  <h2 class="heading-medium">Most popular search terms</h2>
+
+  <p>
+    Download
+    <a id="csv-download-all" href='{% url "search-stats-csv" %}'>full usage stats</a>
+     as a CSV file</a>.
+  </p>
+
+  <table id="latest-20-searches">
+    <tr>
+      <th>Search term</th>
+      <th>Time of search</th>
+      <th>Number of results</th>
+    </tr>
+    {% for query in object_list %}
+    <tr>
+      <td class='search-term'>{{query.term}}</td>
+      <td class='search-time'>{{query.when|date:"d/m/Y, H:i"}}</td>
+      <td class='results'>{{query.results_length}}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+
+  <div class="grid-row">
+    <div class="column-half">
+      <h2 class="heading-medium">Top terms in the last 30 days</h2>
+      <p>These are the most searched-for terms in the last 30 days which have returned any number of results.</p>
+      <table id="search-queries-top-30">
+        <tr>
+          <th>Search term</th>
+          <th>Number of searches</th>
+        </tr>
+        {% for query in top_searches %}
+        <tr>
+          <td class='search-term'>{{query.term__query}}</td>
+          <td class='results'>{{query.total_searches}}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+    <div class="column-half">
+      <h2 class="heading-medium">Top unfulfilled terms in the last 30 days</h2>
+      <p>These are the most searched-for terms in the last 30 days which have returned no results.</p>
+      <table id="search-unfulfilled-queries-top-30">
+        <tr>
+          <th>Search term</th>
+          <th>Number of searches</th>
+        </tr>
+        {% for query in top_unfulfilled_searches %}
+        <tr>
+          <td class='search-term'>{{query.term__query}}</td>
+          <td class='results'>{{query.total_searches}}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+
+{% endblock %}
