@@ -13,6 +13,31 @@
       </p>
 
       {% include "includes/team_list.html" with teams=object_list show_organisation=True %}
+
+      <hr />
+
+      {% if paginator.num_pages > 1 %}
+        <ol class="pagination">
+          {% if page_obj.has_previous %}
+              <li><a class="button" id="page-link-prev" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+          {% else %}
+              <li><span class="button button-disabled">Previous</span></li>
+          {% endif %}
+          {% for page in paginator.page_range %}
+            {% if page == page_obj.number %}
+              <li><span class="button button-disabled">{{ page }}</span></li>
+            {% else %}
+              <li><a href='?page={{ page }}' class="button">{{ page }}</a></li>
+            {% endif %}
+          {% endfor %}
+          {% if page_obj.has_next %}
+              <li><a class="button" id="page-link-next" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+          {% else %}
+              <li><span class="button button-disabled">Next</span></li>
+          {% endif %}
+        </ol>
+      {% endif %}
+      
     {% else %}
       <div class="alert-summary" role="group">
         <h3 class="heading-medium alert-summary-heading">No organisations added yet.</h3>
