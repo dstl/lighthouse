@@ -3,93 +3,89 @@
 
 {% block grid_content %}
 <div class="grid-row">
-	<div class="column-two-thirds">
-
-    <h1 class="form-title heading-xlarge">
-      <span class="heading-secondary">Tool</span>
-      {{link.name}}
-    </h1>
-
-    <div class="text">
-      <p class="lede">
-        {{link.description}}
-      </p>
-    </div>
-
-		<p>{{link.description}}</p>
+    <div class="column-two-thirds">
+        <h1 class="form-title heading-xlarge">
+          <span class="heading-secondary">Tool</span>
+          {{link.name}}
+        </h1>
         <div class="text">
-			<a id="link_follow_button" class="button button-start" href="{% url "link-redirect" link.pk %}" target="_blank">
-				Go to tool
-			</a>
-			<div class="link-aside">
-				<a href="{% url "link-redirect" link.pk %}" target="_blank">
-					{{link.destination}}
-				</a>
-				<span class="link-hint font-xsmall">(will open the tool in a new window)</span>
-			</div>
+          <p class="lede">
+            {{link.description}}
+          </p>
+        </div>
+        <div class="text">
+            <a id="link_follow_button" class="button button-start" href="{% url "link-redirect" link.pk %}" target="_blank">
+                Go to tool
+            </a>
+            <div class="link-aside">
+                <a href="{% url "link-redirect" link.pk %}" target="_blank">
+                    {{link.destination}}
+                </a>
+                <span class="link-hint font-xsmall">(will open the tool in a new window)</span>
+            </div>
         </div>
 
-		<h2 class="heading-large">Recent usage</h2>
-		<p id='usage-today'>Used <span class="stat-inline">{{link.usage_today}}</span> time{{ link.usage_today|pluralize }} today.</p>
-		<p id='usage-seven-days'>Used <span class="stat-inline">{{link.usage_past_seven_days}}</span> time{{ link.usage_past_seven_days|pluralize }} in the last seven days.</p>
-		<p id='usage-thirty-days'>Used <span class="stat-inline">{{link.usage_past_thirty_days}}</span> time{{ link.usage_past_thirty_days|pluralize }} in the last thirty days.</p>
-		<p>
-			View <a href='{% url "link-stats" pk=link.pk %}'>full usage stats</a>
-			for this tool.
-		</p>
-		<h3 class="heading-medium">Who uses this tool?</h3>
-		<p>
-			In the last 30 days, the tool has been used by the following people.
-		</p>
-		<ul id="usage-by-users">
-			{% for user in link.top_users_thirty_days|slice:":5" %}
-			<li><a href="{% url "user-detail" user.slug %}">{{user.username|default:user.slug}}</a> has used the tool {{user.link_usage_count}} times</li>
-			{% endfor %}
-		</ul>
+        <h3 class="heading-medium">Who uses this tool?</h3>
+        <p>
+            In the last 30 days, the tool has been used by the following people.
+        </p>
+        <ul id="usage-by-users">
+            {% for user in link.top_users_thirty_days|slice:":5" %}
+            <li><a href="{% url "user-detail" user.slug %}">{{user.username|default:user.slug}}</a> has used the tool {{user.link_usage_count}} times</li>
+            {% endfor %}
+        </ul>
 
-    <p>
-			In the last 30 days, the tool has been used by the following teams.
-		</p>
-		<ul id="usage-by-teams">
-			{% for t in link.top_teams_thirty_days|slice:":5" %}
+        <p>
+            In the last 30 days, the tool has been used by the following teams.
+        </p>
+        <ul id="usage-by-teams">
+            {% for t in link.top_teams_thirty_days|slice:":5" %}
         <li><a href="{% url "team-detail" t.team.pk %}">{{t.team.name}}</a> have collectively used the tool {{t.link_usage_count}} times</li>
-			{% endfor %}
-		</ul>
+            {% endfor %}
+        </ul>
 
-    <p>
-			In the last 30 days, the tool has been used by the following organisations.
-		</p>
-		<ul id="usage-by-organisations">
-			{% for o in link.top_organisations_thirty_days|slice:":5" %}
+        <p>
+            In the last 30 days, the tool has been used by the following organisations.
+        </p>
+        <ul id="usage-by-organisations">
+            {% for o in link.top_organisations_thirty_days|slice:":5" %}
         <li><a href="{% url "organisation-detail" o.organisation.pk %}">{{o.organisation.name}}</a> have collectively used the tool {{o.link_usage_count}} times</li>
-			{% endfor %}
-		</ul>
+            {% endfor %}
+        </ul>
 
-	</div>
-	<div class="column-third">
-		<h2 class="heading-large">Tool details</h2>
-		{% if link.is_external %}
-		<p id="link_owner">
-			{{link.name}} is an <strong id="is_external">external</strong> tool added by
-			<a href="{% url "user-detail" link.owner.slug %}">{{link.owner.username|default:link.owner.original_slug}}</a>.
-		</p>
-		{% else %}
-		<p id="link_owner">
-			{{link.name}} is an <strong id="is_external">internal</strong> tool owned by
-			<a href="{% url "user-detail" link.owner.slug %}">{{link.owner.username|default:link.owner.original_slug}}</a>.
-		</p>
-		{% endif %}
-		<h2 class="heading-large">Categories</h2>
-		{% if link.categories.count %}
-		<ul>
-		{% for category in link.categories.all %}
-			<li class="link-category">{{category|capfirst}}</li>
-		{% endfor %}
-		</ul>
-		{% else %}
-		<p>This link has not been categorised yet.</p>
-		{% endif %}
-	</div>
+    </div>
+    <div class="column-third">
+        <h2 class="heading-large">Tool details</h2>
+        {% if link.is_external %}
+        <span id="is_external" class="external is-external-label">External</span>
+        <p id="link_owner">
+            {{link.name}} was added by <a href="{% url "user-detail" link.owner.slug %}">{{link.owner.username|default:link.owner.original_slug}}</a>.
+        </p>
+        {% else %}
+        <span id="is_internal" class="internal is-internal-label">Internal</span>
+        <p id="link_owner">
+            {{link.name}} was created by <a href="{% url "user-detail" link.owner.slug %}">{{link.owner.username|default:link.owner.original_slug}}</a>.
+        </p>
+        {% endif %}
+        <h2 class="heading-medium">Categories</h2>
+        {% if link.categories.count %}
+        <ul>
+        {% for category in link.categories.all %}
+            <li class="link-category">{{category|capfirst}}</li>
+        {% endfor %}
+        </ul>
+        {% else %}
+        <p>This link has not been categorised yet.</p>
+        {% endif %}
+        <h2 class="heading-medium">Recent usage</h2>
+        <p id='usage-today'>Used <span class="stat-inline">{{link.usage_today}}</span> time{{ link.usage_today|pluralize }} today.</p>
+        <p id='usage-seven-days'>Used <span class="stat-inline">{{link.usage_past_seven_days}}</span> time{{ link.usage_past_seven_days|pluralize }} in the last seven days.</p>
+        <p id='usage-thirty-days'>Used <span class="stat-inline">{{link.usage_past_thirty_days}}</span> time{{ link.usage_past_thirty_days|pluralize }} in the last thirty days.</p>
+        <p>
+            View <a href='{% url "link-stats" pk=link.pk %}'>full usage stats</a>
+            for this tool.
+        </p>
+    </div>
 </div>
 
 {% endblock %}

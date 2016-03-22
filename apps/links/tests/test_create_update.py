@@ -47,7 +47,7 @@ class LinkTest(WebTest):
         form['is_external'].select('True')
         response = form.submit().follow()
         self.assertIn('Google', response.html.find('h1').text)
-        self.assertIn('external', response.html.find(id="is_external").text)
+        self.assertIn('External', response.html.find(id="is_external").text)
 
         self.assertIn(
             'Fake Fakerly',
@@ -79,7 +79,7 @@ class LinkTest(WebTest):
         form['is_external'].select('True')
         response = form.submit().follow()
         self.assertIn('Wikimapia', response.html.find('h1').text)
-        self.assertIn('external', response.html.find(id="is_external").text)
+        self.assertIn('External', response.html.find(id="is_external").text)
 
     def test_create_empty_link(self):
         form = self.app.get(reverse('link-create')).form
