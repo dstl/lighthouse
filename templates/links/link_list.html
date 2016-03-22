@@ -42,7 +42,6 @@
         <input class="form-control search-box" type='text' name='q' id='q' tabindex="1" autofocus="true" />
         <button class="button search-button" type="submit">Search</button>
       </form>
-      <script>document.forms['organisation_form'].elements['q'].focus()</script>
       {% if object_list %}
       <h2 id="tools-header" class="link-list-header heading-medium heading-snug-top">Showing page {{ page_obj.number }} of {{ paginator.num_pages }}</h2>
       {% else %}
