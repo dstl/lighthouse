@@ -30,6 +30,9 @@ class User(models.Model):
 
     teams = models.ManyToManyField(Team)
 
+    class Meta:
+        ordering = ["username", "original_slug"]
+
     def get_absolute_url(self):
         return reverse('user-detail', kwargs={'slug': self.slug})
 
