@@ -26,33 +26,48 @@
         </div>
 
         <h3 class="heading-medium">Who uses this tool?</h3>
-        <p>
-            In the last 30 days, the tool has been used by the following people.
-        </p>
-        <ul id="usage-by-users">
-            {% for user in link.top_users_thirty_days|slice:":5" %}
-            <li><a href="{% url "user-detail" user.slug %}">{{user.username|default:user.slug}}</a> has used the tool {{user.link_usage_count}} times</li>
-            {% endfor %}
-        </ul>
-
-        <p>
-            In the last 30 days, the tool has been used by the following teams.
-        </p>
-        <ul id="usage-by-teams">
-            {% for t in link.top_teams_thirty_days|slice:":5" %}
-        <li><a href="{% url "team-detail" t.team.pk %}">{{t.team.name}}</a> have collectively used the tool {{t.link_usage_count}} times</li>
-            {% endfor %}
-        </ul>
-
-        <p>
-            In the last 30 days, the tool has been used by the following organisations.
-        </p>
-        <ul id="usage-by-organisations">
-            {% for o in link.top_organisations_thirty_days|slice:":5" %}
-        <li><a href="{% url "organisation-detail" o.organisation.pk %}">{{o.organisation.name}}</a> have collectively used the tool {{o.link_usage_count}} times</li>
-            {% endfor %}
-        </ul>
-
+        {% if link.top_users_thirty_days %}
+            <p>
+                In the last thirty days, {{link.name}} has been used by the
+                following users, teams and organisations respectively.
+                <a href='{% url "link-stats" pk=link.pk %}'>Full usage stats</a>
+                are also available for this tool to view or download in CSV format.
+            </p>
+            <div class="grid-row">
+                <div class="column-third">
+                    <h3 class="heading-small">Users</h3>
+                    <ul id="usage-by-users">
+                        {% for user in link.top_users_thirty_days|slice:":5" %}
+                        <li class="usage-by-users-list-item"><a href="{% url "user-detail" user.slug %}">{{user.username|default:user.slug}}</a><span class="user-usage-count">{{user.link_usage_count}} time{{ user.link_usage_count|pluralize }}</span></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="column-two-thirds">
+                    <h3 class="heading-small">Teams</h3>
+                    {% if link.top_teams_thirty_days %}
+                    <ul id="usage-by-teams">
+                        {% for t in link.top_teams_thirty_days|slice:":5" %}
+                        <li><a href="{% url "team-detail" t.team.pk %}">{{t.team.name}}</a> have collectively used the tool <span class="team-org-usage-count">{{t.link_usage_count}} time{{ t.link_usage_count|pluralize }}</span></li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p>No usage has occurred by users from any team in the last 30 days.</p>
+                    {% endif %}
+                    <h3 class="heading-small">Organisations</h3>
+                    {% if link.top_organisations_thirty_days %}
+                    <ul id="usage-by-organisations">
+                        {% for o in link.top_organisations_thirty_days|slice:":5" %}
+                        <li><a href="{% url "organisation-detail" o.organisation.pk %}">{{o.organisation.name}}</a> have collectively used the tool <span class="team-org-usage-count">{{o.link_usage_count}} time{{ o.link_usage_count|pluralize }}</span></li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p>No usage has occurred by users from any organisation in the last 30 days.</p>
+                    {% endif %}
+                </div>
+            </div>
+        {% else %}
+        <p>In the last 30 days, {{link.name}} has not been used by any users.</p>
+        {% endif %}
     </div>
     <div class="column-third">
         <h2 class="heading-large">Tool details</h2>
