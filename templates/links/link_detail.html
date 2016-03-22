@@ -4,12 +4,18 @@
 {% block grid_content %}
 <div class="grid-row">
 	<div class="column-two-thirds">
-		<h1 class="heading-xlarge">{{link.name}}</h1>
-        <div class="text">
-          <p class="lede">
-            {{link.description}}
-          </p>
-        </div>
+
+    <h1 class="form-title heading-xlarge">
+      <span class="heading-secondary">Tool</span>
+      {{link.name}}
+    </h1>
+
+    <div class="text">
+      <p class="lede">
+        {{link.description}}
+      </p>
+    </div>
+
 		<p>{{link.description}}</p>
         <div class="text">
 			<a id="link_follow_button" class="button button-start" href="{% url "link-redirect" link.pk %}" target="_blank">

@@ -2,7 +2,9 @@
 {% extends "layout.html" %}
 
 {% block grid_content %}
-  <h1 class="heading-large">Search for tools</h1>
+
+  <h1 class="form-title heading-xlarge">Tools</h1>
+
   <form class="form-group two-thirds-inline-search-form" action='/search/' method='get'>
     <input class="form-control search-box" type="text" value="{{ form.q.value }}" name='q'>
     <button class="button search-button" type="submit">Search</button>

@@ -44,8 +44,8 @@ class OrganisationCreateWebTest(WebTest):
         org_name = response.html.find(
             'h1',
             attrs={'class': 'heading-xlarge'}
-        ).text
-        self.assertEquals(org_name, 'Organisation: org0001')
+        ).get_text(strip=True)
+        self.assertEquals(org_name, 'Organisationorg0001')
 
     def test_cannot_create_duplicate_organisation(self):
         #   Create and log in a user

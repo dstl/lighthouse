@@ -14,7 +14,9 @@ class LinkTest(WebTest):
         response = self.app.get(reverse('link-create'))
         form = response.form
 
-        self.assertEquals(response.html.h1.text, 'New tool')
+        self.assertEquals(
+            response.html.h1.get_text(strip=True), 'ToolAdd new tool'
+        )
 
         self.assertEquals(form['name'].value, '')
         self.assertEquals(form['description'].value, '')
@@ -65,8 +67,8 @@ class LinkTest(WebTest):
             reverse('link-edit', kwargs={'pk': existing_link.pk}))
         form = response.form
 
-        self.assertEquals(response.html.h1.text,
-                          'Edit %s' % existing_link.name)
+        self.assertEquals(response.html.h1.get_text(strip=True),
+                          'ToolEdit %s' % existing_link.name)
 
         self.assertEquals(form['name'].value, 'Wikimapia')
         self.assertEquals(form['description'].value,

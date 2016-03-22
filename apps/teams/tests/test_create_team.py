@@ -139,5 +139,5 @@ class TeamWebTest(WebTest):
         org_name = response.html.find(
             'h1',
             attrs={'class': 'heading-xlarge'}
-        ).text
-        self.assertEquals(org_name, 'Team: ' + team_name)
+        ).get_text(strip=True)
+        self.assertEquals(org_name, 'Team' + team_name)

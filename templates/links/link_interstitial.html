@@ -4,7 +4,12 @@
 {% block grid_content %}
 
 <main id="content" role="main">
-<h1 class="form-title heading-large">{{link.name}} is a tool hosted outside of the Dstl network</h1>
+
+  <h1 class="form-title heading-xlarge">
+    <span class="heading-secondary">Tool</span>
+    {{link.name}} is a tool hosted outside of the Dstl network
+  </h1>
+
 <p>
   By clicking the "Yes, take me" button below your browser will be redirected
   to <strong>{{link.destination}}</strong>.
