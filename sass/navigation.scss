@@ -5,3 +5,12 @@
 	  float:right;
 	}
 }
+
+.profile-prompt {
+	&-displayname {
+		color:$mellow-red;
+	}
+	&-details, &-team {
+		color:$orange;
+	}
+}

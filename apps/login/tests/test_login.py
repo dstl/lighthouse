@@ -22,12 +22,12 @@ class UserWebTest(WebTest):
         form['slug'] = 'user0001com'
         response = form.submit().follow()
 
-        #   Check that the error icon is being shown.
-        self.assertEquals(
+        #   Check that the add display name text is shown
+        self.assertIn(
+            'add a display name',
             response.html.find(
-                'img', attrs={'class': 'notification'}
-            ).attrs['src'],
-            '/static/assets/error-bell.png'
+                None, {"class": "user_id"}
+            ).text
         )
 
         #   Check that the link in the nav is heading to the right place
@@ -63,12 +63,12 @@ class UserWebTest(WebTest):
         form['slug'] = 'user0001com'
         response = form.submit().follow()
 
-        #   Check that the error icon is being shown.
-        self.assertEquals(
+        #   Check that the join a team text is shown
+        self.assertIn(
+            'join a team',
             response.html.find(
-                'img', attrs={'class': 'notification'}
-            ).attrs['src'],
-            '/static/assets/error-bell.png'
+                None, {"class": "user_id"}
+            ).text
         )
 
         #   Check that the link in the nav is heading to the right place
@@ -111,20 +111,20 @@ class UserWebTest(WebTest):
         form['slug'] = 'user0001com'
         response = form.submit().follow()
 
-        #   Check that the alert icon is being shown.
-        self.assertEquals(
+        #   Check that the add more details text is shown
+        self.assertIn(
+            'enter more details',
             response.html.find(
-                'img', attrs={'class': 'notification'}
-            ).attrs['src'],
-            '/static/assets/alert-bell.png'
+                None, {"class": "user_id"}
+            ).text
         )
 
         #   Check that the link in the nav is heading to the right place
-        self.assertEquals(
+        self.assertIn(
+            '/users/user0001com/update-profile',
             response.html.find(
                 'span', attrs={'data-slug': 'user0001com'}
             ).find('a').attrs['href'],
-            '/users/user0001com/update-profile'
         )
 
         #   Make sure we *don't* have an alert summary heading
@@ -165,7 +165,7 @@ class UserWebTest(WebTest):
         slug_link = slug_div.find('a')
         self.assertTrue(slug_link)
         slug_text = slug_link.text
-        self.assertEquals(slug_text, 'user@0001.com')
+        self.assertIn('user@0001.com', slug_text)
 
     #   Check that a link showing the user's username appears in the top nav
     #   bar
@@ -199,4 +199,4 @@ class UserWebTest(WebTest):
         slug_link = slug_div.find('a')
         self.assertTrue(slug_link)
         slug_text = slug_link.text
-        self.assertEquals(slug_text, 'User 0001')
+        self.assertIn('User 0001', slug_text)
