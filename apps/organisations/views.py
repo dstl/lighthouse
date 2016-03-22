@@ -10,6 +10,7 @@ from apps.access import LoginRequiredMixin
 
 class OrganisationList(LoginRequiredMixin, ListView):
     model = Organisation
+    paginate_by = 20
 
     #   We're also going to jam the for on the list view page.
     def get_context_data(self, **kwargs):
