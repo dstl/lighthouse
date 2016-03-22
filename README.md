@@ -30,6 +30,12 @@ Web application for finding useful tools, data and techniques
 
     ./manage.py test
 
+### API
+
+Lighthouse provides a (very) limited RESTful API. The documentation can be
+found in the repo under `apps/api/documentation` and linked from the footer
+in a running instance of the lighthouse code.
+
 ## Backup and restore
 
 All data in a running lighthouse instance is kept in PostgreSQL. To back up
