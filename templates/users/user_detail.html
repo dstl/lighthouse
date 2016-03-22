@@ -6,7 +6,10 @@
 <div class="grid-row">
   <div class="column-two-thirds">
 
-    <h1 class="form-title heading-xlarge">User: {{ user.username|default:user.original_slug }}</h1>
+    <h1 class="form-title heading-xlarge">
+      <span class="heading-secondary">User</span>
+      {{ user.username|default:user.original_slug }}
+    </h1>
 
     {% if user.best_way_to_find or user.best_way_to_contact or user.phone or user.email %}
       <p class="lede">

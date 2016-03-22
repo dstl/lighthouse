@@ -5,7 +5,11 @@
 
 <div class="grid-row">
   <div class="column-two-thirds">
-    <h1 class="form-title heading-xlarge">Organisation: {{organisation.name}}</h1>
+
+    <h1 class="form-title heading-xlarge">
+      <span class="heading-secondary">Organisation</span>
+      {{organisation.name}}
+    </h1>
 
     {% if teams %}
       <p class="lede">

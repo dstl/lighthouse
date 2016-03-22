@@ -160,8 +160,11 @@ class LinkUsageWebTest(WebTest):
         usage_today = response.html.find(id='usage-today').find(
             'span',
             {"class": "stat-inline"}
-        ).text
-        self.assertEquals(response.html.h1.text, 'Link Linkerly')
+        ).get_text(strip=True)
+        self.assertEquals(
+            response.html.h1.get_text(strip=True),
+            'ToolLink Linkerly'
+        )
         self.assertEquals(usage_today, '0')
 
         #   Check that this link *doesn't* appear in the 'top tools' widget
@@ -181,8 +184,11 @@ class LinkUsageWebTest(WebTest):
         usage_today = response.html.find(id='usage-today').find(
             'span',
             {"class": "stat-inline"}
-        ).text
-        self.assertEquals(response.html.h1.text, 'Link Linkerly')
+        ).get_text(strip=True)
+        self.assertEquals(
+            response.html.h1.get_text(strip=True),
+            'ToolLink Linkerly'
+        )
         self.assertEquals(usage_today, '1')
 
         #   Check that this link does appear in the 'top tools' widget
@@ -202,8 +208,11 @@ class LinkUsageWebTest(WebTest):
         usage_today = response.html.find(id='usage-today').find(
             'span',
             {"class": "stat-inline"}
-        ).text
-        self.assertEquals(response.html.h1.text, 'Other Link')
+        ).get_text(strip=True)
+        self.assertEquals(
+            response.html.h1.get_text(strip=True),
+            'ToolOther Link'
+        )
         self.assertEquals(usage_today, '0')
 
         #   Check that this link *doesn't* appear in the 'top tools' widget
@@ -223,8 +232,11 @@ class LinkUsageWebTest(WebTest):
         usage_today = response.html.find(id='usage-today').find(
             'span',
             {"class": "stat-inline"}
-        ).text
-        self.assertEquals(response.html.h1.text, 'Other Link')
+        ).get_text(strip=True)
+        self.assertEquals(
+            response.html.h1.get_text(strip=True),
+            'ToolOther Link'
+        )
         self.assertEquals(usage_today, '0')
 
         # clicking 'yes' on interstitial does register usage
@@ -235,8 +247,11 @@ class LinkUsageWebTest(WebTest):
         usage_today = response.html.find(id='usage-today').find(
             'span',
             {"class": "stat-inline"}
-        ).text
-        self.assertEquals(response.html.h1.text, 'Other Link')
+        ).get_text(strip=True)
+        self.assertEquals(
+            response.html.h1.get_text(strip=True),
+            'ToolOther Link'
+        )
         self.assertEquals(usage_today, '1')
 
         #   Check that this link does appear in the 'top tools' widget

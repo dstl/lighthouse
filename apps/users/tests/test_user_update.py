@@ -272,8 +272,11 @@ class UserWebTest(WebTest):
             kwargs={'slug': 'user0001com'}))
 
         self.assertEquals(
-            response.html.find('h1', attrs={'class': 'form-title'}).text,
-            'Update profile'
+            response.html.find(
+                'h1',
+                attrs={'class': 'form-title'}
+            ).get_text(strip=True),
+            'Update profileYour personal details'
         )
 
     def test_cant_see_other_update_profile_page(self):

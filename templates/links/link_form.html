@@ -3,9 +3,15 @@
 
 {% block grid_content %}
 {% if form.name.value %}
-<h1 class="form-title heading-xlarge">Edit {{ form.name.value }}</h1>
+  <h1 class="form-title heading-xlarge">
+    <span class="heading-secondary">Tool</span>
+    Edit {{ form.name.value }}
+  </h1>
 {% else %}
-<h1 class="form-title heading-xlarge">New tool</h1>
+  <h1 class="form-title heading-xlarge">
+    <span class="heading-secondary">Tool</span>
+    Add new tool
+  </h1>
 {% endif %}
 
 <form method="post" action="">

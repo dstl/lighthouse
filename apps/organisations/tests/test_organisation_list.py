@@ -27,8 +27,8 @@ class OrganisationListWebTest(WebTest):
         org_name = response.html.find(
             'h1',
             attrs={'class': 'heading-xlarge'}
-        ).text
-        self.assertEquals(org_name, 'Organisation: ' + o.name)
+        ).get_text(strip=True)
+        self.assertEquals(org_name, 'Organisation' + o.name)
 
     def test_show_number_of_teams_two(self):
         #   Create and log in a user
