@@ -3,6 +3,9 @@ from django.core.urlresolvers import reverse
 from apps.links.models import Link
 from .common import make_user, login_user
 from django_webtest import WebTest
+from datetime import datetime
+from unittest import mock
+from django.utils.timezone import make_aware
 
 
 class LinkTest(WebTest):
@@ -34,25 +37,36 @@ class LinkTest(WebTest):
         )
 
     def test_create_link_external(self):
-        form = self.app.get(reverse('link-create')).form
+        with mock.patch('django.utils.timezone.now') as mock_now:
+            mock_now.return_value = make_aware(datetime(2016, 3, 1, 10, 0, 0))
 
-        self.assertEquals(form['name'].value, '')
-        self.assertEquals(form['description'].value, '')
-        self.assertEquals(form['destination'].value, '')
-        self.assertEquals(form['categories'].value, '')
-        self.assertEqual(form['is_external'].value, 'False')
+            form = self.app.get(reverse('link-create')).form
 
-        form['name'] = 'Google'
-        form['destination'] = 'https://google.com'
-        form['is_external'].select('True')
-        response = form.submit().follow()
-        self.assertIn('Google', response.html.find('h1').text)
-        self.assertIn('External', response.html.find(id="is_external").text)
+            self.assertEquals(form['name'].value, '')
+            self.assertEquals(form['description'].value, '')
+            self.assertEquals(form['destination'].value, '')
+            self.assertEquals(form['categories'].value, '')
+            self.assertEqual(form['is_external'].value, 'False')
 
-        self.assertIn(
-            'Fake Fakerly',
-            response.html.find(id='link_owner').text,
-        )
+            form['name'] = 'Google'
+            form['destination'] = 'https://google.com'
+            form['is_external'].select('True')
+            response = form.submit().follow()
+            self.assertIn('Google', response.html.find('h1').text)
+            self.assertIn(
+                'External',
+                response.html.find(id="is_external").text
+            )
+
+            self.assertIn(
+                '01/03/2016',
+                response.html.find(id="date_added").text
+            )
+
+            self.assertIn(
+                'Fake Fakerly',
+                response.html.find(id='link_owner').text,
+            )
 
     def test_update_link_external(self):
         existing_link = Link(

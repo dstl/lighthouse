@@ -32,6 +32,7 @@ class Link(models.Model):
         on_delete=models.PROTECT
     )
     categories = TaggableManager(blank=True)
+    added = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     def get_absolute_url(self):
         return reverse('link-detail', kwargs={'pk': self.pk})

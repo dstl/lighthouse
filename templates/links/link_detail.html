@@ -56,6 +56,9 @@
     </div>
     <div class="column-third">
         <h2 class="heading-large">Tool details</h2>
+        {% if link.added %}
+        <p>Added on <span id="date_added">{{link.added|date:"d/m/Y"}}</span></p>
+        {% endif %}
         {% if link.is_external %}
         <span id="is_external" class="external is-external-label">External</span>
         <p id="link_owner">
