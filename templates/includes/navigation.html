@@ -1,27 +1,28 @@
 {# (c) Crown Owned Copyright, 2016. Dstl. #}
 <div class="header-proposition" style="position:relative">
-  <div id="user-details">
-    {% if request.user.is_authenticated %}
-      {% if request.user.username %}
-        {% include "includes/navigation_user_link.html" with display_name=request.user.username no_username=False %}
-      {% else %}
-        {% include "includes/navigation_user_link.html" with display_name=request.user.original_slug no_username=True %}
-      {% endif %}
-    {% else %}
-      <a href="{% url 'login-view' %}">Login</a>
-    {% endif %}
-  </div>
   <div class="content">
     <nav id="proposition-menu">
+      <div id="user-details">
+        {% if request.user.is_authenticated %}
+          {% if request.user.username %}
+            {% include "includes/navigation_user_link.html" with display_name=request.user.username no_username=False %}
+          {% else %}
+            {% include "includes/navigation_user_link.html" with display_name=request.user.original_slug no_username=True %}
+          {% endif %}
+        {% else %}
+          <a href="{% url 'login-view' %}">Login</a>
+        {% endif %}
+      </div>
+
       <a href="/" id="proposition-name">Lighthouse</a>
 
       {% if request.user.is_authenticated %}
-        <ul id="proposition-links">
+        <ul class="navigation-menu" id="proposition-links">
           <li><a href="{% url 'link-list' %}">All tools</a></li>
-          <li><a href="{% url 'user-list' %}">All users</a></li>
           <li><a href="{% url 'link-create' %}">Add a new tool</a></li>
-          <li><a href="{% url 'link-overall-stats' %}">Tool stats</a></li>
-          <li><a href="{% url 'search-stats' %}">Search stats</a></li>
+          <li><a href="{% url 'user-list' %}">All users</a></li>
+          <li class="pull-right"><a href="{% url 'link-overall-stats' %}">Tool stats</a></li>
+          <li class="pull-right"><a href="{% url 'search-stats' %}">Search stats</a></li>
         </ul>
       {% endif %}
       

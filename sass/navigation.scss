@@ -1,0 +1,16 @@
+// (c) Crown Owned Copyright, 2016. Dstl.
+
+#global-header .header-proposition #proposition-links {
+	li.pull-right {
+	  float:right;
+	}
+}
+
+.profile-prompt {
+	&-displayname {
+		color:$mellow-red;
+	}
+	&-details, &-team {
+		color:$orange;
+	}
+}
