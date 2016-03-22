@@ -29,9 +29,9 @@
     {% if request.user.slug %}
     <hr />
     {% if team_member %}
-      <a href="{% url "team-leave" team.pk %}" class="button">Leave Team</a>
+      <a href="{% url "team-leave" team.pk %}" class="button">Leave team</a>
     {% else %}
-      <a href="{% url "team-join" team.pk %}" class="button">Join Team</a>
+      <a href="{% url "team-join" team.pk %}" class="button">Join team</a>
     {% endif %}
     {% endif %}
 
