@@ -34,16 +34,21 @@
     @extend .tag;
     white-space: nowrap;
   }
+}
 
-  .internal {
-    @extend .tag;
-    color: fade-out($purple, 0.25);
-  }
-
-  .external {
+.is-external-label {
     @extend .tag;
     color: fade-out($red, 0.25);
-  }
+}
+
+.is-internal-label {
+  @extend .tag;
+  color: fade-out($purple, 0.25);
+}
+
+.category-label {
+  @extend .tag;
+  display:inline-block;
 }
 
 ul.team-list,
