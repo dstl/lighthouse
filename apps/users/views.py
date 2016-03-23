@@ -100,6 +100,24 @@ class UserUpdateProfile(LoginRequiredMixin, UpdateView):
 
         context['organisations'] = Organisation.objects.all()
 
+        #   Work out which field we want to focus the user on, by starting
+        #   with the least significant first and working up.
+        context['highlight_field'] = 'id_username'
+        if (self.request.user.email is None or self.request.user.email == ''):
+            context['highlight_field'] = 'id_email'
+        if (self.request.user.phone is None or self.request.user.phone == ''):
+            context['highlight_field'] = 'id_phone'
+        if (self.request.user.best_way_to_contact is None or
+                self.request.user.best_way_to_contact == ''):
+            context['highlight_field'] = 'id_best_way_to_contact'
+        if (self.request.user.best_way_to_find is None or
+                self.request.user.best_way_to_find == ''):
+            context['highlight_field'] = 'id_best_way_to_find'
+        if (self.request.user.username is None or
+                self.request.user.username == ''):
+            context['highlight_field'] = 'id_username'
+
+        #
         return context
 
     #   Once we've updated the details, go to user profile page

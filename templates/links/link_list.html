@@ -42,7 +42,7 @@
     </div>
     <div class="column-two-thirds">
       <form class="form-group two-thirds-inline-search-form" action='/search/' method='get'>
-        <input class="form-control search-box" type='text' name='q'>
+        <input class="form-control search-box" type='text' name='q' id='q' tabindex="1" autofocus="true" />
         <button class="button search-button" type="submit">Search</button>
       </form>
       {% if object_list %}

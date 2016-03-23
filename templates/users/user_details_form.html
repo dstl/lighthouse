@@ -62,7 +62,8 @@
       {% endfor %}
     </ul>
     {% endif %}
-    <input class="form-control" id="{{ form.username.id_for_label }}" value="{{ form.username.value|default_if_none:"" }}" maxlength="256" name="username" type="text" />
+    <input class="form-control" id="{{ form.username.id_for_label }}" value="{{ form.username.value|default_if_none:"" }}" maxlength="256" name="username" type="text"{% if highlight_field ==  form.username.id_for_label %} tabindex="1" autofocus="true"{% endif %} />
+
   </div>
 
   <div class="form-group {% if show_extra_details_alert %}alert{% endif %}">
@@ -88,7 +89,7 @@
         {% endfor %}
       </ul>
       {% endif %}
-      <textarea class="form-control" id="{{ form.best_way_to_find.id_for_label }}" maxlength="1024" name="best_way_to_find">{{ form.best_way_to_find.value|default_if_none:"" }}</textarea>
+      <textarea class="form-control" id="{{ form.best_way_to_find.id_for_label }}" maxlength="1024" name="best_way_to_find"{% if highlight_field ==  form.best_way_to_find.id_for_label %} tabindex="1" autofocus="true"{% endif %}>{{ form.best_way_to_find.value|default_if_none:"" }}</textarea>
     </p>
 
     <p>
@@ -102,7 +103,7 @@
         {% endfor %}
       </ul>
       {% endif %}
-      <textarea class="form-control" id="{{ form.best_way_to_contact.id_for_label }}" maxlength="1024" name="best_way_to_contact">{{ form.best_way_to_contact.value|default_if_none:"" }}</textarea>
+      <textarea class="form-control" id="{{ form.best_way_to_contact.id_for_label }}" maxlength="1024" name="best_way_to_contact"{% if highlight_field ==  form.best_way_to_contact.id_for_label %} tabindex="1" autofocus="true"{% endif %}>{{ form.best_way_to_contact.value|default_if_none:"" }}</textarea>
     </p>
 
     <p>
@@ -116,7 +117,7 @@
         {% endfor %}
       </ul>
       {% endif %}
-      <input class="form-control" id="{{ form.phone.id_for_label }}" value="{{ form.phone.value|default_if_none:"" }}" maxlength="256" name="phone" type="text" />
+      <input class="form-control" id="{{ form.phone.id_for_label }}" value="{{ form.phone.value|default_if_none:"" }}" maxlength="256" name="phone" type="text"{% if highlight_field ==  form.phone.id_for_label %} tabindex="1" autofocus="true"{% endif %} />
     </p>
 
     <p>
@@ -130,7 +131,7 @@
         {% endfor %}
       </ul>
       {% endif %}
-      <input class="form-control" id="{{ form.email.id_for_label }}" value="{{ form.email.value|default_if_none:"" }}" maxlength="256" name="email" type="text" />
+      <input class="form-control" id="{{ form.email.id_for_label }}" value="{{ form.email.value|default_if_none:"" }}" maxlength="256" name="email" type="text"{% if highlight_field ==  form.email.id_for_label %} tabindex="1" autofocus="true"{% endif %} />
     </p>
   </div>
 
@@ -139,5 +140,4 @@
     <input type="submit" name="submit_action" value="Save and finish" class="button" />
   {% endif %}
 </form>
-
 {% endblock %}
