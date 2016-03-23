@@ -14,6 +14,10 @@
   </h1>
 {% endif %}
 
+<p class="lede">
+  Please provide as much information as possible so other people will easily be able to understand what this tool does and why it's useful.
+</p>
+
 <form method="post" action="">
   {% if form.errors %}
   <div class="error-summary">
@@ -159,7 +163,7 @@
     <input class="form-control" id="{{ form.destination.id_for_label }}" value="{{ form.destination.value|default_if_none:"" }}" maxlength="2000" name="destination" type="url" />
   </div>
 
-  <input type="submit" method="POST" value="Save bookmark" class="button" />
+  <input type="submit" method="POST" value="Save tool" class="button" />
 </form>
 
 {% endblock %}
