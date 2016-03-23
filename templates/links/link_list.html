@@ -63,7 +63,7 @@
               <span class="internal is-external-label">Internal</span>
               {% endif %}
               {% for category in link.categories.all %}
-              <a class="category-label">{{ category|capfirst }}</a>
+              <a id="link_{{link.id}}_cat_{{category.name}}" href="?categories={{category.name}}" class="category-label">{{ category|capfirst }}</a>
               {% endfor %}
             </span>
           </li>
