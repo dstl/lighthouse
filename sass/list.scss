@@ -29,11 +29,6 @@
 
 .categories {
   display: block;
-
-  a {
-    @extend .tag;
-    white-space: nowrap;
-  }
 }
 
 .is-external-label {

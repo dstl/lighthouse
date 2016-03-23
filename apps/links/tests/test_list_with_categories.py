@@ -185,3 +185,61 @@ class ListLinksWithCategoriesTest(WebTest):
 
         self.assertTrue(form.get('categories', index=0).checked)
         self.assertTrue(form.get('categories', index=2).checked)
+
+        return response
+
+    def test_categories_in_list_item(self):
+        response = self.test_filter_by_multiple_categories()
+
+        # el6
+        first_result = response.html.findAll(
+            'li', {'class': 'link-list-item'}
+        )[0]
+        first_category_labels = first_result.findAll(
+            None, {'class': 'category-label'}
+        )
+        self.assertEquals(
+            2, len(first_category_labels)
+        )
+        self.assertIn('Mapping', first_result.text)
+        self.assertIn('Geospatial', first_result.text)
+
+        # el4
+        second_result = response.html.findAll(
+            'li', {'class': 'link-list-item'}
+        )[1]
+        second_category_labels = second_result.findAll(
+            None, {'class': 'category-label'}
+        )
+        self.assertEquals(
+            1, len(second_category_labels)
+        )
+        self.assertIn('Geospatial', second_result.text)
+
+        # el2
+        third_result = response.html.findAll(
+            'li', {'class': 'link-list-item'}
+        )[2]
+
+        third_category_labels = third_result.findAll(
+            None, {'class': 'category-label'}
+        )
+
+        self.assertEquals(
+            1, len(third_category_labels)
+        )
+        self.assertIn('Mapping', third_result.text)
+
+        # el1
+        final_result = response.html.findAll(
+            'li', {'class': 'link-list-item'}
+        )[3]
+
+        final_category_labels = final_result.findAll(
+            None, {'class': 'category-label'}
+        )
+
+        self.assertEquals(
+            2, len(final_category_labels)
+        )
+        self.assertIn('Social', final_result.text)

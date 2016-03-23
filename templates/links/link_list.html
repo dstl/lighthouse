@@ -62,6 +62,9 @@
               {% else %}
               <span class="internal is-external-label">Internal</span>
               {% endif %}
+              {% for category in link.categories.all %}
+              <a class="category-label">{{ category|capfirst }}</a>
+              {% endfor %}
             </span>
           </li>
         {% endfor %}
