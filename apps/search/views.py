@@ -1,3 +1,4 @@
+# (c) Crown Owned Copyright, 2016. Dstl.
 import csv
 from datetime import timedelta
 

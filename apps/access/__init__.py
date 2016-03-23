@@ -1,3 +1,4 @@
+# (c) Crown Owned Copyright, 2016. Dstl.
 # TODO
 # This is borrowed from django 1.9 and can be removed when either:
 # - haystack supports django 1.9
