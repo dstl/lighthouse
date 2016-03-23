@@ -1,10 +1,21 @@
 {# (c) Crown Owned Copyright, 2016. Dstl. #}
 <div class="side-element-holder" id="teams-holder">
-  <h2 class="heading-medium">"Top" Teams</h2>
+  <h2 class="heading-large">Teams</h2>
   {% if top_teams %}
+    <p>
+      {% if top_teams.count > 20 %}
+        Here are the 20 teams with the most members.
+      {% else %}
+        {% if top_teams.count == 1 %}
+          Here is the largest team.
+        {% else %}
+          Here are the {{top_teams.count}} teams with the most members.
+        {% endif %}
+      {% endif %}
+    </p>
     <ul class="list list-bullet">
       {% for team in top_teams|slice:":20" %}
-        <li><a class="main-list-item" href='{% url "team-detail" team.pk %}'>{{team.name}}</a> ({{team.user_set.all|length}})</li>
+        <li><a class="main-list-item" href='{% url "team-detail" team.pk %}'>{{team.name}}</a>, {{team.user_set.all|length}} member{{ team.user_set.all|length|pluralize }}</li>
       {% endfor %}
     </ul>
     {% if top_teams.count > 20 %}

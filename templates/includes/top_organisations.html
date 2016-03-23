@@ -1,13 +1,24 @@
 {# (c) Crown Owned Copyright, 2016. Dstl. #}
 <div class="side-element-holder" id="organisations-holder">
-  <h2 class="heading-medium">"Top" Organisations</h2>
+  <h2 class="heading-large">Organisations</h2>
   {% if top_organisations %}
+    <p>
+      {% if top_organisations.count > 10 %}
+        Here are the 10 organisations with the most teams.
+      {% else %}
+        {% if top_organisations.count == 1 %}
+          Here is the organisation with the most teams.
+        {% else %}
+          Here are the {{top_organisations.count}} organisations with the most teams.
+        {% endif %}
+      {% endif %}
+    </p>
     <ul class="list list-bullet">
-      {% for organisation in top_organisations|slice:":20" %}
-        <li><a class="main-list-item" href='{% url "organisation-detail" organisation.pk %}'>{{organisation.name}}</a> ({{organisation.team_set.all|length}})</li>
+      {% for organisation in top_organisations|slice:":10" %}
+        <li><a class="main-list-item" href='{% url "organisation-detail" organisation.pk %}'>{{organisation.name}}</a>, {{organisation.team_set.all|length}} team{{ organisation.team_set.all|length|pluralize }}</li>
       {% endfor %}
     </ul>
-    {% if top_organisations.count > 20 %}
+    {% if top_organisations.count > 10 %}
       <a href="{% url "organisation-list" %}">See all organisations</a>
     {% endif %}
   {% else %}
@@ -16,3 +27,4 @@
     </p>
   {% endif %}
 </div>
+Here are the three organisations with the most teams
