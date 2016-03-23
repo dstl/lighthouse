@@ -31,17 +31,17 @@
   display: block;
 }
 
-.is-external-label {
+.is-external-label, a.is-external-label {
     @extend .tag;
     color: fade-out($red, 0.25);
 }
 
-.is-internal-label {
+.is-internal-label, a.is-internal-label {
   @extend .tag;
   color: fade-out($purple, 0.25);
 }
 
-.category-label {
+.category-label, a.category-label {
   @extend .tag;
   display:inline-block;
 }

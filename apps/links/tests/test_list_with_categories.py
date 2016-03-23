@@ -15,6 +15,13 @@ class ListLinksWithCategoriesTest(WebTest):
             count=6
         )
 
+        self.el7, = generate_fake_links(
+            self.logged_in_user,
+            start=7,
+            count=1,
+            is_external=True,
+        )
+
         self.el1.categories.add('mapping')
         self.el1.categories.add('social')
         self.el1.save()
@@ -77,6 +84,8 @@ class ListLinksWithCategoriesTest(WebTest):
         assert 'Social' in socialLbl.text
         assert 'Geospatial' in geoLbl.text
         assert 'Imagery' in imageryLbl.text
+
+        return response
 
     def test_filter_by_single_category(self):
 
@@ -268,6 +277,108 @@ class ListLinksWithCategoriesTest(WebTest):
         self.assertIsNotNone(socialCheckbox)
         self.assertEquals(socialCheckbox.attrs['value'], 'social')
         self.assertTrue('checked' in socialCheckbox.attrs)
+
+        geoLbl = filterEl.find(attrs={'for': 'categories-filter-geospatial'})
+        geoCheckbox = filterEl.find(id='categories-filter-geospatial')
+        self.assertIsNotNone(geoLbl)
+        self.assertIsNotNone(geoCheckbox)
+        self.assertEquals(geoCheckbox.attrs['value'], 'geospatial')
+        self.assertFalse('checked' in geoCheckbox.attrs)
+
+        imageryLbl = filterEl.find(attrs={'for': 'categories-filter-imagery'})
+        imageryCheckbox = filterEl.find(id='categories-filter-imagery')
+        self.assertIsNotNone(imageryLbl)
+        self.assertIsNotNone(imageryCheckbox)
+        self.assertEquals(imageryCheckbox.attrs['value'], 'imagery')
+        self.assertFalse('checked' in imageryCheckbox.attrs)
+
+    def test_internal_click_to_filter(self):
+        response = self.test_filter_by_multiple_categories()
+
+        link_id = "link_%s_internal" % self.el1.id
+
+        response = response.click(linkid=link_id)
+
+        filterEl = response.html.find(id='categories-filter')
+
+        internalLbl = filterEl.find(attrs={'for': 'types-filter-internal'})
+        internalCheckbox = filterEl.find(id='types-filter-internal')
+        self.assertIsNotNone(internalLbl)
+        self.assertIsNotNone(internalCheckbox)
+        self.assertEquals(internalCheckbox.attrs['value'], 'internal')
+        self.assertTrue('checked' in internalCheckbox.attrs)
+
+        externalLbl = filterEl.find(attrs={'for': 'types-filter-external'})
+        externalCheckbox = filterEl.find(id='types-filter-external')
+        self.assertIsNotNone(externalLbl)
+        self.assertIsNotNone(externalCheckbox)
+        self.assertEquals(externalCheckbox.attrs['value'], 'external')
+        self.assertFalse('checked' in externalCheckbox.attrs)
+
+        mappingLbl = filterEl.find(attrs={'for': 'categories-filter-mapping'})
+        mappingCheckbox = filterEl.find(id='categories-filter-mapping')
+        self.assertIsNotNone(mappingLbl)
+        self.assertIsNotNone(mappingCheckbox)
+        self.assertEquals(mappingCheckbox.attrs['value'], 'mapping')
+        self.assertFalse('checked' in mappingCheckbox.attrs)
+
+        socialLbl = filterEl.find(attrs={'for': 'categories-filter-social'})
+        socialCheckbox = filterEl.find(id='categories-filter-social')
+        self.assertIsNotNone(socialLbl)
+        self.assertIsNotNone(socialCheckbox)
+        self.assertEquals(socialCheckbox.attrs['value'], 'social')
+        self.assertFalse('checked' in socialCheckbox.attrs)
+
+        geoLbl = filterEl.find(attrs={'for': 'categories-filter-geospatial'})
+        geoCheckbox = filterEl.find(id='categories-filter-geospatial')
+        self.assertIsNotNone(geoLbl)
+        self.assertIsNotNone(geoCheckbox)
+        self.assertEquals(geoCheckbox.attrs['value'], 'geospatial')
+        self.assertFalse('checked' in geoCheckbox.attrs)
+
+        imageryLbl = filterEl.find(attrs={'for': 'categories-filter-imagery'})
+        imageryCheckbox = filterEl.find(id='categories-filter-imagery')
+        self.assertIsNotNone(imageryLbl)
+        self.assertIsNotNone(imageryCheckbox)
+        self.assertEquals(imageryCheckbox.attrs['value'], 'imagery')
+        self.assertFalse('checked' in imageryCheckbox.attrs)
+
+    def test_external_click_to_filter(self):
+        response = self.test_all_categories_appear()
+
+        link_id = "link_%s_external" % self.el7.id
+
+        response = response.click(linkid=link_id)
+
+        filterEl = response.html.find(id='categories-filter')
+
+        internalLbl = filterEl.find(attrs={'for': 'types-filter-internal'})
+        internalCheckbox = filterEl.find(id='types-filter-internal')
+        self.assertIsNotNone(internalLbl)
+        self.assertIsNotNone(internalCheckbox)
+        self.assertEquals(internalCheckbox.attrs['value'], 'internal')
+        self.assertFalse('checked' in internalCheckbox.attrs)
+
+        externalLbl = filterEl.find(attrs={'for': 'types-filter-external'})
+        externalCheckbox = filterEl.find(id='types-filter-external')
+        self.assertIsNotNone(externalLbl)
+        self.assertIsNotNone(externalCheckbox)
+        self.assertEquals(externalCheckbox.attrs['value'], 'external')
+        self.assertTrue('checked' in externalCheckbox.attrs)
+
+        mappingLbl = filterEl.find(attrs={'for': 'categories-filter-mapping'})
+        mappingCheckbox = filterEl.find(id='categories-filter-mapping')
+        self.assertIsNotNone(mappingLbl)
+        self.assertIsNotNone(mappingCheckbox)
+        self.assertEquals(mappingCheckbox.attrs['value'], 'mapping')
+        self.assertFalse('checked' in mappingCheckbox.attrs)
+
+        socialLbl = filterEl.find(attrs={'for': 'categories-filter-social'})
+        socialCheckbox = filterEl.find(id='categories-filter-social')
+        self.assertIsNotNone(socialLbl)
+        self.assertIsNotNone(socialCheckbox)
+        self.assertEquals(socialCheckbox.attrs['value'], 'social')
+        self.assertFalse('checked' in socialCheckbox.attrs)
 
         geoLbl = filterEl.find(attrs={'for': 'categories-filter-geospatial'})
         geoCheckbox = filterEl.find(id='categories-filter-geospatial')
