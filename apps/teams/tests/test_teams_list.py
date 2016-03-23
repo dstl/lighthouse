@@ -124,14 +124,13 @@ class TeamWebTest(WebTest):
             len(user_items),
             2
         )
-
         self.assertIn(
-            'teammember1',
+            'steve',
             user_items[0].text
         )
 
         self.assertIn(
-            'steve',
+            'teammember1',
             user_items[1].text
         )
 
