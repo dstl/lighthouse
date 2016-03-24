@@ -1,14 +1,13 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
 
 import csv
-
 from datetime import datetime
 from unittest import mock
 
 from django.core.urlresolvers import reverse
+from django.utils.timezone import make_aware
 
 from django_webtest import WebTest
-from django.utils.timezone import make_aware
 
 from ..models import Link
 from .common import make_user, login_user

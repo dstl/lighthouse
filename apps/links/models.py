@@ -1,16 +1,16 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
 
-import json
-
 from datetime import timedelta
 from dateutil.relativedelta import relativedelta, MO
+import json
 
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils import timezone
 
-from apps.users.models import User
 from taggit.managers import TaggableManager
+
+from apps.users.models import User
 
 
 class LinkUsage(models.Model):

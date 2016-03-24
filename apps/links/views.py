@@ -3,10 +3,10 @@
 import csv
 
 from django import forms
-
-from apps.access import LoginRequiredMixin
+from django.core.urlresolvers import reverse
 from django.db.models import Count
 from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import redirect
 from django.utils import timezone
 from django.utils.text import slugify
 from django.views.generic import (
@@ -16,12 +16,11 @@ from django.views.generic import (
     UpdateView,
     View,
 )
+
 from taggit.models import Tag
 
-from django.shortcuts import redirect
-from django.core.urlresolvers import reverse
-
 from .models import Link, LinkUsage
+from apps.access import LoginRequiredMixin
 
 
 class LinkDetail(DetailView):

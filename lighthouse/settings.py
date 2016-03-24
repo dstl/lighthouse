@@ -38,6 +38,7 @@ else:
 
 # Application definition
 INSTALLED_APPS = [
+    # django provided
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,22 +46,22 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # third party
+    'compressor',
     'haystack',
-    'apps.access',
-    'apps.home',
-    'apps.login',
-    'apps.links',
-    'apps.organisations',
-    'apps.teams',
-    'apps.users',
-    'apps.govuk_template',
-    'apps.search',
-
     'taggit',
 
-    'compressor',
-
+    # this project
     'acceptancetests',
+    'apps.access',
+    'apps.govuk_template',
+    'apps.home',
+    'apps.links',
+    'apps.login',
+    'apps.organisations',
+    'apps.search',
+    'apps.teams',
+    'apps.users',
 ]
 
 MIDDLEWARE_CLASSES = [

@@ -1,11 +1,13 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
-# apps/staticpages/views.py
-from django.views.generic.base import TemplateView
-from django.conf import settings
-from django.http import Http404
-import markdown
+
 import codecs
 import os
+
+from django.conf import settings
+from django.http import Http404
+from django.views.generic.base import TemplateView
+
+import markdown
 
 
 class StaticPageViewBase(TemplateView):

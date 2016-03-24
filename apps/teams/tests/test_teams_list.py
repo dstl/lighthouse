@@ -1,12 +1,15 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
-# apps/teams/tests.py
-from django.core.urlresolvers import reverse
-from django_webtest import WebTest
+
 import re
-from apps.teams.models import Team
-from apps.organisations.models import Organisation
-from apps.users.models import User
+
+from django.core.urlresolvers import reverse
+
+from django_webtest import WebTest
+
 from .common import create_team
+from apps.organisations.models import Organisation
+from apps.teams.models import Team
+from apps.users.models import User
 
 
 class TeamWebTest(WebTest):

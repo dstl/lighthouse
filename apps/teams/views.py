@@ -1,15 +1,15 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
-# apps/teams/views.py
+
+from django.core.urlresolvers import reverse
+from django.db import IntegrityError
+from django.shortcuts import redirect
 from django.views.generic import CreateView, DetailView, ListView
 from django.views.generic.base import TemplateView
-from django.core.urlresolvers import reverse
-from django.shortcuts import redirect
-from django.db import IntegrityError
-from apps.access import LoginRequiredMixin
 
-from .models import Team
-from apps.organisations.models import Organisation
 from .forms import TeamForm
+from .models import Team
+from apps.access import LoginRequiredMixin
+from apps.organisations.models import Organisation
 
 
 class TeamList(LoginRequiredMixin, ListView):

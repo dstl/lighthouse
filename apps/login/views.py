@@ -1,11 +1,13 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
+
+from django.contrib.auth import authenticate, login, logout
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
-from django.core.urlresolvers import reverse
-from django.views.generic.base import TemplateView, View
-from apps.users.models import User
-from django.contrib.auth import authenticate, login, logout
 from django.utils.text import slugify
+from django.views.generic.base import TemplateView, View
+
+from apps.users.models import User
 
 
 #   This is the function that actually logs a user in, if they exists then

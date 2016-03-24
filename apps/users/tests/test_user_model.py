@@ -1,10 +1,11 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
-from django.test import TestCase
-from django.db.utils import IntegrityError
 
-from apps.users.models import User
-from apps.teams.models import Team
+from django.db.utils import IntegrityError
+from django.test import TestCase
+
 from apps.organisations.models import Organisation
+from apps.teams.models import Team
+from apps.users.models import User
 
 
 class UserTest(TestCase):

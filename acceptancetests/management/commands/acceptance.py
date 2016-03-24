@@ -1,8 +1,10 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
-from django.core.management.base import BaseCommand
+
 from os import path
-import unittest
 import sys
+import unittest
+
+from django.core.management.base import BaseCommand
 
 
 def thisDir():

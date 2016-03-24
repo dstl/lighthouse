@@ -1,12 +1,15 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
+
 import csv
 from datetime import timedelta
 
-from haystack.views import SearchView
-from django.views.generic import ListView, View
-from django.http import HttpResponse
 from django.db.models import Count
+from django.http import HttpResponse
 from django.utils import timezone
+from django.views.generic import ListView, View
+
+from haystack.views import SearchView
+
 from .models import SearchQuery, SearchTerm
 
 
