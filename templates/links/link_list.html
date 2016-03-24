@@ -58,10 +58,13 @@
             <p>{{ link.description }}</p>
             <span class="categories">
               {% if link.is_external %}
-              <span class="external is-external-label">External</span>
+              <a id="link_{{link.id}}_external" href="?types=external" class="external is-external-label">External</a>
               {% else %}
-              <span class="internal is-external-label">Internal</span>
+              <a id="link_{{link.id}}_internal" href="?types=internal" class="internal is-external-label">Internal</a>
               {% endif %}
+              {% for category in link.categories.all %}
+              <a id="link_{{link.id}}_cat_{{category.name}}" href="?categories={{category.name}}" class="category-label">{{ category|capfirst }}</a>
+              {% endfor %}
             </span>
           </li>
         {% endfor %}
