@@ -17,10 +17,8 @@
 <div class="error-summary" role="group">
   <h3 class="heading-medium error-summary-heading">Please add a username</h3>
   <p>
-    To help people find you on the system you need to add a username. The more information you can add to help people contact you the better.
-  </p>
-  <p>
-    Thank you.
+    A username can help others find you on the system. Additional contact
+    information also helps, so share as much as you can.
   </p>
 </div>
 {% endif %}
@@ -29,10 +27,8 @@
 <div class="alert-summary" role="group">
   <h3 class="heading-medium alert-summary-heading">Please add additional information</h3>
   <p>
-    The system works best when it's easy to find other people, and it's easy for them to find you. It's not required but it's helpful to add as much information as possible.
-  </p>
-  <p>
-    Thank you.
+    The system works best when it's easy to find other people, and it's easy for them to find you.<br />
+    Although this isn't required, it's better to add as much information as possible.
   </p>
 </div>
 {% endif %}
@@ -67,6 +63,10 @@
   </div>
 
   <div class="form-group {% if show_extra_details_alert %}alert{% endif %}">
+    <label class="form-label-bold">Additional contact information</label>
+    <p class="form-hint">
+      Quick details about how you'd like other people to get hold of you.
+    </p>
 
     {% if show_extra_details_alert %}
       <span class="alert-message">
@@ -74,11 +74,7 @@
       </span>
     {% endif %}
 
-    <p class="form-hint">
-      Quick details about how you'd like other people to get hold of you.
-    </p>
-
-    <p>
+    <div class="form-group">
       <label class="form-label-bold" for="{{ form.best_way_to_find.id_for_label }}">
         Best way to find you.
       </label>
@@ -89,10 +85,10 @@
         {% endfor %}
       </ul>
       {% endif %}
-      <textarea class="form-control" id="{{ form.best_way_to_find.id_for_label }}" maxlength="1024" name="best_way_to_find"{% if highlight_field ==  form.best_way_to_find.id_for_label %} tabindex="1" autofocus="true"{% endif %}>{{ form.best_way_to_find.value|default_if_none:"" }}</textarea>
-    </p>
+      <textarea class="form-control no-highlight" id="{{ form.best_way_to_find.id_for_label }}" maxlength="1024" name="best_way_to_find"{% if highlight_field ==  form.best_way_to_find.id_for_label %} tabindex="1" autofocus="true"{% endif %}>{{ form.best_way_to_find.value|default_if_none:"" }}</textarea>
+    </div>
 
-    <p>
+    <div class="form-group">
       <label class="form-label-bold" for="{{ form.best_way_to_contact.id_for_label }}">
         Best way to contact you.
       </label>
@@ -103,10 +99,10 @@
         {% endfor %}
       </ul>
       {% endif %}
-      <textarea class="form-control" id="{{ form.best_way_to_contact.id_for_label }}" maxlength="1024" name="best_way_to_contact"{% if highlight_field ==  form.best_way_to_contact.id_for_label %} tabindex="1" autofocus="true"{% endif %}>{{ form.best_way_to_contact.value|default_if_none:"" }}</textarea>
-    </p>
+      <textarea class="form-control no-highlight" id="{{ form.best_way_to_contact.id_for_label }}" maxlength="1024" name="best_way_to_contact"{% if highlight_field ==  form.best_way_to_contact.id_for_label %} tabindex="1" autofocus="true"{% endif %}>{{ form.best_way_to_contact.value|default_if_none:"" }}</textarea>
+    </div>
 
-    <p>
+    <div class="form-group">
       <label class="form-label-bold" for="{{ form.phone.id_for_label }}">
         Phone
       </label>
@@ -117,10 +113,10 @@
         {% endfor %}
       </ul>
       {% endif %}
-      <input class="form-control" id="{{ form.phone.id_for_label }}" value="{{ form.phone.value|default_if_none:"" }}" maxlength="256" name="phone" type="text"{% if highlight_field ==  form.phone.id_for_label %} tabindex="1" autofocus="true"{% endif %} />
-    </p>
+      <input class="form-control no-highlight" id="{{ form.phone.id_for_label }}" value="{{ form.phone.value|default_if_none:"" }}" maxlength="256" name="phone" type="text"{% if highlight_field ==  form.phone.id_for_label %} tabindex="1" autofocus="true"{% endif %} />
+    </div>
 
-    <p>
+    <div class="form-group">
       <label class="form-label-bold" for="{{ form.email.id_for_label }}">
         Email
       </label>
@@ -131,8 +127,8 @@
         {% endfor %}
       </ul>
       {% endif %}
-      <input class="form-control" id="{{ form.email.id_for_label }}" value="{{ form.email.value|default_if_none:"" }}" maxlength="256" name="email" type="text"{% if highlight_field ==  form.email.id_for_label %} tabindex="1" autofocus="true"{% endif %} />
-    </p>
+      <input class="form-control no-highlight" id="{{ form.email.id_for_label }}" value="{{ form.email.value|default_if_none:"" }}" maxlength="256" name="email" type="text"{% if highlight_field ==  form.email.id_for_label %} tabindex="1" autofocus="true"{% endif %} />
+    </div>
   </div>
 
   <input type="submit" name="submit_action" value="Save and manage team membership" class="button" />

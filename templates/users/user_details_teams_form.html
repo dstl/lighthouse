@@ -10,7 +10,7 @@
 
 <p class="lede">
   You can be a member of as many teams as you like, and each team is part of
-  an organisation. Here, you can join or leave teams by checking or unchecking
+  an organisation. On this page, you can join or leave teams by checking or unchecking
   the boxes next to the team names, or create whole new teams to join.
 </p>
 
@@ -18,12 +18,9 @@
   <div class="error-summary" role="group">
     <h3 class="heading-medium error-summary-heading">Please add additional team information</h3>
     <p>
-      Before you start diving into the site you should let the system know which
-      teams you're a member of. If you don't see the teams listen (or there are
-      no teams listed) then you can add them right here.
-    </p>
-    <p>
-      Thank you.
+      Before you start using Lighthouse you should indicate which
+      teams you're a member of. If you don't see the teams listed (or there are
+      no teams listed) then you can add them on this page.
     </p>
   </div>
 {% endif %}
@@ -47,9 +44,9 @@
           Please check all the teams of which you are a member.
         </p>
         {% for team in teams %}
-          <label for="team_{{team.id}}" class="block-label form-control">
+          <label for="team_{{team.id}}" class="block-label">
             <input id="team_{{team.id}}" type="checkbox" name="team" value="{{team.id}}" {% if team.checked %}checked{% endif %} />
-            <span class="heading-small">{{team.name}}</span> <span class="font-xsmall">({{team.organisation.name}})</span><br />
+            <span class="heading-small">{{team.name}}</span> <span class="font-xsmall">({{team.organisation.name}})</span>
           </label>
         {% endfor %}
       </div>
