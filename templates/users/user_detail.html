@@ -23,6 +23,19 @@
         you wish to contact them...
       </p>
 
+      {% if user.phone or user.email %}
+        <p>
+          <h2 class="heading-medium">
+            {% if user.phone and user.email %}
+              Phone: <span class="not-strong">{{user.phone}}</span>, Email: <span class="not-strong"><a href="mailto:{{user.email}}">{{user.email}}</a></span>
+            {% else %}
+              {% if user.phone %}Phone: <span class="not-strong">{{user.phone}}</span>{% endif %}
+              {% if user.email %}Email: <span class="not-strong"><a href="mailto:{{user.email}}">{{user.email}}</a></span>{% endif %}
+            {% endif %}
+          </h2>
+        </p>
+      {% endif %}
+
       {% if user.best_way_to_find %}
         <h3 class="heading-medium">The best way to find this user is:</h3>
         <div class="panel panel-border-wide">
@@ -41,12 +54,6 @@
         </div>
       {% endif %}
 
-      <p>
-        <ul>
-          {% if user.phone %}<li>Phone: {{user.phone}}</li>{% endif %}
-          {% if user.email %}<li>email: <a href="mailto:{{user.email}}">{{user.email}}</a></li>{% endif %}
-        </ul>
-      </p>
     {% else %}
       <p class="lede">
         This user hasn't added any contact information yet. Maybe you should ask them to (if you know how to get hold of them).
