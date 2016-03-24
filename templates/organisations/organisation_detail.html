@@ -10,7 +10,11 @@
       <span class="heading-secondary">Organisation</span>
       {{organisation.name}}
     </h1>
+  </div>
+</div>
 
+<div class="grid-row">
+  <div class="column-two-thirds">
     {% if teams %}
       <p class="lede">
         This Organisation contains the following teams.
@@ -48,7 +52,7 @@
 
   <div class="column-one-third">
     <div class="side-element-holder" id="top_links_for_organisation">
-      <h2 class="heading-medium">"Top" Tools used by this organisation</h2>
+      <h2 class="heading-medium heading-snug-top">"Top" Tools used by this organisation</h2>
       {% if organisation.top_links|length > 0 %}
         <ul class="list list-bullet" id="top_links_list">
           {% for link in organisation.top_links|slice:":5" %}

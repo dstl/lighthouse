@@ -1,6 +1,6 @@
 {# (c) Crown Owned Copyright, 2016. Dstl. #}
 <div class="side-element-holder" id="top_links_for_user">
-  <h2 class="heading-medium">"Top" Tools used by user</h2>
+  <h2 class="heading-large heading-snug-top">"Top" Tools used by user</h2>
   {% if user.top_links %}
     <ul class="list list-bullet">
       {% for link in user.top_links|slice:":20" %}

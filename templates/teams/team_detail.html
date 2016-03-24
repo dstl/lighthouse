@@ -10,7 +10,11 @@
       <span class="heading-secondary">Team</span>
       {{team.name}}
     </h1>
+  </div>
+</div>
 
+<div class="grid-row">
+  <div class="column-two-thirds">
     <p class="lede">
       This team is in the <a href="{% url "organisation-detail" team.organisation.pk %}">{{team.organisation}}</a> organisation,
       {% if team.user_set.count > 0 %}
@@ -41,7 +45,7 @@
 
   <div class="column-one-third">
     <div class="side-element-holder" id="top_links_for_team">
-      <h2 class="heading-medium">"Top" Tools used by this team</h2>
+      <h2 class="heading-medium heading-snug-top">"Top" Tools used by this team</h2>
       {% if team.top_links|length > 0 %}
         <ul class="list list-bullet" id="top_links_list">
           {% for link in team.top_links|slice:":5" %}
