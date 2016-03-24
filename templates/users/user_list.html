@@ -3,8 +3,14 @@
 
 {% block grid_content %}
 
+<div class="grid-row">
   <div class="column-two-thirds">
     <h1 class="heading-xlarge">Users</h1>
+  </div>
+</div>
+
+<div class="grid-row">
+  <div class="column-two-thirds">
     {% if total_users_in_db > 0 %}
       <p class="lede">
         These are the users currently registered with the system. Click on a user to view more information.

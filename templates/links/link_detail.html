@@ -8,6 +8,11 @@
           <span class="heading-secondary">Tool</span>
           {{link.name}}
         </h1>
+      </div>
+    </div>
+
+    <div class="grid-row">
+      <div class="column-two-thirds">
         <div class="text">
           <p class="lede">
             {{link.description}}
@@ -70,7 +75,7 @@
         {% endif %}
     </div>
     <div class="column-third">
-        <h2 class="heading-large">Tool details</h2>
+        <h2 class="heading-large heading-snug-top">Tool details</h2>
         {% if link.added %}
         <p>Added on <span id="date_added">{{link.added|date:"d/m/Y"}}</span></p>
         {% endif %}

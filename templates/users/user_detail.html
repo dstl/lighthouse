@@ -11,6 +11,12 @@
       {{ user.username|default:user.original_slug }}
     </h1>
 
+  </div>
+</div>
+
+<div class="grid-row">
+  <div class="column-two-thirds">
+
     {% if user.best_way_to_find or user.best_way_to_contact or user.phone or user.email %}
       <p class="lede">
         Hey there, welcome to this users page. Here's some handy information should
