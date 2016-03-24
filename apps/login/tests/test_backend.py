@@ -1,5 +1,7 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
+
 from django.test import TestCase
+
 from apps.login.super_basic_auth_backend import SuperBasicAuth
 from apps.users.models import User
 

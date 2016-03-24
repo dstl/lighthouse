@@ -1,7 +1,9 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
-from splinter import Browser
-import unittest
+
 import os
+import unittest
+
+from splinter import Browser
 
 
 class TestLoginPage (unittest.TestCase):

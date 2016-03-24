@@ -1,9 +1,11 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
+
 from django.core.urlresolvers import reverse
-from apps.links.models import Link
-from .common import make_user, login_user
 
 from django_webtest import WebTest
+
+from .common import make_user, login_user
+from apps.links.models import Link
 
 
 class LinksWithInterstitialTest(WebTest):

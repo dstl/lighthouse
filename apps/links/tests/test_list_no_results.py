@@ -1,8 +1,10 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
+
 from django.core.urlresolvers import reverse
-from .common import generate_fake_links, make_user, login_user
 
 from django_webtest import WebTest
+
+from .common import generate_fake_links, login_user, make_user
 
 
 class ListLinksWithNoResultsTest(WebTest):

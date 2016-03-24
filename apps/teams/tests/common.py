@@ -1,6 +1,7 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
-from apps.teams.models import Team
+
 from apps.organisations.models import Organisation
+from apps.teams.models import Team
 from apps.users.models import User
 
 

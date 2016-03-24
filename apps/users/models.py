@@ -1,9 +1,11 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
-# apps/users/models.py
+
+import uuid
+
 from django.core.urlresolvers import reverse
 from django.db import models
+
 from apps.teams.models import Team
-import uuid
 
 
 def slug_default():

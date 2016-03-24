@@ -1,7 +1,6 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
 
 import csv
-
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta, SU
 from unittest import mock

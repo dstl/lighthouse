@@ -1,10 +1,13 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
-from django.core.urlresolvers import reverse
-from django_webtest import WebTest
+
 import re
 
-from apps.organisations.models import Organisation
+from django.core.urlresolvers import reverse
+
+from django_webtest import WebTest
+
 from .common import create_organisation
+from apps.organisations.models import Organisation
 from apps.users.models import User
 
 

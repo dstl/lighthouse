@@ -1,15 +1,13 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
+
 from dateutil.relativedelta import relativedelta
 from unittest import mock
 
 from django.core.urlresolvers import reverse
-# from django.test import TestCase
 from django.utils.timezone import now
 
 from django_webtest import WebTest
 
-# from ..models import Link
-# from .common import make_user, login_user
 from apps.organisations.tests.common import create_organisation
 from apps.links.tests.common import generate_fake_links
 

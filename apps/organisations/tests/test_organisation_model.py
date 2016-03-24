@@ -1,6 +1,7 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
-from django.test import TestCase
+
 from django.db.utils import IntegrityError
+from django.test import TestCase
 
 from apps.organisations.models import Organisation
 

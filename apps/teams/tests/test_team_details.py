@@ -1,7 +1,9 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
-# apps/teams/tests.py
+
 from django.core.urlresolvers import reverse
+
 from django_webtest import WebTest
+
 from .common import create_team
 from apps.links.tests.common import generate_fake_links
 from apps.users.models import User

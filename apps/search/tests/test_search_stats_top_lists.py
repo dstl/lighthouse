@@ -1,11 +1,12 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
+
 from datetime import timedelta
+from unittest import mock
 
 from django.core.urlresolvers import reverse
+from django.utils.timezone import now
 
 from django_webtest import WebTest
-from django.utils.timezone import now
-from unittest import mock
 
 from apps.links.tests.common import make_user, login_user
 from apps.search.models import SearchTerm, SearchQuery

@@ -1,12 +1,13 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
-# apps/users/views.py
+
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.views.generic import DetailView, ListView, UpdateView
-from django.core.urlresolvers import reverse
+
 from .models import User
-from apps.teams.models import Team
-from apps.organisations.models import Organisation
 from apps.access import LoginRequiredMixin
+from apps.organisations.models import Organisation
+from apps.teams.models import Team
 
 
 class UserDetail(LoginRequiredMixin, DetailView):

@@ -1,11 +1,12 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
-# apps/organisations/views.py
-from django.views.generic import CreateView, DetailView, ListView
+
 from django.core.urlresolvers import reverse
-from .models import Organisation
-from apps.teams.models import Team
+from django.views.generic import CreateView, DetailView, ListView
+
 from .forms import OrganisationForm
+from .models import Organisation
 from apps.access import LoginRequiredMixin
+from apps.teams.models import Team
 
 
 class OrganisationList(LoginRequiredMixin, ListView):

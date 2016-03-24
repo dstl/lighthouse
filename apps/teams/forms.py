@@ -1,6 +1,7 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
-# apps/teams/forms.py
+
 from django import forms
+
 from .models import Team
 from apps.organisations.models import Organisation
 

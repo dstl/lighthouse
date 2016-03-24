@@ -1,7 +1,8 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
-from django.test import TestCase
-from apps.links.tests.common import make_user
 
+from django.test import TestCase
+
+from apps.links.tests.common import make_user
 from apps.search.models import SearchQuery, SearchTerm
 
 

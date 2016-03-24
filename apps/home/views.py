@@ -1,6 +1,7 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
-from django.shortcuts import redirect
+
 from django.core.urlresolvers import reverse
+from django.shortcuts import redirect
 from django.views.generic.base import View
 
 

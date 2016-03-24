@@ -1,10 +1,13 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
-from django_webtest import WebTest
-from apps.organisations.models import Organisation
+
 from django.core.urlresolvers import reverse
+
+from django_webtest import WebTest
+
+from apps.links.models import Link
+from apps.organisations.models import Organisation
 from apps.teams.models import Team
 from apps.users.models import User
-from apps.links.models import Link
 
 
 class LinkUsageByUserTest(WebTest):
