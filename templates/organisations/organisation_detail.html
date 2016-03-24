@@ -52,11 +52,22 @@
 
   <div class="column-one-third">
     <div class="side-element-holder" id="top_links_for_organisation">
-      <h2 class="heading-medium heading-snug-top">"Top" Tools used by this organisation</h2>
+      <h2 class="heading-large heading-snug-top">Tools</h2>
       {% if organisation.top_links|length > 0 %}
+        <p>
+          {% if organisation.top_links.count > 5 %}
+            Here are the 5 tools this organisation has used the most in the last 30 days.
+          {% else %}
+            {% if organisation.top_links.count == 1 %}
+              Here is the tool this organisation has used the most in the last 30 days.
+            {% else %}
+              Here are the {{organisation.top_links.count}} tools this organisation uses the most.
+            {% endif %}
+          {% endif %}
+        </p>
         <ul class="list list-bullet" id="top_links_list">
           {% for link in organisation.top_links|slice:":5" %}
-            <li><a class="main-list-item" href='{% url "link-detail" link.pk %}'>{{link.name}}</a> ({{link.linkusagecount}})</li>
+            <li><a class="main-list-item" href='{% url "link-detail" link.pk %}'>{{link.name}}</a>, {{ link.linkusagecount }} time{{ link.linkusagecount|pluralize }}.</li>
           {% endfor %}
         </ul>
       {% else %}
