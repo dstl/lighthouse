@@ -2,3 +2,8 @@
 .heading-snug-top {
 	margin-top: -0em !important;
 }
+
+.heading-xlarge .back-to-parent {
+	@extend .font-small;
+	display: block;
+}

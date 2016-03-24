@@ -6,25 +6,31 @@
   <h1 class="form-title heading-xlarge">
     <span class="heading-secondary">Tool</span>
     Usage stats for {{link.name}}
+    <span class="back-to-parent"><a href="{% url "link-detail" pk=link.pk %}">Back to {{link.name}}</a></span>
   </h1>
 
-  <p>
-    Download
-    <a href='{% url "link-stats-csv" pk=link.pk %}'>full usage stats</a>
-    for this tool as a CSV file</a>.
+  <p class="lede">
+    Detailed statistics including date, time and user can be downloaded as
+    <a href='{% url "link-stats-csv" pk=link.pk %}'>a CSV file</a>.
   </p>
 
-  <table>
-    <tr>
-      <th>Usage in the past 7 days</th>
-      <th>Usage in the past 30 days</th>
-      <th>Total usage</th>
-    </tr>
-    <tr>
-      <td class='usage-seven-days'>{{link.usage_past_seven_days}}</td>
-      <td class='usage-thirty-days'>{{link.usage_past_thirty_days}}</td>
-      <td class='usage-total'>{{link.usage.count}}</td>
-    </tr>
-  </table>
+  <h2 class="heading-medium">How many times has this tool been used?</h2>
 
+  <div class="grid-row statistics-grid">
+    <div class="column-third specific-usage-stat">
+      <span class="statistic usage-seven-days">{{link.usage_past_seven_days}}</span>
+      <span class="statistic-period">in the last 7 days</span>
+    </div>
+    <div class="column-third specific-usage-stat">
+      <span class="statistic usage-thirty-days">{{link.usage_past_thirty_days}}</span>
+      <h2 class="statistic-period">in the last 30 days</h2>
+    </div>
+    <div class="column-third specific-usage-stat">
+      <span class="statistic usage-total">{{link.usage.count}}</span>
+      <h2 class="statistic-period">in total</h2>
+    </div>
+  </div>
+  <div class="form-group">
+    <a class="button" href="{% url "link-stats-csv" pk=link.pk %}">Download CSV of all usage stats for {{link.name}}</a>
+  </div>
 {% endblock %}
