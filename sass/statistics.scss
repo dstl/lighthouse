@@ -1,0 +1,18 @@
+.statistics-grid {
+	margin-bottom:$gutter;
+}
+
+.statistic {
+	@extend .bold-xxlarge;
+	float:left;
+	display: block;
+	margin-right:$gutter;
+}
+
+.statistic-period {
+	@include core-24($line-height: 1.5);
+	// line-height:1.5;
+	float:left;
+	display:inline;
+	width:35%;
+}
