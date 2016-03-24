@@ -139,3 +139,15 @@ $alert-background: #f7f7fe;       // Alert background colour
     }
   }
 }
+
+.error .block-label.form-control.no-highlight {
+  border:1px solid #dee0e2;
+}
+
+.alert .form-control.no-highlight {
+  border:2px solid #6f777b;
+}
+
+.form-group > .form-group:last-child {
+  margin-bottom:0;
+}

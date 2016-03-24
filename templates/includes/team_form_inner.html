@@ -36,8 +36,8 @@
 
   {% if form.fields.organisation.queryset %}
     {% for org in form.fields.organisation.queryset %}
-    <label for="{{ form.organisation.id_for_label }}_{{org.id}}" class="block-label form-control">
-      <input id="{{ form.organisation.id_for_label }}_{{org.id}}" type="radio" name="organisation" value="{{org.id}}" />
+    <label for="{{ form.organisation.id_for_label }}_{{org.id}}" class="block-label">
+      <input id="{{ form.organisation.id_for_label }}_{{org.id}}" class="form-control" type="radio" name="organisation" value="{{org.id}}" />
       <span class="heading-small">{{org.name}}</span><br />
     </label>
     {% endfor %}
@@ -45,14 +45,14 @@
 
   {% if organisations %}
     {% for org in organisations %}
-    <label for="organisation_id_{{ forloop.counter }}" class="block-label form-control">
+    <label for="organisation_id_{{ forloop.counter }}" class="block-label">
       <input id="organisation_id_{{ forloop.counter }}" type="radio" name="organisation" value="{{org.id}}" />
       <span class="heading-small">{{org.name}}</span><br />
     </label>
     {% endfor %}
   {% endif %}
 
-  <label for="{{ form.new_organisation.id_for_label }}" class="block-label block-label-text form-control">
+  <label for="{{ form.new_organisation.id_for_label }}" class="block-label form-control no-highlight block-label-text">
     <span class="heading-small">Add a new organisation</span><br />
     <input class="form-control radio-free-text" id="{{ form.new_organisation.id_for_label }}" maxlength="256" name="new_organisation" type="text" value="{{ form.new_organisation.value|default_if_none:"" }}">
   </label>
