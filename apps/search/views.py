@@ -6,19 +6,16 @@ from datetime import timedelta
 from django.db.models import Count
 from django.http import HttpResponse
 from django.utils import timezone
-from django.views.generic import ListView, View
+from django.views.generic import TemplateView, View
 
 from haystack.views import SearchView
 
 from .models import SearchQuery, SearchTerm
 
 
-class SearchStats(ListView):
+class SearchStats(TemplateView):
     model = SearchQuery
     template_name = 'search/search_stats.html'
-
-    def get_queryset(self):
-        return SearchQuery.objects.order_by('-when')[:20]
 
     def get_context_data(self, **kwargs):
         context = super(SearchStats, self).get_context_data(**kwargs)

@@ -9,32 +9,11 @@
     <span class="heading-secondary">Tools</span>
     Search stats
   </h1>
-
-  <h2 class="heading-medium">Most popular search terms</h2>
-
-  <p>
-    Download
-    <a id="csv-download-all" href='{% url "search-stats-csv" %}'>full usage stats</a>
-     as a CSV file</a>.
+  <p class="lede">
+    This page contains a summary of the most popular search terms of the last thirty days, as well as the most popular unfulfilled search terms.<br>The full search statistics are also available as
+    <a href='{% url "search-stats-csv" %}'>a CSV file</a> which includes each query's term, date and the username of the user who performed the search.
   </p>
-
-  <table id="latest-20-searches">
-    <tr>
-      <th>Search term</th>
-      <th>Time of search</th>
-      <th>Number of results</th>
-    </tr>
-    {% for query in object_list %}
-    <tr>
-      <td class='search-term'>{{query.term}}</td>
-      <td class='search-time'>{{query.when|date:"d/m/Y, H:i"}}</td>
-      <td class='results'>{{query.results_length}}</td>
-    </tr>
-    {% endfor %}
-  </table>
-
-
-  <div class="grid-row">
+  <div class="grid-row statistics-grid">
     <div class="column-half">
       <h2 class="heading-medium">Top terms in the last 30 days</h2>
       <p>These are the most searched-for terms in the last 30 days which have returned any number of results.</p>
@@ -67,6 +46,9 @@
         {% endfor %}
       </table>
     </div>
+  </div>
+  <div class="form-group">
+    <a class="button" id="csv-download-all" href="{% url "search-stats-csv" %}">Download CSV of all search queries</a>
   </div>
 
 {% endblock %}
