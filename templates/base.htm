@@ -67,14 +67,6 @@
         <a href="#content" class="skiplink">{{ skip_link_message|default:'Skip to main content' }}</a>
       </div>
     </div>
-
-    <div id="global-cookie-message">
-      
-        {% block cookie_message %}{% endblock %}
-      
-    </div>
-    <!--end global-cookie-message-->
-
     
     <header role="banner" id="global-header" class="{% block header_class %}{% endblock %}">
       <div class="header-wrapper">
@@ -119,8 +111,6 @@
     <!--end footer-->
 
     <div id="global-app-error" class="app-error hidden"></div>
-
-    <script src="{% static 'javascripts/govuk-template.js' %}" type="text/javascript"></script>
 
     {% block body_end %}{% endblock %}
   </body>
