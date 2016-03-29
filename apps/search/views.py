@@ -72,8 +72,10 @@ class SearchStatsCSV(View):
 def search(request):
     view = SearchView()
     response = view(request)
+    has_query = 'q' in request.GET
+    not_on_page = 'page' not in request.GET
 
-    if 'page' not in request.GET:
+    if has_query and len(request.GET.get('q')) > 0 and not_on_page:
         st, created = SearchTerm.objects.get_or_create(
             query=request.GET.get('q')
         )

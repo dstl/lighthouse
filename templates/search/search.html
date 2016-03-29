@@ -8,7 +8,7 @@
   <h1 class="form-title heading-xlarge">Tools</h1>
 
   <form class="form-group two-thirds-inline-search-form" action='/search/' method='get'>
-    <input class="form-control search-box" id='q' type="text" value="{{ form.q.value }}" name='q' tabindex="1" autofocus="true" />
+    <input class="form-control search-box" id='q' type="text" value="{{ form.q.value|default_if_none:'' }}" name='q' tabindex="1" autofocus="true" />
     <button class="button search-button" type="submit">Search</button>
   </form>
 
