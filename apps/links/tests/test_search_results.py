@@ -125,6 +125,22 @@ class LinkSearchResults(WebTest):
         )
         self.assertIsNotNone(csv_download_link)
 
+    def test_search_with_no_query_is_valid(self):
+        empty_search_url = reverse('search')
+        response = self.app.get(empty_search_url)
+        form = response.form
+
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(form['q'].value, '')
+
+    def test_search_with_empty_query_is_valid(self):
+        empty_search_url = '%s?q=' % reverse('search')
+        response = self.app.get(empty_search_url)
+        form = response.form
+
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(form['q'].value, '')
+
     def test_search_stats_csv(self):
         self.test_search_twice_with_different_terms()
 
