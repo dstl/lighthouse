@@ -92,6 +92,12 @@
             {{link.name}} was created by <a href="{% url "user-detail" link.owner.slug %}">{{link.owner.username|default:link.owner.original_slug}}</a>.
         </p>
         {% endif %}
+        {% if user_owns_link %}
+        <p>
+            Since you added it, you have permission to edit this tool.
+        </p>
+        <a class="button" id="edit-button" href="{% url "link-edit" link.id %}">Edit this tool</a>
+        {% endif %}
         <h2 class="heading-medium">Categories</h2>
         {% if link.categories.count %}
         <ul>

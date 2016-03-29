@@ -23,13 +23,17 @@ def generate_fake_links(owner, start=1, count=1, is_external=False):
         yield link
 
 
-def make_user():
-    user = User(
-        slug='user0001com',
+def make_user(
         original_slug='user@0001.com',
-        username='Fake Fakerly',
+        email='fake@dstl.gov.uk',
+        name='Fake Fakerly'):
+    slug = original_slug.replace('@', '').replace('.', '')
+    user = User(
+        slug=slug,
+        original_slug=original_slug,
+        username=name,
         phone='555-2187',
-        email='fake@dstl.gov.uk')
+        email=email)
     user.save()
     return user
 
@@ -38,7 +42,7 @@ def login_user(owner, user):
 
     #   Log in as user
     form = owner.app.get(reverse('login-view')).form
-    form['slug'] = 'user0001com'
+    form['slug'] = user.slug
     response = form.submit().follow()
 
     user_id = response.html.find(
