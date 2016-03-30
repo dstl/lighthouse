@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 
 from django_webtest import WebTest
 
-from .common import login_user, make_user
+from testing.common import login_user, make_user
 from apps.links.models import Link
 
 

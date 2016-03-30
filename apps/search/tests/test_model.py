@@ -2,7 +2,7 @@
 
 from django.test import TestCase
 
-from apps.links.tests.common import make_user
+from testing.common import make_user
 from apps.search.models import SearchQuery, SearchTerm
 
 

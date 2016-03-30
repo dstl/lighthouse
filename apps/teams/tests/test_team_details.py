@@ -4,8 +4,8 @@ from django.core.urlresolvers import reverse
 
 from django_webtest import WebTest
 
-from .common import create_team
-from apps.links.tests.common import generate_fake_links
+from testing.common import create_team
+from testing.common import generate_fake_links
 from apps.users.models import User
 
 

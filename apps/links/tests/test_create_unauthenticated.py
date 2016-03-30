@@ -7,7 +7,7 @@ from django_webtest import WebTest
 from apps.links.models import Link
 from apps.organisations.models import Organisation
 from apps.teams.models import Team
-from .common import make_user
+from testing.common import make_user
 
 
 class LinkNotLoggedInTest(WebTest):

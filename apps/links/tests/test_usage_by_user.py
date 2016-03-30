@@ -8,8 +8,8 @@ from django.utils.timezone import now
 
 from django_webtest import WebTest
 
-from apps.organisations.tests.common import create_organisation
-from apps.links.tests.common import generate_fake_links
+from testing.common import create_organisation
+from testing.common import generate_fake_links
 
 
 def register_link_usage_for_user(link, user, num_usage):

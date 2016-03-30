@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 
 from django_webtest import WebTest
 
-from .common import generate_fake_links, login_user, make_user
+from testing.common import generate_fake_links, login_user, make_user
 
 
 class ListLinksWithCategoriesTest(WebTest):
