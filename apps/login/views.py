@@ -16,7 +16,7 @@ from apps.users.models import User
 #   TODO: There's a fair amount of refactoring we can do around this, but
 #   that's probably best left for when we do LDAP stuff
 def LogUserIn(self, request, slug):
-
+    # pdb.set_trace()
     #   See if we an authenticate the user
     try:
         user = authenticate(slug=slugify(slug))
@@ -27,6 +27,9 @@ def LogUserIn(self, request, slug):
     #   to send them.
     if user is not None:
         login(request, user)
+
+        if 'next' in request.GET:
+            return self.request.GET.get('next')
 
         #   Check to see if we are missing extra information such as
         #   username, in which case bounce them to the update-profile
@@ -61,9 +64,6 @@ def LogUserIn(self, request, slug):
                     'user-updateprofile',
                     kwargs={'slug': user.slug}
                 )
-
-        if 'next' in request.GET:
-            return self.request.GET.get('next')
 
         return reverse(
                 'user-detail',
