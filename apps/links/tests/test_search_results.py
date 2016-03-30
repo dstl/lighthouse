@@ -52,18 +52,6 @@ class LinkSearchResults(WebTest):
         results = response.html.find(id='search-results').findAll('li')
         self.assertEquals(len(results), 3)
 
-        response = self.app.get(reverse('search-stats'))
-        search_queries_table = response.html.find(
-            None,
-            {"id": "latest-20-searches"}
-        )
-        search_queries_rows = search_queries_table.findChildren('tr')
-        self.assertEquals(len(search_queries_rows), 2)
-
-        self.assertIn('google', search_queries_rows[1].text)
-        self.assertIn('3', search_queries_rows[1].text)
-        self.assertIn('01/03/2016, 10:00', search_queries_rows[1].text)
-
     def test_search_for_first_shows_one(self):
         search_url = '%s?q=search' % reverse('search')
         response = self.app.get(search_url)
@@ -99,20 +87,6 @@ class LinkSearchResults(WebTest):
         self.assertEquals(len(results), 1)
 
         response = self.app.get(reverse('search-stats'))
-        search_queries_table = response.html.find(
-            None,
-            {"id": "latest-20-searches"}
-        )
-        search_queries_rows = search_queries_table.findChildren('tr')
-        self.assertEquals(len(search_queries_rows), 3)
-
-        self.assertIn('chat', search_queries_rows[1].text)
-        self.assertIn('1', search_queries_rows[1].text)
-        self.assertIn('01/03/2016, 10:02', search_queries_rows[1].text)
-
-        self.assertIn('flibble', search_queries_rows[2].text)
-        self.assertIn('0', search_queries_rows[2].text)
-        self.assertIn('01/03/2016, 10:00', search_queries_rows[2].text)
 
         csv_download_link = response.html.find(
             None,
