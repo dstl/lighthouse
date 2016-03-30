@@ -119,7 +119,7 @@
       field.
     </p>
     {% for category in existing_categories %}
-    <label class="link-category-label block-label-small form-control" for="{{ form.categories.id_for_label }}_{{ category }}">
+    <label class="link-category-label block-label block-label-small form-control" for="{{ form.categories.id_for_label }}_{{ category }}">
       <input class="form-control" class="link-category-checkbox" id="{{ form.categories.id_for_label }}_{{ category }}" type="checkbox" value="{{ category }}" name="categories" {% if category in form.instance.categories.all %}checked="checked"{% endif %} />
       <span class="heading-small">{{ category|capfirst }}</span>
     </label>

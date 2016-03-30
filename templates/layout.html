@@ -22,6 +22,14 @@
 </div>
 {% endblock %}
 
+{% block body_end %}
+    {% compress js %}
+		<script type="text/javascript" src="{% static "vendor/jquery-1.11.0.min.js" %}"></script>
+		<script type="text/javascript" src="{% static "govuk/selection-buttons.js" %}"></script>
+		<script type="text/javascript" src="{% static "lighthouse.js" %}"></script>
+    {% endcompress %}
+{% endblock %}
+
 {% block proposition_header %}
 {% include "includes/navigation.html" %}
 {% endblock %}
