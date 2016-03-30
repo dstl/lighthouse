@@ -15,6 +15,10 @@ from apps.links.models import Link
 class LinkTest(WebTest):
     def setUp(self):
         self.logged_in_user = make_user()
+        self.other_user = make_user(
+            original_slug='other_user',
+            email='fake2@dstl.gov.uk',
+            name='Fake2 Fakerly')
         self.assertTrue(login_user(self, self.logged_in_user))
 
     def test_create_link(self):
@@ -71,6 +75,31 @@ class LinkTest(WebTest):
                 'Fake Fakerly',
                 response.html.find(id='link_owner').text,
             )
+
+    def test_update_link_button(self):
+        existing_link = Link(
+            name='Wikimapia',
+            description='A great mapping application',
+            destination='https://wikimapia.org',
+            owner=self.logged_in_user,
+            is_external=False)
+        existing_link.save()
+
+        response = self.app.get(
+            reverse('link-detail', kwargs={'pk': existing_link.pk}))
+        edit_button = response.html.find(None, {"id": "edit-button"})
+        self.assertIsNotNone(edit_button)
+        self.assertEqual(
+            reverse('link-edit', kwargs={'pk': existing_link.pk}),
+            edit_button.get('href')
+        )
+
+        self.assertTrue(login_user(self, self.other_user))
+
+        response = self.app.get(
+            reverse('link-detail', kwargs={'pk': existing_link.pk}))
+        edit_button = response.html.find(None, {"id": "edit-button"})
+        self.assertIsNone(edit_button)
 
     def test_update_link_external(self):
         existing_link = Link(

@@ -26,6 +26,11 @@ from apps.access import LoginRequiredMixin
 class LinkDetail(DetailView):
     model = Link
 
+    def get_context_data(self, **kwargs):
+        context = super(LinkDetail, self).get_context_data(**kwargs)
+        context['user_owns_link'] = self.request.user == self.object.owner
+        return context
+
 
 class LinkRedirect(DetailView):
     model = Link
