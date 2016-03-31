@@ -71,11 +71,6 @@ $path: "/static/";
 @import "statistics";
 @import "markdown-content";
 
-#content {
-	width:960px;
-	margin:0 auto;
-}
-
 .button-secondary {
   @include button($grey-3);
   @include box-sizing (border-box);
