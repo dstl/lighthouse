@@ -35,9 +35,15 @@
     {% if request.user.slug %}
     <hr />
     {% if team_member %}
-      <a href="{% url "team-leave" team.pk %}" class="button">Leave team</a>
+      <form action="{% url "team-leave" team.pk %}" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Leave team" class="button" />
+      </form>
     {% else %}
-      <a href="{% url "team-join" team.pk %}" class="button">Join team</a>
+      <form action="{% url "team-join" team.pk %}" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Join team" class="button" />
+      </form>
     {% endif %}
     {% endif %}
 
