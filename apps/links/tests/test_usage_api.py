@@ -10,7 +10,7 @@ from django.test import LiveServerTestCase
 from django.utils.timezone import make_aware
 
 from ..models import Link
-from .common import make_user
+from testing.common import make_user
 
 
 class LinkUsageAPITest(LiveServerTestCase):

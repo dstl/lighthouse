@@ -10,7 +10,7 @@ from django.utils.timezone import make_aware
 from django_webtest import WebTest
 
 from ..models import Link
-from .common import make_user, login_user
+from testing.common import make_user, login_user
 
 
 class LinkSearchResults(WebTest):

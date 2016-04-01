@@ -8,7 +8,7 @@ from django.utils.timezone import now
 
 from django_webtest import WebTest
 
-from apps.links.tests.common import make_user, login_user
+from testing.common import make_user, login_user
 from apps.search.models import SearchTerm, SearchQuery
 
 

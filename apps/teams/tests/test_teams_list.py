@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 
 from django_webtest import WebTest
 
-from .common import create_team
+from testing.common import create_team
 from apps.organisations.models import Organisation
 from apps.teams.models import Team
 from apps.users.models import User
