@@ -103,7 +103,7 @@ class TeamWebTest(WebTest):
             user_items[1].text
         )
 
-    def test_list_members_no_username(self):
+    def test_list_members_ordering(self):
         #   Create and log in a user
         get_user_model().objects.create_user(userid='user@0001.com')
         form = self.app.get(reverse('login')).form
@@ -112,7 +112,7 @@ class TeamWebTest(WebTest):
 
         t = create_team(
             name='two members', num_members=2,
-            usernames={0: None, 1: 'steve'}
+            usernames={0: 'steve', 1: 'bob'}
         )
         response = self.app.get(reverse('team-detail', kwargs={"pk": t.pk}))
 
@@ -126,12 +126,12 @@ class TeamWebTest(WebTest):
             2
         )
         self.assertIn(
-            'steve',
+            'bob',
             user_items[0].text
         )
 
         self.assertIn(
-            'teammember1',
+            'steve',
             user_items[1].text
         )
 
