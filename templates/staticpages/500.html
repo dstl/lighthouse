@@ -5,8 +5,10 @@
 {% block page_title %}500 Internal Server Error{% endblock %}
 
 {% block grid_content %}
-<span class="heading-secondary">500 Internal Server Error</span>
-<h1 class="heading-xlarge">An error has been encountered</h1>
+<h1 class="heading-xlarge">
+	<span class="heading-secondary">500 Internal Server Error</span>
+	An error has been encountered
+</h1>
 <p class="lede">
 The Lighthouse application encountered an error while trying to serve up this page. You could try refreshing, but even if you see what you expected to see you should contact whoever is responsible for Lighthouse. If you don't want to try again, you can head back to the <a href="{% url 'home' %}">Lighthouse homepage</a>.</p>
 {% endblock %}

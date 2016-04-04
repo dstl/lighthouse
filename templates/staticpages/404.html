@@ -5,7 +5,9 @@
 {% block page_title %}404 Not Found{% endblock %}
 
 {% block grid_content %}
-<span class="heading-secondary">404 Not Found</span>
-<h1 class="heading-xlarge">The page you're looking for cannot be found</h1>
+<h1 class="heading-xlarge">
+	<span class="heading-secondary">404 Not Found</span>
+	The page you're looking for cannot be found
+</h1>
 <p class="lede">No content is available at the URL you've navigated to. If this is unexpected, try going back one page or visiting the <a href="{% url 'home' %}">Lighthouse homepage</a> to find your way back to the page you were looking for.</p>
 {% endblock %}

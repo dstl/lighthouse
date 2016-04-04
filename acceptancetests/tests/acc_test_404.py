@@ -12,7 +12,6 @@ class Test404Page (unittest.TestCase):
 
     def test_404_page_appears(self):
         url = "http://%s/nonsense-doesnt-exist" % os.environ['LIGHTHOUSE_HOST']
-        homeURL = "http://%s" % os.environ['LIGHTHOUSE_HOST']
         title = '404 Not Found'
 
         self.browser.visit(url)
@@ -23,4 +22,4 @@ class Test404Page (unittest.TestCase):
 
         self.assertIn('404 Not Found', self.browser.html)
         # Make sure there's a link to the homepage
-        self.assertIn(homeURL, self.browser.html)
+        self.assertIn('<a href="/">Lighthouse homepage</a>', self.browser.html)
