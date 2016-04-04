@@ -31,3 +31,29 @@ class UserModelTest(TestCase):
         user = get_user_model().objects.create_user(userid='u.s.e.r@0001.com')
         self.assertTrue(user.pk)
         self.assertEqual(user.slug, 'user0001com2')
+
+    def test_user_can_have_multiple_teams_which_have_multiple_users(self):
+        o = Organisation(name='New Org')
+        o.save()
+
+        t1 = Team(name='Team Awesome', organisation=o)
+        t1.save()
+        t2 = Team(name='Team Great', organisation=o)
+        t2.save()
+
+        u1 = get_user_model().objects.create_user(userid='teamplayer')
+        u1.teams.add(t1)
+        u1.teams.add(t2)
+        u1.save()
+
+        u2 = get_user_model().objects.create_user(userid='teamplayer2')
+        u2.teams.add(t2)
+        u2.save()
+
+        self.assertIn(u1, t1.user_set.all())
+        self.assertIn(u1, t2.user_set.all())
+        self.assertNotIn(u2, t1.user_set.all())
+        self.assertIn(u2, t2.user_set.all())
+
+        self.assertEqual(len(t1.user_set.all()), 1)
+        self.assertEqual(len(t2.user_set.all()), 2)

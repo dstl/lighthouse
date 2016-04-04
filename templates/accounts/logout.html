@@ -1,0 +1,9 @@
+{# (c) Crown Owned Copyright, 2016. Dstl. #}
+{% extends "layout.html" %}
+
+{% block grid_content %}
+  <form method='post'>
+    {% csrf_token %}
+    <button type='submit'>Logout</button>
+  </form>
+{% endblock %}
