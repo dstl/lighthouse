@@ -254,7 +254,7 @@ class LinkStatsCSV(DetailView):
         for usage in link.usage.all():
             writer.writerow([
                 usage.start.strftime("%Y-%m-%d %H:%M:%S"),
-                usage.user,
+                usage.user.userid,
                 usage.link
             ])
 
@@ -284,7 +284,7 @@ class OverallLinkStatsCSV(View):
         for usage in LinkUsage.objects.all():
             writer.writerow([
                 usage.start.strftime("%Y-%m-%d %H:%M:%S"),
-                usage.user,
+                usage.user.userid,
                 usage.link
             ])
 

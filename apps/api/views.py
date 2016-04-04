@@ -58,7 +58,7 @@ class LinkUsageAPI(SingleObjectMixin, APIBase):
         response = []
         for use in link.usage.all():
             response.append({
-                'user': use.user.slug,
+                'user': use.user.userid,
                 'date': use.start,
             })
         return JsonResponse(response, safe=False)

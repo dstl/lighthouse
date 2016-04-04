@@ -31,7 +31,7 @@ class LinkUsageAPITest(LiveServerTestCase):
 
         expected_response = [{
             'date': '2016-03-01T10:00:00Z',
-            'user': self.user.slug,
+            'user': self.user.userid,
         }]
         link_api_url = '%s%s' % (
             self.live_server_url,
@@ -98,5 +98,5 @@ class LinkUsageAPITest(LiveServerTestCase):
             reverse('api-link-usage', kwargs={'pk': (self.link.pk + 1000)}),
         )
 
-        response = requests.post(link_api_url, data={'user': self.user.slug})
+        response = requests.post(link_api_url, data={'user': self.user.userid})
         self.assertEqual(response.status_code, 404)

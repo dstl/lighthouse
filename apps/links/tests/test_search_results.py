@@ -201,7 +201,7 @@ class LinkSearchResults(WebTest):
 
         row = next(reader)
         self.assertEquals(row, {
-            'User': 'user0001com',
+            'User': 'user@0001.com',
             'Date': '2016-03-01 10:00:00',
             'Term': 'flibble',
             'Number of Results': '0',
@@ -209,7 +209,7 @@ class LinkSearchResults(WebTest):
 
         row = next(reader)
         self.assertEquals(row, {
-            'User': 'user0001com',
+            'User': 'user@0001.com',
             'Date': '2016-03-01 10:02:00',
             'Term': 'chat',
             'Number of Results': '1',
