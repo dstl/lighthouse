@@ -12,49 +12,48 @@
 
 {% if total_links_in_db > 0 %}
 <div class="grid-row">
+  <form class="form-group two-thirds-inline-search-form" action="" method="get" id="list-results">
   <div id="categories-filter" class="column-third">
-    <form method="get" action="" id="list-results">
-      <h2 class="filter-controls-header heading-medium heading-snug-top">Tool categories</h2>
-      {# Category filters #}
-      <div class="form-group">
-        <input type="submit" value="Filter using selections below" class="button" />
+    <h2 class="filter-controls-header heading-medium heading-snug-top">Tool categories</h2>
+    {# Category filters #}
+    <div class="form-group">
+      <input type="submit" value="Filter using selections below" class="button" />
+    </div>
+    <div class="form-group">
+      {% for category in categories %}
+      <label for="categories-filter-{{ category.name }}" class="block-label block-label-small">
+        <h3>{{ category.name|capfirst }}</h3>
+        <input type="checkbox" id="categories-filter-{{ category.name }}" value="{{ category.name }}" name="categories" {% if category.name in filtered_categories %}checked="checked"{% endif %} />
+        </label>
+        {% endfor %}
       </div>
       <div class="form-group">
-        {% for category in categories %}
-        <label for="categories-filter-{{ category.name }}" class="block-label block-label-small">
-          <h3>{{ category.name|capfirst }}</h3>
-          <input type="checkbox" id="categories-filter-{{ category.name }}" value="{{ category.name }}" name="categories" {% if category.name in filtered_categories %}checked="checked"{% endif %} />
-          </label>
-          {% endfor %}
-        </div>
-        <div class="form-group">
-          {# Internal/external filters #}
-          <label for="types-filter-external" class="block-label block-label-small">
-            <h3>External</h3>
-            <input type="checkbox" id="types-filter-external" value="external" name="types" {% if 'external' in filtered_types %}checked="checked"{% endif %} />
-          </label>
-          <label for="types-filter-internal" class="block-label block-label-small">
-            <h3>Internal</h3>
-            <input type="checkbox" id="types-filter-internal" value="internal" name="types" {% if 'internal' in filtered_types %}checked="checked"{% endif %} />
-          </label>
-        </div>
-        <div class="form-group">
-          <input type="submit" value="Filter" class="button" />
-        </div>
-      </form>
+        {# Internal/external filters #}
+        <label for="types-filter-external" class="block-label block-label-small">
+          <h3>External</h3>
+          <input type="checkbox" id="types-filter-external" value="external" name="types" {% if 'external' in filtered_types %}checked="checked"{% endif %} />
+        </label>
+        <label for="types-filter-internal" class="block-label block-label-small">
+          <h3>Internal</h3>
+          <input type="checkbox" id="types-filter-internal" value="internal" name="types" {% if 'internal' in filtered_types %}checked="checked"{% endif %} />
+        </label>
+      </div>
+      <div class="form-group">
+        <input type="submit" value="Filter" class="button" />
+      </div>
     </div>
     <div class="column-two-thirds">
-      <form class="form-group two-thirds-inline-search-form" action='/search/' method='get'>
-        <input class="form-control search-box" type='text' name='q' id='q' tabindex="1" autofocus="true" />
+      <div class="form-group two-thirds-inline-search-form">
+        <input class="form-control search-box" type='text' name='q' id='q' tabindex="1" autofocus="true" value="{{query|default_if_none:''}}" />
         <button class="button search-button" type="submit">Search</button>
-      </form>
+      </div>
       {% if object_list %}
       <h2 id="tools-header" class="link-list-header heading-medium heading-snug-top">Showing page {{ page_obj.number }} of {{ paginator.num_pages }}</h2>
       {% else %}
       <h2 id="tools-header">No results found.</h2>
       {% endif %}
       {% if object_list %}
-      <ol>
+      <ol id="link-results">
         {% for link in object_list %}
           <li class="link-list-item">
             <h3 class="inline"><a href='{% url "link-detail" link.pk %}'>{{ link.name }}</a></h3>
