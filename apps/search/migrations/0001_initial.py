@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
 # (c) Crown Owned Copyright, 2016. Dstl.
+
 from __future__ import unicode_literals
 
 from django.db import migrations, models
+from django.conf import settings
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('users', '0007_auto_20160314_1659'),
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
@@ -16,11 +18,8 @@ class Migration(migrations.Migration):
             name='SearchQuery',
             fields=[
                 ('id', models.AutoField(
-                    auto_created=True,
-                    serialize=False,
-                    verbose_name='ID',
-                    primary_key=True
-                )),
+                    verbose_name='ID', primary_key=True,
+                    auto_created=True, serialize=False)),
                 ('when', models.DateTimeField(auto_now_add=True)),
                 ('results_length', models.IntegerField()),
             ],
@@ -29,13 +28,9 @@ class Migration(migrations.Migration):
             name='SearchTerm',
             fields=[
                 ('id', models.AutoField(
-                    auto_created=True,
-                    serialize=False,
-                    verbose_name='ID',
-                    primary_key=True
-                )
-                ),
-                ('query', models.CharField(max_length=255, default=None)),
+                    verbose_name='ID', primary_key=True,
+                    auto_created=True, serialize=False)),
+                ('query', models.CharField(default=None, max_length=255)),
             ],
         ),
         migrations.AddField(
@@ -46,6 +41,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='searchquery',
             name='user',
-            field=models.ForeignKey(to='users.User'),
+            field=models.ForeignKey(to=settings.AUTH_USER_MODEL),
         ),
     ]

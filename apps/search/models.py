@@ -1,6 +1,7 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
+
+from django.conf import settings
 from django.db import models
-from apps.users.models import User
 
 
 class SearchTerm(models.Model):
@@ -15,6 +16,6 @@ class SearchTerm(models.Model):
 
 class SearchQuery(models.Model):
     term = models.ForeignKey(SearchTerm)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
     when = models.DateTimeField(auto_now_add=True)
     results_length = models.IntegerField()
