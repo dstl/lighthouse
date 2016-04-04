@@ -54,13 +54,14 @@ from apps.teams.views import (
 )
 from apps.login.views import LoginRequest, LoginUser, Logout
 from apps.home.views import Home
-from apps.staticpages.views import StaticPageView, Status404View
+from apps.staticpages.views import StaticPageView, Status404View, Status500View
 from apps.search.views import (
     SearchStats,
     SearchStatsCSV
 )
 
 handler404 = Status404View.as_view()
+handler500 = Status500View.as_view()
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),

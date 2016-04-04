@@ -54,3 +54,8 @@ class StaticPageView(StaticPageViewBase):
 class Status404View(View):
     def dispatch(self, request, *args, **kwargs):
         return render(request, 'staticpages/404.html', status=404)
+
+
+class Status500View(View):
+    def dispatch(self, request, *args, **kwargs):
+        return render(request, 'staticpages/500.html', status=500)
