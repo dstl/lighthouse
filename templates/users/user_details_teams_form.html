@@ -58,7 +58,9 @@
       <label class="form-label-bold" for="teams">
         <h2 class="bold-medium">Create a new team.</h2>
       </label>
-      {% include "includes/team_form_inner.html" %}
+      {% with team_include="includes/team_form_team_as_teamname.html" %}
+        {% include "includes/team_form_inner.html" %}
+      {% endwith %}
     </div>
   </div>
   <input type="submit" name="submit_action" id="save-add-new-team" value="Save and add a new team" class="button" />

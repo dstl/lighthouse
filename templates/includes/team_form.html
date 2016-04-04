@@ -23,7 +23,9 @@
     </ul>
   </div>
   {% endif %}
-  {% include "includes/team_form_inner.html" %}
+  {% with team_include="includes/team_form_team_as_team.html" %}
+    {% include "includes/team_form_inner.html" %}
+  {% endwith %}
 
   <input type="submit" method="POST" value="Create team" class="button">
 </form>

@@ -15,11 +15,11 @@
 </p>
 
 
-{% if show_username_alert %}
+{% if show_name_alert %}
 <div class="error-summary" role="group">
-  <h3 class="heading-medium error-summary-heading">Please add a username</h3>
+  <h3 class="heading-medium error-summary-heading">Please add your name</h3>
   <p>
-    A username can help others find you on the system. Additional contact
+    A name can help others find you on the system. Additional contact
     information also helps, so share as much as you can.
   </p>
 </div>
@@ -39,28 +39,28 @@
 <form method="post" action="">
   {% csrf_token %}
 
-  <div class="form-group {% if show_username_alert %}error{% endif %}">
-    <label class="form-label-bold" for="{{ form.username.id_for_label }}">
-      Username
+  <div class="form-group {% if show_name_alert %}error{% endif %}">
+    <label class="form-label-bold" for="{{ form.name.id_for_label }}">
+      Name
     </label>
 
-    {% if show_username_alert %}
+    {% if show_name_alert %}
       <span class="error-message">
-        Please supply a username so other people can easily contact you.
+        Please supply a name so other people can easily contact you.
       </span>
     {% endif %}
 
     <p class="form-hint">
       Generally how other people would recognise your name in the system.
     </p>
-    {% if form.username.errors %}
-    <ul id="{{ form.username.id_for_label }}_error_list">
-      {% for error in form.username.errors %}
+    {% if form.name.errors %}
+    <ul id="{{ form.name.id_for_label }}_error_list">
+      {% for error in form.name.errors %}
         <li class="error-message">{{ error }}</li>
       {% endfor %}
     </ul>
     {% endif %}
-    <input class="form-control" id="{{ form.username.id_for_label }}" value="{{ form.username.value|default_if_none:"" }}" maxlength="256" name="username" type="text" {% if highlight_field ==  form.username.id_for_label %} autofocus="true"{% endif %} />
+    <input class="form-control" id="{{ form.name.id_for_label }}" value="{{ form.name.value|default_if_none:"" }}" maxlength="256" name="name" type="text"{% if highlight_field ==  form.name.id_for_label %} tabindex="1" autofocus="true"{% endif %} />
 
   </div>
 

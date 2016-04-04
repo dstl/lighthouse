@@ -32,13 +32,6 @@ from apps.links.views import (
     OverallLinkStatsCSV,
 )
 
-from apps.users.views import (
-    UserDetail,
-    UserUpdateProfile,
-    UserUpdateProfileTeams,
-    UserList,
-)
-
 from apps.organisations.views import (
     OrganisationCreate,
     OrganisationDetail,
@@ -61,6 +54,10 @@ from apps.search.views import (
 from apps.accounts.views import (
     LoginView,
     LogoutView,
+    UserDetail,
+    UserList,
+    UserUpdateProfile,
+    UserUpdateProfileTeams,
 )
 
 

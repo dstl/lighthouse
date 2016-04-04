@@ -1,0 +1,16 @@
+{# (c) Crown Owned Copyright, 2016. Dstl. #}
+
+<div class="form-group{% if form.name.errors %} error{% endif %}" id="{{ form.name.id_for_label }}_group">
+  <label for="{{ form.name.id_for_label }}" class="form-label-bold">
+    What is this team called?
+  </label>
+  {% if form.name.errors %}
+  <ul id="{{ form.name.id_for_label }}_error_list">
+    {% for error in form.name.errors %}
+      <li class="error-message">{{ error }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  <input class="form-control" id="{{ form.name.id_for_label }}" maxlength="256" name="name" type="text" value="{{ form.name.value|default_if_none:"" }}">
+</div>
+
