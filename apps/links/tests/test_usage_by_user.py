@@ -69,15 +69,15 @@ class LinkUsageByUserTest(WebTest):
 
         self.assertEqual(5, len(user_usage_items))
 
-        self.assertIn(self.top_user_1.username, user_usage_items[0].text)
+        self.assertIn(self.top_user_1.name, user_usage_items[0].text)
         self.assertIn('13', user_usage_items[0].text)
-        self.assertIn(self.top_user_2.username, user_usage_items[1].text)
+        self.assertIn(self.top_user_2.name, user_usage_items[1].text)
         self.assertIn('12', user_usage_items[1].text)
-        self.assertIn(self.top_user_3.username, user_usage_items[2].text)
+        self.assertIn(self.top_user_3.name, user_usage_items[2].text)
         self.assertIn('10', user_usage_items[2].text)
-        self.assertIn(self.top_user_4.username, user_usage_items[3].text)
+        self.assertIn(self.top_user_4.name, user_usage_items[3].text)
         self.assertIn('9', user_usage_items[3].text)
-        self.assertIn(self.top_user_5.username, user_usage_items[4].text)
+        self.assertIn(self.top_user_5.name, user_usage_items[4].text)
         self.assertIn('7', user_usage_items[4].text)
 
     def test_five_users_of_tool_listed_in_usage_order_excluding_old(self):
@@ -101,13 +101,13 @@ class LinkUsageByUserTest(WebTest):
 
         self.assertEqual(5, len(user_usage_items))
 
-        self.assertIn(self.top_user_1.username, user_usage_items[0].text)
+        self.assertIn(self.top_user_1.name, user_usage_items[0].text)
         self.assertIn('14', user_usage_items[0].text)
-        self.assertIn(self.top_user_2.username, user_usage_items[1].text)
+        self.assertIn(self.top_user_2.name, user_usage_items[1].text)
         self.assertIn('12', user_usage_items[1].text)
-        self.assertIn(self.top_user_3.username, user_usage_items[2].text)
+        self.assertIn(self.top_user_3.name, user_usage_items[2].text)
         self.assertIn('10', user_usage_items[2].text)
-        self.assertIn(self.top_user_4.username, user_usage_items[3].text)
+        self.assertIn(self.top_user_4.name, user_usage_items[3].text)
         self.assertIn('9', user_usage_items[3].text)
-        self.assertIn(self.top_user_5.username, user_usage_items[4].text)
+        self.assertIn(self.top_user_5.name, user_usage_items[4].text)
         self.assertIn('7', user_usage_items[4].text)
