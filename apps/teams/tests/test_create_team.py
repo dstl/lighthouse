@@ -1,7 +1,5 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
 
-import re
-
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 
@@ -136,7 +134,7 @@ class TeamWebTest(WebTest):
         response = self.app.get(reverse('team-list'))
         response = self.app.get(response.html.find(
                 'a',
-                text=re.compile(team_name + r'')
+                text=team_name
             ).attrs['href']
         )
         org_name = response.html.find(
