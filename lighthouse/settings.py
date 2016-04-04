@@ -53,6 +53,7 @@ INSTALLED_APPS = [
 
     # this project
     'acceptancetests',
+    'apps.accounts',
     'apps.access',
     'apps.govuk_template',
     'apps.home',
@@ -61,7 +62,6 @@ INSTALLED_APPS = [
     'apps.organisations',
     'apps.search',
     'apps.teams',
-    'apps.users',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -118,6 +118,8 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
+
+AUTH_USER_MODEL = 'accounts.User'
 
 domain = 'django.contrib.auth.password_validation'
 
@@ -178,10 +180,6 @@ STATIC_URL = '/static/'
 TEST_RUNNER = 'rainbowtests.test.runner.RainbowDiscoverRunner'
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
-
-AUTHENTICATION_BACKENDS = [
-    'apps.login.super_basic_auth_backend.SuperBasicAuth'
-]
 
 LOGIN_URL = '/login'
 
