@@ -5,7 +5,8 @@ import os
 
 from django.conf import settings
 from django.http import Http404
-from django.views.generic.base import TemplateView
+from django.shortcuts import render
+from django.views.generic.base import TemplateView, View
 
 import markdown
 
@@ -48,3 +49,8 @@ class StaticPageViewBase(TemplateView):
 
 class StaticPageView(StaticPageViewBase):
     template_name = 'staticpages/static.html'
+
+
+class Status404View(View):
+    def dispatch(self, request, *args, **kwargs):
+        return render(request, 'staticpages/404.html', status=404)
