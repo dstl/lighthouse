@@ -2,21 +2,21 @@
 
 import re
 
+from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 
 from django_webtest import WebTest
 
 from testing.common import create_organisation
 from apps.organisations.models import Organisation
-from apps.users.models import User
 
 
 class OrganisationListWebTest(WebTest):
     def test_can_click_through_existing_organisation_link(self):
         #   Create and log in a user
-        User(slug='user0001com', original_slug='user@0001.com').save()
-        form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0001com'
+        get_user_model().objects.create_user(userid='user@0001.com')
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user@0001.com'
         form.submit().follow()
 
         o = Organisation(name='org0001')
@@ -35,9 +35,9 @@ class OrganisationListWebTest(WebTest):
 
     def test_show_number_of_teams_two(self):
         #   Create and log in a user
-        User(slug='user0001com', original_slug='user@0001.com').save()
-        form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0001com'
+        get_user_model().objects.create_user(userid='user@0001.com')
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user@0001.com'
         form.submit().follow()
 
         o = create_organisation(name='two teams', num_teams=2)
@@ -54,9 +54,9 @@ class OrganisationListWebTest(WebTest):
 
     def test_show_number_of_teams_none(self):
         #   Create and log in a user
-        User(slug='user0001com', original_slug='user@0001.com').save()
-        form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0001com'
+        get_user_model().objects.create_user(userid='user@0001.com')
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user@0001.com'
         form.submit().follow()
 
         o = create_organisation(name='no teams', num_teams=0)

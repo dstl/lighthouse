@@ -1,20 +1,20 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
 
+from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 
 from django_webtest import WebTest
 
 from testing.common import create_team
 from testing.common import generate_fake_links
-from apps.users.models import User
 
 
 class TeamToolUsageTests(WebTest):
     def test_list_top_tools_ordered(self):
         #   Create and log in a user
-        User(slug='user0001com', original_slug='user@0001.com').save()
-        form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0001com'
+        get_user_model().objects.create_user(userid='user@0001.com')
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user0001com'
         form.submit().follow()
 
         t = create_team(

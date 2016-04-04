@@ -21,14 +21,14 @@ class LinkNotLoggedInTest(WebTest):
         self.complete_user.save()
 
         self.incomplete_user = make_user(
-            original_slug='user@0002.com',
+            userid='user@0002.com',
             email='fake2@dstl.gov.uk',
             name='Fake2 Fakerly')
         self.incomplete_user.teams.add(t)
         self.incomplete_user.save()
 
         self.teamless_user = make_user(
-            original_slug='user@0003.com',
+            userid='user@0003.com',
             email='fake3@dstl.gov.uk',
             name='Fake3 Fakerly')
         self.teamless_user.best_way_to_find = 'Whatever'
@@ -47,7 +47,9 @@ class LinkNotLoggedInTest(WebTest):
         response = self.app.get(reverse('link-create')).follow()
 
         self.assertEqual(
-            response.html.find('label', {"for": "id_slug"}).text.strip(' \n'),
+            response.html.find(
+                'label', {"for": "id_userid"}
+            ).text.strip(' \n'),
             'Login with ID.'
         )
 
@@ -58,7 +60,7 @@ class LinkNotLoggedInTest(WebTest):
         response = self.test_create_link_redirects_to_login()
 
         form = response.form
-        form['slug'] = self.complete_user.slug
+        form['userid'] = self.complete_user.userid
         response = form.submit().follow()
 
         self.assertNotIn(
@@ -71,7 +73,7 @@ class LinkNotLoggedInTest(WebTest):
         response = self.test_create_link_redirects_to_login()
 
         form = response.form
-        form['slug'] = self.incomplete_user.slug
+        form['userid'] = self.incomplete_user.userid
         response = form.submit().follow()
 
         self.assertNotIn(
@@ -84,7 +86,7 @@ class LinkNotLoggedInTest(WebTest):
         response = self.test_create_link_redirects_to_login()
 
         form = response.form
-        form['slug'] = self.teamless_user.slug
+        form['userid'] = self.teamless_user.userid
         response = form.submit().follow()
 
         self.assertNotIn(
@@ -102,7 +104,9 @@ class LinkNotLoggedInTest(WebTest):
         response = self.app.get(link_update_url).follow()
 
         self.assertEqual(
-            response.html.find('label', {"for": "id_slug"}).text.strip(' \n'),
+            response.html.find(
+                'label', {"for": "id_userid"}
+            ).text.strip(' \n'),
             'Login with ID.'
         )
 

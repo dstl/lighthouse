@@ -11,10 +11,10 @@ def generate_fake_links(owner, start=1, count=1, is_external=False):
 
 @testing_depreceated(common.make_user)
 def make_user(
-        original_slug='user@0001.com',
+        userid='user@0001.com',
         email='fake@dstl.gov.uk',
         name='Fake Fakerly'):
-    return common.make_user(original_slug, email, name)
+    return common.make_user(userid, email, name)
 
 
 @testing_depreceated(common.login_user)

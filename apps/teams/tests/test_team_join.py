@@ -1,12 +1,12 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
 
+from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 
 from django_webtest import WebTest
 
 from apps.organisations.models import Organisation
 from apps.teams.models import Team
-from apps.users.models import User
 from testing.common import login_user
 
 
@@ -18,12 +18,12 @@ class TeamWebTest(WebTest):
         o.save()
         t = Team(name="team0001", organisation=o)
         t.save()
-        User(slug='user0001com', original_slug='user@0001.com').save()
+        get_user_model().objects.create_user(userid='user@0001.com')
         # u.teams.add(t).save()
 
         #   Now we need to log in as that user.
-        form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0001com'
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user0001com'
         form.submit().follow()
 
         #   Now go visit the team page...
@@ -68,14 +68,13 @@ class TeamWebTest(WebTest):
         o.save()
         t = Team(name="team0001", organisation=o)
         t.save()
-        u = User(slug='user0001com', original_slug='user@0001.com')
-        u.save()
+        u = get_user_model().objects.create_user(userid='user@0001.com')
         u.teams.add(t)
         u.save()
 
         #   Now we need to log in as that user.
-        form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0001com'
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user@0001.com'
         form.submit().follow()
 
         #   Now go visit the team page...
@@ -120,9 +119,7 @@ class TeamWebTest(WebTest):
         o.save()
         t = Team(name="team0001", organisation=o)
         t.save()
-        u = User(slug='user0001com', original_slug='user@0001.com')
-        u.save()
-
+        u = get_user_model().objects.create_user(userid='user@0001.com')
         login_user(self, u)
 
         response = self.app.get(

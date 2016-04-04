@@ -180,7 +180,7 @@ TEST_RUNNER = 'rainbowtests.test.runner.RainbowDiscoverRunner'
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 
-LOGIN_URL = '/login'
+LOGIN_URL = 'login'
 
 # Search
 WHOOSH_INDEX = os.path.join(os.path.dirname(__file__), 'whoosh_index')

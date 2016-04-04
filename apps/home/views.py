@@ -17,6 +17,6 @@ class Home(View):
             if (u is not None and u is not ''):
                 return redirect(reverse('link-list'))
             else:
-                return redirect(reverse('login-view'))
+                return redirect(reverse('login'))
         except:
-            return redirect(reverse('login-view'))
+            return redirect(reverse('login'))

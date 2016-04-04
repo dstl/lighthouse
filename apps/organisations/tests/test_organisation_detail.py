@@ -1,20 +1,20 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
 
+from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 
 from django_webtest import WebTest
 
 from testing.common import create_organisation
 from testing.common import generate_fake_links
-from apps.users.models import User
 
 
 class OrganisationDetailWebTest(WebTest):
     def test_new_team_input_visible(self):
         #   Create and log in a user
-        User(slug='user0001com', original_slug='user@0001.com').save()
-        form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0001com'
+        get_user_model().objects.create_user(userid='user@0001.com')
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user@0001.com'
         form.submit().follow()
 
         o = create_organisation(name='two teams', num_teams=2)
@@ -128,9 +128,9 @@ class OrganisationDetailWebTest(WebTest):
 
     def test_list_top_tools_ordered(self):
         #   Create and log in a user
-        User(slug='user0001com', original_slug='user@0001.com').save()
-        form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0001com'
+        get_user_model().objects.create_user(userid='user@0001.com')
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user@0001.com'
         form.submit().follow()
 
         # Create an organistion with two teams and two members in each team.

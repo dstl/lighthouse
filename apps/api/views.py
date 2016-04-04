@@ -3,6 +3,7 @@
 import os
 
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
@@ -12,7 +13,6 @@ from django.views.generic.detail import SingleObjectMixin
 
 from apps.links.models import Link
 from apps.staticpages.views import StaticPageViewBase
-from apps.users.models import User
 
 
 class APIBase(View):
@@ -75,8 +75,8 @@ class LinkUsageAPI(SingleObjectMixin, APIBase):
 
         # user must exist
         try:
-            user = User.objects.get(slug=request.POST.get('user'))
-        except User.DoesNotExist:
+            user = get_user_model().objects.get(slug=request.POST.get('user'))
+        except get_user_model().DoesNotExist:
             return JsonResponse({'error': 'no such user'}, status=400)
 
         link.register_usage(user)
