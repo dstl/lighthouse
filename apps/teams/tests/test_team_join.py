@@ -7,6 +7,7 @@ from django_webtest import WebTest
 from apps.organisations.models import Organisation
 from apps.teams.models import Team
 from apps.users.models import User
+from testing.common import login_user
 
 
 class TeamWebTest(WebTest):
@@ -32,18 +33,31 @@ class TeamWebTest(WebTest):
                 kwargs={'pk': t.pk}
             )
         )
-        #   ...and see if the "join" button appears...
-        self.assertTrue(
-            response.html.find(
-                'a',
-                attrs={'href': '/teams/' + str(t.pk) + '/join'}
-            )
+
+        form = response.form
+
+        self.assertEqual(
+            form.method,
+            'post'
         )
-        #   ...and that the "leave" button doesn't...
-        self.assertFalse(
+
+        self.assertEqual(
+            form.action,
+            '/teams/' + str(t.pk) + '/join'
+        )
+
+        # Make sure this button no longer exists
+        self.assertIsNone(
             response.html.find(
                 'a',
                 attrs={'href': '/teams/' + str(t.pk) + '/leave'}
+            )
+        )
+        # Make sure this button no longer exists
+        self.assertIsNone(
+            response.html.find(
+                'a',
+                attrs={'href': '/teams/' + str(t.pk) + '/join'}
             )
         )
 
@@ -71,22 +85,35 @@ class TeamWebTest(WebTest):
                 kwargs={'pk': t.pk}
             )
         )
-        #   ...and see if the "leave" button appears...
-        self.assertTrue(
+
+        form = response.form
+
+        self.assertEqual(
+            form.method,
+            'post'
+        )
+
+        self.assertEqual(
+            form.action,
+            '/teams/' + str(t.pk) + '/leave'
+        )
+
+        # Make sure this button no longer exists
+        self.assertIsNone(
             response.html.find(
                 'a',
                 attrs={'href': '/teams/' + str(t.pk) + '/leave'}
             )
         )
-        #   ...and that the "join" button doesn't...
-        self.assertFalse(
+        # Make sure this button no longer exists
+        self.assertIsNone(
             response.html.find(
                 'a',
                 attrs={'href': '/teams/' + str(t.pk) + '/join'}
             )
         )
 
-    def test_join_leave_link_works(self):
+    def test_join_leave_buttons_work(self):
         #   Create an organisation, a team and a user and assign that
         #   team to that user.
         o = Organisation(name="org0001")
@@ -96,44 +123,37 @@ class TeamWebTest(WebTest):
         u = User(slug='user0001com', original_slug='user@0001.com')
         u.save()
 
-        #   Now we need to log in as that user.
-        form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0001com'
-        form.submit().follow()
+        login_user(self, u)
 
-        #   Assert that a link to the team doesn't exists (because we are
-        #   not a member of it yet.)
         response = self.app.get(
             reverse(
-                'user-detail',
-                kwargs={'slug': u.slug}
-            )
-        )
-        self.assertFalse(
-            response.html.find(
-                'a',
-                attrs={
-                    'class': 'main-list-item',
-                    'href': '/teams/' + str(t.pk)
-                }
-            )
-        )
-
-        #   Now go visit the join url
-        self.app.get(
-            reverse(
-                'team-join',
+                'team-detail',
                 kwargs={'pk': t.pk}
             )
         )
 
-        #   Now go to the user's profile and see if a link to the team exists
+        form = response.form
+
+        self.assertEqual(
+            form.method,
+            'post'
+        )
+
+        self.assertEqual(
+            form.action,
+            '/teams/' + str(t.pk) + '/join'
+        )
+
+        response = form.submit().follow()
+
+        # Make sure the user is now in the team
         response = self.app.get(
             reverse(
                 'user-detail',
                 kwargs={'slug': u.slug}
             )
         )
+
         self.assertTrue(
             response.html.find(
                 'a',
@@ -144,15 +164,29 @@ class TeamWebTest(WebTest):
             )
         )
 
-        #   Now go visit the leave url
-        self.app.get(
+        # Go back to the team detail page so we can submit the link
+        response = self.app.get(
             reverse(
-                'team-leave',
+                'team-detail',
                 kwargs={'pk': t.pk}
             )
         )
 
-        #   And once again check the link to the team has gone
+        form = response.form
+
+        self.assertEqual(
+            form.method,
+            'post'
+        )
+
+        self.assertEqual(
+            form.action,
+            '/teams/' + str(t.pk) + '/leave'
+        )
+
+        response = form.submit().follow()
+
+        # Make sure the user is no longer in the team
         response = self.app.get(
             reverse(
                 'user-detail',

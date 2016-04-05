@@ -69,7 +69,7 @@ class TeamDetail(LoginRequiredMixin, DetailView):
 
 class TeamJoin(LoginRequiredMixin, TemplateView):
 
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
 
         #   If we are not logged in, send the user to the login page
         if not self.request.user.is_authenticated():
@@ -96,7 +96,7 @@ class TeamJoin(LoginRequiredMixin, TemplateView):
 
 class TeamLeave(LoginRequiredMixin, TemplateView):
 
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
 
         #   If we are not logged in, send the user to the login page
         if not self.request.user.is_authenticated():

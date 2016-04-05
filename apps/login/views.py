@@ -16,7 +16,6 @@ from apps.users.models import User
 #   TODO: There's a fair amount of refactoring we can do around this, but
 #   that's probably best left for when we do LDAP stuff
 def LogUserIn(self, request, slug):
-    # pdb.set_trace()
     #   See if we an authenticate the user
     try:
         user = authenticate(slug=slugify(slug))
