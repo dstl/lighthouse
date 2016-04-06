@@ -1,3 +1,4 @@
+// (c) Crown Owned Copyright, 2016. Dstl.
 $(document).ready(function() {
 
   // Turn off jQuery animation
