@@ -7,10 +7,11 @@
 
 <h1 class="form-title heading-xlarge">
   <span class="heading-secondary">Tools</span>
+  All tools
 </h1>
 
+{% if total_links_in_db > 0 %}
 <div class="grid-row">
-  {% if total_links_in_db > 0 %}
   <div id="categories-filter" class="column-third">
     <form method="get" action="" id="list-results">
       <h2 class="filter-controls-header heading-medium heading-snug-top">Tool categories</h2>
@@ -84,17 +85,14 @@
       {% include "includes/pagination.html" %}
 
     </div>
-  {% else %}
-    <div class="alert-summary" role="group">
-      <h3 class="heading-medium alert-summary-heading">No tools added yet.</h3>
-      <p>
-        Hey there, it doesn't look like any tools have been added to the system yet. That means you're a super early adopter!
-      </p>
-      <p>
-        To get started you can add the 1st tool here: <a href="{% url 'link-create' %}">Add a new tool</a>.
-      </p>
-    </div>
-  {% endif %}
-
 </div>
+{% else %}
+<div class="alert-summary" role="group">
+  <h3 class="heading-medium alert-summary-heading">No tools have been added yet</h3>
+  <p>
+    The system doesn't yet have any tools recorded. Add the first tool, visit the "<a href="{% url 'link-create' %}">Add a new tool</a>" page.
+  </p>
+</div>
+{% endif %}
+
 {% endblock %}
