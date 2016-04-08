@@ -22,6 +22,11 @@ from taggit.models import Tag
 from .models import Link, LinkUsage
 from apps.access import LoginRequiredMixin
 
+from haystack.inputs import AutoQuery
+from haystack.query import SearchQuerySet
+
+from apps.search.models import SearchQuery, SearchTerm
+
 
 class LinkDetail(DetailView):
     model = Link
@@ -115,32 +120,86 @@ class LinkUpdate(LoginRequiredMixin, CategoriesFormMixin, UpdateView):
 class LinkList(ListView):
     model = Link
     paginate_by = 5
+    template_name = 'links/link_list.html'
+
+    def has_query(self):
+        return 'q' in self.request.GET and len(self.request.GET['q']) > 0
+
+    def has_categories(self):
+        return 'categories' in self.request.GET
+
+    def external_only(self):
+        types = self.request.GET.getlist('types', [])
+        if type(types) == str:
+            types = [types]
+        return 'internal' not in types and 'external' in types
+
+    def internal_only(self):
+        types = self.request.GET.getlist('types', [])
+        if type(types) == str:
+            types = [types]
+        return 'internal' in types and 'external' not in types
 
     def get_queryset(self):
-        qs = super(LinkList, self).get_queryset().order_by('id')
-        if 'categories' in self.request.GET:
+        queryset = super(LinkList, self).get_queryset().order_by('-added')
+        not_on_page = 'page' not in self.request.GET
+
+        if self.has_query():
+            queryset = SearchQuerySet().filter(
+                content=AutoQuery(self.request.GET['q']),
+            ).filter_or(
+                categories=AutoQuery(self.request.GET['q'])
+            ).filter_or(
+                network_location=AutoQuery(self.request.GET['q'])
+            )
+
+        if self.has_categories():
             categories_to_filter = dict(self.request.GET)['categories']
             if type(categories_to_filter) == str:
                 categories_to_filter = [categories_to_filter]
-            qs = Link.objects.filter(
-                categories__name__in=categories_to_filter
-            ).order_by('id').distinct()
+            if self.has_query():
+                queryset = queryset.models(Link).filter(
+                    categories__in=categories_to_filter
+                )
+            else:
+                # At this point, the queryset should already be ordered because
+                # of the original get_queryset call at the beginning of this
+                # function.
+                queryset = queryset.filter(
+                    categories__name__in=categories_to_filter
+                ).distinct()
 
-        if 'types' in self.request.GET:
-            types_to_filter = self.request.GET.getlist('types')
-            if type(types_to_filter) == str:
-                types_to_filter = [types_to_filter]
-            if ('internal' in types_to_filter and
-                    'external' not in types_to_filter):
-                qs = qs.exclude(is_external=True)
-            elif ('internal' not in types_to_filter and
-                    'external' in types_to_filter):
-                qs = qs.exclude(is_external=False)
+        if self.external_only() or self.internal_only():
+            if self.has_query():
+                queryset = queryset.models(Link).exclude(
+                    is_external=self.internal_only()
+                )
+            else:
+                # At this point, the queryset should already be ordered because
+                # of the original get_queryset call at the beginning of this
+                # function.
+                queryset = queryset.exclude(
+                    is_external=self.internal_only()
+                ).distinct()
 
-        qs = qs.reverse()
-        return qs
+        if self.has_query() and not self.has_categories() and not_on_page:
+            # At this point the queryset is a list of SearchResult objects, all
+            # of them. So, the length is accurate. By the time it reaches
+            # context, it won't be.
+            st, created = SearchTerm.objects.get_or_create(
+                query=self.request.GET.get('q')
+            )
+            sq = SearchQuery()
+            sq.term = st
+            sq.results_length = len(queryset)
+            sq.user = self.request.user
+            sq.save()
+
+        return queryset
 
     def get_context_data(self, **kwargs):
+        context = super(LinkList, self).get_context_data(**kwargs)
+        querystrings = []
         if 'categories' in self.request.GET:
             categories_to_filter = dict(self.request.GET)['categories']
             if type(categories_to_filter) == str:
@@ -148,13 +207,27 @@ class LinkList(ListView):
         else:
             categories_to_filter = []
 
+        querystrings = ['categories=%s' % c for c in categories_to_filter]
+
+        # At this point the context contains object_list which is either a list
+        # of SearchResult objects or Link objects
         types_to_filter = self.request.GET.getlist('types', [])
 
-        context = super(LinkList, self).get_context_data(**kwargs)
+        querystrings += ['types=%s' % t for t in types_to_filter]
+
+        if self.has_query():
+            context['query'] = self.request.GET['q']
+            context['object_list'] = [result.object for
+                                      result in
+                                      context['object_list']]
+            querystrings += ['q=%s' % self.request.GET['q']]
         context['categories'] = Tag.objects.all()
         context['filtered_categories'] = categories_to_filter
         context['filtered_types'] = types_to_filter
         context['total_links_in_db'] = Link.objects.count()
+
+        context['extra_query_strings'] = '&'.join(querystrings)
+
         return context
 
 

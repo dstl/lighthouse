@@ -205,11 +205,6 @@ urlpatterns = [
     ),
 
     url(
-        r'^search',
-        include('apps.search.urls'),
-    ),
-
-    url(
         r'^(?P<slug>\w+)/?$',
         StaticPageView.as_view(),
         name='static-page'

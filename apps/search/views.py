@@ -8,9 +8,7 @@ from django.http import HttpResponse
 from django.utils import timezone
 from django.views.generic import TemplateView, View
 
-from haystack.views import SearchView
-
-from .models import SearchQuery, SearchTerm
+from .models import SearchQuery
 
 
 class SearchStats(TemplateView):
@@ -64,22 +62,3 @@ class SearchStatsCSV(View):
             ])
 
         return response
-
-
-def search(request):
-    view = SearchView()
-    response = view(request)
-    has_query = 'q' in request.GET
-    not_on_page = 'page' not in request.GET
-
-    if has_query and len(request.GET.get('q')) > 0 and not_on_page:
-        st, created = SearchTerm.objects.get_or_create(
-            query=request.GET.get('q')
-        )
-        sq = SearchQuery()
-        sq.term = st
-        sq.results_length = len(view.get_results())
-        sq.user = request.user
-        sq.save()
-
-    return response

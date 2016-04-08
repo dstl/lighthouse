@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django_webtest import WebTest
 
 from testing.common import generate_fake_links, login_user, make_user
+from haystack.management.commands import rebuild_index
 
 
 class ListLinksWithCategoriesTest(WebTest):
@@ -45,6 +46,8 @@ class ListLinksWithCategoriesTest(WebTest):
         self.el6.save()
 
         self.assertTrue(login_user(self, self.logged_in_user))
+
+        rebuild_index.Command().handle(interactive=False, verbosity=0)
 
     def test_all_categories_appear(self):
         response = self.app.get(reverse('link-list'))
