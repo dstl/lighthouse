@@ -51,7 +51,7 @@ class LinkSearchResults(WebTest):
         self.fourth_link = Link.objects.create(
             name='Bing Translate',
             destination='https://translate.bing.com',
-            description='Translation service',
+            description="Bing's a pretty good translation service. Run, yeah?",
             owner=self.user,
             is_external=True,
         )
@@ -123,6 +123,24 @@ class LinkSearchResults(WebTest):
         results = response.html.find(id='link-results').findAll('li')
         self.assertEquals(len(results), 1)
         self.assertIn('Google Mail', results[0].text)
+
+    def test_search_for_desc_conjugated_word_shows_one(self):
+        search_url = '%s?q=running' % reverse('link-list')
+        response = self.app.get(search_url)
+        search_results_list = response.html.find(id='link-results')
+        self.assertIsNotNone(search_results_list)
+        results = search_results_list.findAll('li')
+        self.assertEquals(len(results), 1)
+        self.assertIn('Bing Translate', results[0].text)
+
+    def test_search_for_title_conjugated_word_shows_one(self):
+        search_url = '%s?q=chatting' % reverse('link-list')
+        response = self.app.get(search_url)
+        search_results_list = response.html.find(id='link-results')
+        self.assertIsNotNone(search_results_list)
+        results = search_results_list.findAll('li')
+        self.assertEquals(len(results), 1)
+        self.assertIn('Google Chat', results[0].text)
 
     def test_search_for_flibble_shows_none(self):
         search_url = '%s?q=flibble' % reverse('link-list')
