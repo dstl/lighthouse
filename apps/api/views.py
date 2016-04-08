@@ -60,6 +60,7 @@ class LinkUsageAPI(SingleObjectMixin, APIBase):
             response.append({
                 'user': use.user.userid,
                 'date': use.start,
+                'duration': use.duration,
             })
         return JsonResponse(response, safe=False)
 

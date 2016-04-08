@@ -17,6 +17,17 @@ class LinkUsage(models.Model):
     link = models.ForeignKey('Link', related_name='usage')
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='usage')
     start = models.DateTimeField(auto_now_add=True)
+    end = models.DateTimeField(blank=True, null=True)
+
+    @property
+    def duration(self):
+        if not self.end:
+            return 0
+
+        # don't report the microseconds, just the seconds
+        delta = self.end - self.start
+        duration = delta - timedelta(microseconds=delta.microseconds)
+        return int(duration.total_seconds())
 
     def __str__(self):
         return 'Usage of %s by %s at %s' % (self.link, self.user, self.start)
@@ -37,8 +48,16 @@ class Link(models.Model):
     def get_absolute_url(self):
         return reverse('link-detail', kwargs={'pk': self.pk})
 
-    def register_usage(self, user):
-        LinkUsage.objects.create(link=self, user=user).save()
+    def register_usage(self, user, force_new=False):
+        an_hour_ago = timezone.now() - timedelta(hours=1)
+
+        usage = LinkUsage.objects.filter(
+            link=self, user=user, start__gt=an_hour_ago)
+        if len(usage) and not force_new:
+            usage[0].end = timezone.now()
+            usage[0].save()
+        else:
+            LinkUsage.objects.create(link=self, user=user)
 
     def usage_today(self):
         """ All usage since midnight """

@@ -250,10 +250,11 @@ class LinkStatsCSV(DetailView):
             )
 
         writer = csv.writer(response)
-        writer.writerow(['Date', 'User', 'Tool'])
+        writer.writerow(['Date', 'Duration', 'User', 'Tool'])
         for usage in link.usage.all():
             writer.writerow([
                 usage.start.strftime("%Y-%m-%d %H:%M:%S"),
+                usage.duration,
                 usage.user.userid,
                 usage.link
             ])
@@ -280,10 +281,11 @@ class OverallLinkStatsCSV(View):
             'attachment; filename="lighthouse_full_%s.csv"' % date
 
         writer = csv.writer(response)
-        writer.writerow(['Date', 'User', 'Tool'])
+        writer.writerow(['Date', 'Duration', 'User', 'Tool'])
         for usage in LinkUsage.objects.all():
             writer.writerow([
                 usage.start.strftime("%Y-%m-%d %H:%M:%S"),
+                usage.duration,
                 usage.user.userid,
                 usage.link
             ])

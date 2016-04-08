@@ -158,39 +158,39 @@ class OrganisationDetailWebTest(WebTest):
         # increase the aggregate from values across teams.
         # 16 times for existing link 8
         for i in range(0, 6):
-            self.el8.register_usage(user1)
+            self.el8.register_usage(user1, force_new=True)
         for i in range(0, 10):
-            self.el8.register_usage(user2)
+            self.el8.register_usage(user2, force_new=True)
 
         # 13 times for existing link 4
         for i in range(0, 8):
-            self.el4.register_usage(user1)
+            self.el4.register_usage(user1, force_new=True)
         for i in range(0, 5):
-            self.el4.register_usage(user2)
+            self.el4.register_usage(user2, force_new=True)
 
         # 9 times for existing link 1
         for i in range(0, 4):
-            self.el1.register_usage(user1)
+            self.el1.register_usage(user1, force_new=True)
         for i in range(0, 5):
-            self.el1.register_usage(user2)
+            self.el1.register_usage(user2, force_new=True)
 
         # 8 times for existing link 3
         for i in range(0, 5):
-            self.el3.register_usage(user1)
+            self.el3.register_usage(user1, force_new=True)
         for i in range(0, 3):
-            self.el3.register_usage(user2)
+            self.el3.register_usage(user2, force_new=True)
 
         # 4 times for existing link 9
         for i in range(0, 3):
-            self.el9.register_usage(user1)
+            self.el9.register_usage(user1, force_new=True)
         for i in range(0, 1):
-            self.el9.register_usage(user2)
+            self.el9.register_usage(user2, force_new=True)
 
         # 3 times for existing link 10
         for i in range(0, 2):
-            self.el10.register_usage(user1)
+            self.el10.register_usage(user1, force_new=True)
         for i in range(0, 1):
-            self.el10.register_usage(user2)
+            self.el10.register_usage(user2, force_new=True)
 
         response = self.app.get(reverse(
             'organisation-detail',
