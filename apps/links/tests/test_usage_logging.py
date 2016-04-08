@@ -219,13 +219,13 @@ class LinkUsageWebTest(WebTest):
 
         self.link = Link.objects.create(
             name='Link Linkerly',
-            destination='/',
+            destination='https://here/',
             owner=self.user,
             is_external=False,
         )
         self.other_link = Link.objects.create(
             name='Other Link',
-            destination='/links',
+            destination='https://here/links',
             owner=self.user,
             is_external=True,
         )
