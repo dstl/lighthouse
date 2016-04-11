@@ -43,6 +43,85 @@ class LinkUsageModelTest(TestCase):
         self.assertEquals(self.link.usage_total(), 1)
         self.assertEquals(self.other_link.usage_total(), 0)
 
+        usage = self.link.usage.all()[0]
+        self.assertEquals(usage.duration, 0)
+
+    def test_update_usage_within_one_hour(self):
+        self.assertEquals(self.link.usage_total(), 0)
+        self.assertEquals(self.other_link.usage_total(), 0)
+
+        with mock.patch('django.utils.timezone.now') as mock_now:
+            mock_now.return_value = make_aware(datetime(2016, 3, 1, 10, 0, 0))
+            self.link.register_usage(self.user)
+
+            mock_now.return_value = make_aware(datetime(2016, 3, 1, 10, 59, 0))
+            self.link.register_usage(self.user)
+
+            self.assertEquals(self.link.usage_today(), 1)
+            self.assertEquals(self.link.usage_total(), 1)
+            self.assertEquals(self.other_link.usage_total(), 0)
+
+        usage = self.link.usage.all()[0]
+        self.assertEquals(usage.duration, 3540)
+
+    def test_update_different_user_doesnt_cause_duration(self):
+        self.assertEquals(self.link.usage_total(), 0)
+        self.assertEquals(self.other_link.usage_total(), 0)
+
+        new_user = make_user(userid='user@example.com')
+        self.link.register_usage(self.user)
+        self.link.register_usage(new_user)
+
+        self.assertEquals(self.link.usage_today(), 2)
+        self.assertEquals(self.link.usage_total(), 2)
+        self.assertEquals(self.other_link.usage_total(), 0)
+
+    def test_update_different_link_doesnt_cause_duration(self):
+        self.assertEquals(self.link.usage_total(), 0)
+        self.assertEquals(self.other_link.usage_total(), 0)
+
+        self.link.register_usage(self.user)
+        self.other_link.register_usage(self.user)
+
+        self.assertEquals(self.link.usage_today(), 1)
+        self.assertEquals(self.link.usage_total(), 1)
+        self.assertEquals(self.other_link.usage_today(), 1)
+        self.assertEquals(self.other_link.usage_total(), 1)
+
+    def test_create_new_usage_after_one_hour(self):
+        self.assertEquals(self.link.usage_total(), 0)
+        self.assertEquals(self.other_link.usage_total(), 0)
+
+        with mock.patch('django.utils.timezone.now') as mock_now:
+            mock_now.return_value = make_aware(datetime(2016, 3, 1, 10, 0, 0))
+            self.link.register_usage(self.user)
+
+            mock_now.return_value = make_aware(datetime(2016, 3, 1, 11, 0, 0))
+            self.link.register_usage(self.user)
+
+            self.assertEquals(self.link.usage_today(), 2)
+            self.assertEquals(self.link.usage_total(), 2)
+            self.assertEquals(self.other_link.usage_total(), 0)
+
+        usage = self.link.usage.all()
+        self.assertEquals(usage[0].duration, 0)
+        self.assertEquals(usage[1].duration, 0)
+
+    def test_force_new_usage(self):
+        self.assertEquals(self.link.usage_total(), 0)
+        self.assertEquals(self.other_link.usage_total(), 0)
+
+        with mock.patch('django.utils.timezone.now') as mock_now:
+            mock_now.return_value = make_aware(datetime(2016, 3, 1, 10, 0, 0))
+            self.link.register_usage(self.user)
+
+            mock_now.return_value = make_aware(datetime(2016, 3, 1, 10, 15, 0))
+            self.link.register_usage(self.user, force_new=True)
+
+            self.assertEquals(self.link.usage_today(), 2)
+            self.assertEquals(self.link.usage_total(), 2)
+            self.assertEquals(self.other_link.usage_total(), 0)
+
     def test_usage_only_yesterday(self):
         self.assertEquals(self.link.usage_total(), 0)
         self.assertEquals(self.other_link.usage_total(), 0)
@@ -114,11 +193,11 @@ class LinkUsageModelTest(TestCase):
 
         with mock.patch('django.utils.timezone.now') as mock_now:
             # register usage in a specific month
-            mock_now.return_value = make_aware(datetime(2016, 3, 1, 10, 0, 0))
+            mock_now.return_value = make_aware(datetime(2016, 2, 29, 10, 0, 0))
             self.link.register_usage(self.user)
 
-            # register usage in the previous month
-            mock_now.return_value = make_aware(datetime(2016, 2, 29, 10, 0, 0))
+            # register usage in the next month
+            mock_now.return_value = make_aware(datetime(2016, 3, 1, 10, 0, 0))
             self.link.register_usage(self.user)
 
             # test it from the point of view of the specific month
@@ -264,16 +343,17 @@ class LinkUsageWebTest(WebTest):
         )
 
     def test_link_stats_page(self):
-        self.link.register_usage(self.user)
-
         with mock.patch('django.utils.timezone.now') as mock_now:
+            # register usage thirty-eight days ago
+            mock_now.return_value = self.now - relativedelta(days=38)
+            self.link.register_usage(self.user)
+
             # register usage eight days ago
             mock_now.return_value = self.now - relativedelta(days=8)
             self.link.register_usage(self.user)
 
-            # register usage thirty-eight days ago
-            mock_now.return_value = self.now - relativedelta(days=38)
-            self.link.register_usage(self.user)
+        # register usage now
+        self.link.register_usage(self.user)
 
         stats_url = reverse('link-stats', kwargs={'pk': self.link.pk})
         response = self.app.get(stats_url)
@@ -308,6 +388,7 @@ class LinkUsageWebTest(WebTest):
         row = next(reader)
         self.assertEquals(row, {
             'User': 'user@0001.com',
+            'Duration': '0',
             'Date': '2016-03-01 10:00:00',
             'Tool': 'Link Linkerly',
         })
@@ -315,22 +396,24 @@ class LinkUsageWebTest(WebTest):
         row = next(reader)
         self.assertEquals(row, {
             'User': 'user@0001.com',
+            'Duration': '0',
             'Date': '2016-03-01 11:15:00',
             'Tool': 'Link Linkerly',
         })
 
     def test_overall_stats_page(self):
-        self.link.register_usage(self.user)
-        self.other_link.register_usage(self.user)
-
         with mock.patch('django.utils.timezone.now') as mock_now:
+            # register usage thirty-eight days ago
+            mock_now.return_value = self.now - relativedelta(days=38)
+            self.link.register_usage(self.user)
+
             # register usage eight days ago
             mock_now.return_value = self.now - relativedelta(days=8)
             self.link.register_usage(self.user)
 
-            # register usage thirty-eight days ago
-            mock_now.return_value = self.now - relativedelta(days=38)
-            self.link.register_usage(self.user)
+        # register usage now
+        self.link.register_usage(self.user)
+        self.other_link.register_usage(self.user)
 
         stats_url = reverse('link-overall-stats')
         response = self.app.get(stats_url)
@@ -353,10 +436,13 @@ class LinkUsageWebTest(WebTest):
             mock_now.return_value = make_aware(datetime(2016, 3, 1, 10, 0, 0))
             self.link.register_usage(self.user)
 
+            # these two will be combined into usage with duration
             mock_now.return_value = make_aware(datetime(2016, 3, 1, 11, 15, 0))
             self.other_link.register_usage(self.user)
-
             mock_now.return_value = make_aware(datetime(2016, 3, 1, 11, 16, 0))
+            self.other_link.register_usage(self.user)
+
+            mock_now.return_value = make_aware(datetime(2016, 3, 1, 13, 0, 0))
             self.link.register_usage(self.user)
 
         stats_url = reverse('link-overall-stats-csv')
@@ -368,6 +454,7 @@ class LinkUsageWebTest(WebTest):
         row = next(reader)
         self.assertEquals(row, {
             'User': 'user@0001.com',
+            'Duration': '0',
             'Date': '2016-03-01 10:00:00',
             'Tool': 'Link Linkerly',
         })
@@ -375,6 +462,7 @@ class LinkUsageWebTest(WebTest):
         row = next(reader)
         self.assertEquals(row, {
             'User': 'user@0001.com',
+            'Duration': '60',
             'Date': '2016-03-01 11:15:00',
             'Tool': 'Other Link',
         })
@@ -382,7 +470,8 @@ class LinkUsageWebTest(WebTest):
         row = next(reader)
         self.assertEquals(row, {
             'User': 'user@0001.com',
-            'Date': '2016-03-01 11:16:00',
+            'Duration': '0',
+            'Date': '2016-03-01 13:00:00',
             'Tool': 'Link Linkerly',
         })
 
@@ -390,17 +479,17 @@ class LinkUsageWebTest(WebTest):
         self.assertEquals(self.link.usage_total(), 0)
         self.assertEquals(self.other_link.usage_total(), 0)
 
-        # register usage today
-        self.link.register_usage(self.user)
-
         with mock.patch('django.utils.timezone.now') as mock_now:
+            # register usage eight days ago (last 30 days)
+            mock_now.return_value = self.now - timedelta(days=8)
+            self.link.register_usage(self.user)
+
             # register usage one day ago (last 7 days)
             mock_now.return_value = self.now - timedelta(days=1)
             self.link.register_usage(self.user)
 
-            # register usage eight day ago (last 30 days)
-            mock_now.return_value = self.now - timedelta(days=8)
-            self.link.register_usage(self.user)
+        # register usage today
+        self.link.register_usage(self.user)
 
         detail_url = reverse('link-detail', kwargs={'pk': self.link.pk})
         response = self.app.get(detail_url)

@@ -29,10 +29,24 @@ class LinkUsageAPITest(LiveServerTestCase):
             mock_now.return_value = make_aware(datetime(2016, 3, 1, 10, 0, 0))
             self.link.register_usage(self.user)
 
-        expected_response = [{
-            'date': '2016-03-01T10:00:00Z',
-            'user': self.user.userid,
-        }]
+            mock_now.return_value = make_aware(datetime(2016, 3, 2, 10, 0, 0))
+            self.link.register_usage(self.user)
+
+            mock_now.return_value = make_aware(datetime(2016, 3, 2, 10, 15, 0))
+            self.link.register_usage(self.user)
+
+        expected_response = [
+            {
+                'date': '2016-03-01T10:00:00Z',
+                'user': self.user.userid,
+                'duration': 0,
+            },
+            {
+                'date': '2016-03-02T10:00:00Z',
+                'user': self.user.userid,
+                'duration': 900,
+            }
+        ]
         link_api_url = '%s%s' % (
             self.live_server_url,
             reverse('api-link-usage', kwargs={'pk': self.link.pk}),
@@ -92,11 +106,80 @@ class LinkUsageAPITest(LiveServerTestCase):
         self.assertEquals(self.link.usage_total(), 1)
         self.assertEquals(response.json(), expected_response)
 
+    def test_update_usage_extends_duration(self):
+        self.assertEquals(self.link.usage_total(), 0)
+
+        with mock.patch('django.utils.timezone.now') as mock_now:
+            # register usage on a specific day
+            mock_now.return_value = make_aware(datetime(2016, 3, 1, 10, 0, 0))
+
+            expected_response = {'status': 'ok'}
+            link_api_url = '%s%s' % (
+                self.live_server_url,
+                reverse('api-link-usage', kwargs={'pk': self.link.pk}),
+            )
+
+            response = requests.post(
+                link_api_url, data={'user': self.user.slug})
+            self.assertEqual(response.status_code, 201)
+            self.assertEquals(self.link.usage_total(), 1)
+            self.assertEquals(response.json(), expected_response)
+
+            # register usage shortly after
+            mock_now.return_value = make_aware(datetime(2016, 3, 1, 10, 15, 0))
+
+            expected_response = {'status': 'ok'}
+            link_api_url = '%s%s' % (
+                self.live_server_url,
+                reverse('api-link-usage', kwargs={'pk': self.link.pk}),
+            )
+
+            response = requests.post(
+                link_api_url, data={'user': self.user.slug})
+            self.assertEqual(response.status_code, 201)
+            self.assertEquals(self.link.usage_total(), 1)
+            self.assertEquals(response.json(), expected_response)
+
+    def test_update_usage_creates_new_usage(self):
+        self.assertEquals(self.link.usage_total(), 0)
+
+        with mock.patch('django.utils.timezone.now') as mock_now:
+            # register usage on a specific day
+            mock_now.return_value = make_aware(datetime(2016, 3, 1, 10, 0, 0))
+
+            expected_response = {'status': 'ok'}
+            link_api_url = '%s%s' % (
+                self.live_server_url,
+                reverse('api-link-usage', kwargs={'pk': self.link.pk}),
+            )
+
+            response = requests.post(
+                link_api_url, data={'user': self.user.slug})
+            self.assertEqual(response.status_code, 201)
+            self.assertEquals(self.link.usage_total(), 1)
+            self.assertEquals(response.json(), expected_response)
+
+            # register usage after one hour, triggers new usage stat
+            mock_now.return_value = make_aware(datetime(2016, 3, 1, 11, 15, 0))
+
+            expected_response = {'status': 'ok'}
+            link_api_url = '%s%s' % (
+                self.live_server_url,
+                reverse('api-link-usage', kwargs={'pk': self.link.pk}),
+            )
+
+            response = requests.post(
+                link_api_url, data={'user': self.user.slug})
+            self.assertEqual(response.status_code, 201)
+            self.assertEquals(self.link.usage_total(), 2)
+            self.assertEquals(response.json(), expected_response)
+
     def test_cannot_update_usage_on_nonexistent_link(self):
         link_api_url = '%s%s' % (
             self.live_server_url,
             reverse('api-link-usage', kwargs={'pk': (self.link.pk + 1000)}),
         )
 
-        response = requests.post(link_api_url, data={'user': self.user.userid})
+        response = requests.post(
+            link_api_url, data={'user': self.user.userid})
         self.assertEqual(response.status_code, 404)

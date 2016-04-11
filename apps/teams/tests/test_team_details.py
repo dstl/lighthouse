@@ -34,22 +34,22 @@ class TeamToolUsageTests(WebTest):
         )
 
         for i in range(0, 8):
-            self.el4.register_usage(user1)
+            self.el4.register_usage(user1, force_new=True)
 
         for i in range(0, 6):
-            self.el8.register_usage(user1)
+            self.el8.register_usage(user1, force_new=True)
 
         for i in range(0, 5):
-            self.el3.register_usage(user1)
+            self.el3.register_usage(user1, force_new=True)
 
         for i in range(0, 4):
-            self.el1.register_usage(user1)
+            self.el1.register_usage(user1, force_new=True)
 
         for i in range(0, 2):
-            self.el9.register_usage(user1)
+            self.el9.register_usage(user1, force_new=True)
 
         for i in range(0, 1):
-            self.el10.register_usage(user1)
+            self.el10.register_usage(user1, force_new=True)
 
         response = self.app.get(reverse('team-detail', kwargs={"pk": t.pk}))
 

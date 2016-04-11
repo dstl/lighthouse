@@ -62,51 +62,27 @@ class LinkUsageByUserTest(WebTest):
         )
         l1.save()
 
-        #   Now we need to log in each user and get them to click the external
-        #   link button a few times each.
+        #   Now we need to log the activity of each user.
         #
         #   User 1, is going to use the tool 4 times.
+        for i in range(0, 4):
+            l1.register_usage(user=u1, force_new=True)
+
         #   User 2, is going to use the tool 2 times.
+        for i in range(0, 2):
+            l1.register_usage(user=u2, force_new=True)
+
         #   User 3, is going to use the tool 5 times.
+        for i in range(0, 5):
+            l1.register_usage(user=u3, force_new=True)
 
         #   Login as the first user
         form = self.app.get(reverse('login')).form
         form['userid'] = 'user0001'
         form.submit()
 
-        interstitial_page_form = self.app.get(
-            reverse('link-redirect', kwargs={'pk': l1.pk})).follow().form
-        interstitial_page_form.submit().follow()
-        interstitial_page_form.submit().follow()
-        interstitial_page_form.submit().follow()
-        interstitial_page_form.submit().follow()
-
-        #   Login as the second user
-        form = self.app.get(reverse('login')).form
-        form['userid'] = 'user0002'
-        form.submit()
-
-        interstitial_page_form = self.app.get(
-            reverse('link-redirect', kwargs={'pk': l1.pk})).follow().form
-        interstitial_page_form.submit().follow()
-        interstitial_page_form.submit().follow()
-
-        #   Login as the third user
-        form = self.app.get(reverse('login')).form
-        form['userid'] = 'user0003'
-        form.submit()
-
-        interstitial_page_form = self.app.get(
-            reverse('link-redirect', kwargs={'pk': l1.pk})).follow().form
-        interstitial_page_form.submit().follow()
-        interstitial_page_form.submit().follow()
-        interstitial_page_form.submit().follow()
-        interstitial_page_form.submit().follow()
-        interstitial_page_form.submit().follow()
-
-        #   Now we've done all the clicks, lets go an have a look at the
-        #   details page, and check out the teams and organisations usage
-        #   count.
+        #   Now lets go an have a look at the details page, and check
+        #   out the teams and organisations usage count.
         details_page = self.app.get(
             reverse('link-detail', kwargs={'pk': l1.pk}))
 

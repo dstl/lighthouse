@@ -14,7 +14,7 @@ from testing.common import generate_fake_links
 
 def register_link_usage_for_user(link, user, num_usage):
     for u in range(0, num_usage):
-        link.register_usage(user)
+        link.register_usage(user, force_new=True)
 
 
 class LinkUsageByUserTest(WebTest):
@@ -84,11 +84,11 @@ class LinkUsageByUserTest(WebTest):
         with mock.patch('django.utils.timezone.now') as mock_now:
             # Register additional usage, just within the window
             mock_now.return_value = self.now - relativedelta(days=29)
-            self.used_link.register_usage(self.top_user_1)
+            self.used_link.register_usage(self.top_user_1, force_new=True)
 
             # Register additional usage, AGES ago (just outside window)
             mock_now.return_value = self.now - relativedelta(days=31)
-            self.used_link.register_usage(self.top_user_1)
+            self.used_link.register_usage(self.top_user_1, force_new=True)
 
         response = self.app.get(
             reverse('link-detail', kwargs={'pk': self.used_link.pk})
