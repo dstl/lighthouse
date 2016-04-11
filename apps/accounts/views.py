@@ -1,13 +1,126 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
 
+from django.contrib.auth import REDIRECT_FIELD_NAME, login, logout
+from django.core.exceptions import NON_FIELD_ERRORS
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from django.views.generic import DetailView, ListView, UpdateView
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
+from django.views.decorators.csrf import csrf_protect
+from django.views.generic import (
+    DetailView,
+    ListView,
+    TemplateView,
+    UpdateView,
+)
+from django.views.generic.edit import FormView
 
+from .forms import AuthenticationForm
 from .models import User
 from apps.access import LoginRequiredMixin
 from apps.organisations.models import Organisation
 from apps.teams.models import Team
+
+
+class LoginView(FormView):
+    form_class = AuthenticationForm
+    redirect_field_name = REDIRECT_FIELD_NAME
+    template_name = 'accounts/login.html'
+    user = None
+
+    @method_decorator(csrf_protect)
+    @method_decorator(never_cache)
+    def dispatch(self, *args, **kwargs):
+        return super(LoginView, self).dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        """
+        The user has provided valid credentials (this was checked in
+        AuthenticationForm.is_valid()). So now we can check the test cookie
+        stuff and log them in.
+        """
+        self.check_and_delete_test_cookie()
+        self.user = form.get_user()
+        login(self.request, self.user)
+        return super(LoginView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        """
+        The user has provided invalid credentials (this was checked in
+        AuthenticationForm.is_valid()). So now we set the test cookie again
+        and re-render the form with errors.
+        """
+        self.set_test_cookie()
+        if form.has_error(NON_FIELD_ERRORS, 'admin_user'):
+            return HttpResponseRedirect('/admin/')
+        return super(LoginView, self).form_invalid(form)
+
+    def get_success_url(self):
+        # Explicit "next" page overrides prompts for more user info
+        if 'next' in self.request.GET:
+            return self.request.GET.get('next')
+
+        # If they don't have a name set
+        if not self.user.name:
+            return reverse(
+                'user-updateprofile',
+                kwargs={'slug': self.user.slug}
+            )
+
+        # If they don't have a team set
+        if self.user.teams.count() == 0:
+            return reverse(
+                'user-update-teams',
+                kwargs={'slug': self.user.slug}
+            )
+
+        # If they have a name and a team, but are missing extra information
+        if (not self.user.best_way_to_find or
+                not self.user.best_way_to_contact or
+                not self.user.phone or
+                not self.user.email):
+            return reverse(
+                'user-updateprofile',
+                kwargs={'slug': self.user.slug}
+            )
+
+        return reverse('user-detail', kwargs={'slug': self.user.slug})
+
+    def set_test_cookie(self):
+        self.request.session.set_test_cookie()
+
+    def check_and_delete_test_cookie(self):
+        if self.request.session.test_cookie_worked():
+            self.request.session.delete_test_cookie()
+            return True
+        return False
+
+    def get(self, request, *args, **kwargs):
+        """
+        Same as django.views.generic.edit.ProcessFormView.get(),
+        but adds test cookie stuff
+        """
+        self.set_test_cookie()
+        return super(LoginView, self).get(request, *args, **kwargs)
+
+
+class LogoutView(TemplateView):
+    template_name = 'accounts/logout.html'
+
+    def get_next_url(self):
+        next = self.request.POST.get('next', None)
+        if next is None:
+            next = reverse('home')
+        return next
+
+    def get(self, request):
+        if not request.user.is_authenticated():
+            return HttpResponseRedirect(self.get_next_url())
+        return super(LogoutView, self).get(request)
+
+    def post(self, request):
+        logout(request)
+        return HttpResponseRedirect(self.get_next_url())
 
 
 class UserDetail(LoginRequiredMixin, DetailView):
@@ -17,7 +130,7 @@ class UserDetail(LoginRequiredMixin, DetailView):
 class UserUpdateProfileTeams(LoginRequiredMixin, UpdateView):
     model = User
     fields = [
-                'username',
+                'name',
                 'best_way_to_find',
                 'best_way_to_contact',
                 'phone',
@@ -51,7 +164,7 @@ class UserUpdateProfileTeams(LoginRequiredMixin, UpdateView):
 class UserUpdateProfile(LoginRequiredMixin, UpdateView):
     model = User
     fields = [
-                'username',
+                'name',
                 'best_way_to_find',
                 'best_way_to_contact',
                 'phone',
@@ -70,10 +183,10 @@ class UserUpdateProfile(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super(UserUpdateProfile, self).get_context_data(**kwargs)
         if (
-            self.request.user.username is None or
-            self.request.user.username == ''
+            self.request.user.name is None or
+            self.request.user.name == ''
         ):
-            context['show_username_alert'] = True
+            context['show_name_alert'] = True
         else:
             if (
                 self.request.user.best_way_to_find is None or
@@ -103,7 +216,7 @@ class UserUpdateProfile(LoginRequiredMixin, UpdateView):
 
         #   Work out which field we want to focus the user on, by starting
         #   with the least significant first and working up.
-        context['highlight_field'] = 'id_username'
+        context['highlight_field'] = 'id_name'
         if (self.request.user.email is None or self.request.user.email == ''):
             context['highlight_field'] = 'id_email'
         if (self.request.user.phone is None or self.request.user.phone == ''):
@@ -114,9 +227,9 @@ class UserUpdateProfile(LoginRequiredMixin, UpdateView):
         if (self.request.user.best_way_to_find is None or
                 self.request.user.best_way_to_find == ''):
             context['highlight_field'] = 'id_best_way_to_find'
-        if (self.request.user.username is None or
-                self.request.user.username == ''):
-            context['highlight_field'] = 'id_username'
+        if (self.request.user.name is None or
+                self.request.user.name == ''):
+            context['highlight_field'] = 'id_name'
 
         #
         return context
@@ -136,10 +249,10 @@ class UserUpdateProfile(LoginRequiredMixin, UpdateView):
                 userDetails.id != self.request.user.id):
             return HttpResponseRedirect(self.get_success_url())
 
-        #   If we have been passed a username then we have come from the
-        #   user details form, if we don't have a username, then we are dealing
+        #   If we have been passed a name then we have come from the
+        #   user details form, if we don't have a name, then we are dealing
         #   with teams.
-        if form.data.get('username') is not None:
+        if form.data.get('name') is not None:
             userDetails.save()
         else:
             user = User.objects.get(pk=userDetails.pk)
@@ -152,7 +265,7 @@ class UserUpdateProfile(LoginRequiredMixin, UpdateView):
             #   We need to see if we have been passed over a new team name
             #   if so then we have a bunch of work to do around adding that
             #   team
-            team_name = form.data.get('name')
+            team_name = form.data.get('teamname')
             if (team_name is not None and team_name is not ''):
                 new_organisation_name = form.data.get('new_organisation')
                 organisation_id = form.data.get('organisation')

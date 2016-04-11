@@ -56,7 +56,7 @@ class SearchStatsCSV(View):
         for query in SearchQuery.objects.all():
             writer.writerow([
                 query.when.strftime("%Y-%m-%d %H:%M:%S"),
-                query.user,
+                query.user.userid,
                 query.term,
                 query.results_length
             ])

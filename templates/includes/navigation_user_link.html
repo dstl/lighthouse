@@ -1,22 +1,24 @@
 {# (c) Crown Owned Copyright, 2016. Dstl. #}
-{% if no_username %}
-  <span class="user_id" data-slug="{{request.user.slug}}">
-    <a href="{% url 'user-updateprofile' request.user.slug %}" title="You are logged in as {{display_name}}, and your profile has no display name. Click here to update your profile.">{{display_name|truncatechars:20}} <span class="profile-prompt-displayname">(add a display name)</span></a>
-  </span> | <a href="{% url 'logout' %}">Logout</a>
+
+{% if not user.name %}
+  <span class="user_id" data-slug="{{user.slug}}">
+    <a href="{% url 'user-updateprofile' user.slug %}" title="You are logged in as {{user}}, and your profile has no display name. Click here to update your profile.">{{user|truncatechars:20}} <span class="profile-prompt-displayname">(add a display name)</span></a>
+  </span>
 {% else %}
-  {% if request.user.teams.count > 0 %}
-    {% if request.user.best_way_to_find == '' or request.user.best_way_to_contact == '' or request.user.phone == '' or request.user.email == '' %}
-      <span class="user_id" data-slug="{{request.user.slug}}">
-        <a href="{% url 'user-updateprofile' request.user.slug %}" title="You are logged in as {{display_name}}, and your profile needs more information. Click here to update your profile.">{{display_name|truncatechars:20}} <span class="profile-prompt-details">(enter more details)</span></a>
-      </span> | <a href="{% url 'logout' %}">Logout</a>
+  {% if user.teams.count > 0 %}
+    {% if user.best_way_to_find == '' or user.best_way_to_contact == '' or user.phone == '' or user.email == '' %}
+      <span class="user_id" data-slug="{{user.slug}}">
+        <a href="{% url 'user-updateprofile' user.slug %}" title="You are logged in as {{user}}, and your profile needs more information. Click here to update your profile.">{{user|truncatechars:20}} <span class="profile-prompt-details">(enter more details)</span></a>
+      </span>
     {% else %}
-      <span class="user_id" data-slug="{{request.user.slug}}">
-        <a title="You are logged in as {{display_name}}" href="{% url 'user-detail' request.user.slug %}">{{display_name}}</a>
-      </span> | <a href="{% url 'logout' %}">Logout</a>
+      <span class="user_id" data-slug="{{user.slug}}">
+        <a title="You are logged in as {{user}}" href="{% url 'user-detail' user.slug %}">{{user}}</a>
+      </span>
     {% endif %}
   {% else %}
-    <span class="user_id" data-slug="{{request.user.slug}}">
-      <a href="{% url 'user-update-teams' request.user.slug %}" title="You are logged in as {{display_name}}, and your profile is not a member of any teams. Click here to choose or create a new team.">{{display_name|truncatechars:20}} <span class="profile-prompt-team">(join a team)</span></a>
-    </span> | <a href="{% url 'logout' %}">Logout</a>
+    <span class="user_id" data-slug="{{user.slug}}">
+      <a href="{% url 'user-update-teams' user.slug %}" title="You are logged in as {{user}}, and your profile is not a member of any teams. Click here to choose or create a new team.">{{user|truncatechars:20}} <span class="profile-prompt-team">(join a team)</span></a>
+    </span>
   {% endif %}
 {% endif %}
+<a href='{% url "logout" %}'>Logout</a>

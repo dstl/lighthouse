@@ -1,26 +1,82 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
 
+from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 
 from django_webtest import WebTest
 
-from apps.users.models import User
 from apps.teams.models import Team
 from apps.organisations.models import Organisation
 
 
 class UserWebTest(WebTest):
+    def test_can_login(self):
+        get_user_model().objects.create_user(userid='user@0001.com')
+
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user@0001.com'
+        response = form.submit().follow()
+
+        # userid in the navigation, login link not
+        self.assertTrue(
+            response.html.find(
+                'span',
+                attrs={'data-slug': 'user0001com'}
+            )
+        )
+        self.assertFalse(
+            response.html.find('a', class_='login')
+        )
+
+    def test_new_userid_creates_normal_account(self):
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user@0001.com'
+        response = form.submit().follow()
+
+        # userid in the navigation, login link not
+        self.assertTrue(
+            response.html.find(
+                'span',
+                attrs={'data-slug': 'user0001com'}
+            )
+        )
+        self.assertFalse(
+            response.html.find('a', class_='login')
+        )
+
+        # created a passwordless user in the db
+        user = get_user_model().objects.get(slug='user0001com')
+        self.assertTrue(user.pk)
+        self.assertFalse(user.has_usable_password())
+
+    def test_no_userid_doesnt_create_account(self):
+        form = self.app.get(reverse('login')).form
+        response = form.submit()
+
+        # login link in the navigation
+        self.assertTrue(
+            response.html.find('a', class_='login')
+        )
+
+    def test_login_as_user_with_password_redirects_to_admin(self):
+        get_user_model().objects.create_user(
+            userid='user@0001.com', password='password')
+
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user@0001.com'
+        response = form.submit()
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(response.location, 'http://localhost:80/admin/')
 
     #   We want to test that a user who is missing a username is redirected
     #   to the update user profile page
     def test_user_missing_data_redirected(self):
         #   This user doesn't have a username
-        u = User(slug='user0001com', original_slug='user@0001.com')
-        u.save()
+        user = get_user_model().objects.create_user(userid='user@0001.com')
 
         #   Log in as user
-        form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0001com'
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user@0001.com'
         response = form.submit().follow()
 
         #   Check that the add display name text is shown
@@ -34,9 +90,9 @@ class UserWebTest(WebTest):
         #   Check that the link in the nav is heading to the right place
         self.assertEquals(
             response.html.find(
-                'span', attrs={'data-slug': u.slug}
+                'span', attrs={'data-slug': user.slug}
             ).find('a').attrs['href'],
-            '/users/' + str(u.slug) + '/update-profile'
+            '/users/' + str(user.slug) + '/update-profile'
         )
 
         #   We should now be on the user needs to add information page
@@ -45,23 +101,19 @@ class UserWebTest(WebTest):
                 'h3',
                 attrs={'class': 'error-summary-heading'}
             ).text,
-            'Please add a username'
+            'Please add your name'
         )
 
     #   Meanwhile a user who has a username but no teams will end up
     #   at the page asking for them to enter additional team information
     def test_user_has_username_but_no_teams_redirected(self):
         #   This user has a username
-        u = User(
-            slug='user0001com',
-            original_slug='user@0001.com',
-            username='User 0001'
-        )
-        u.save()
+        user = get_user_model().objects.create_user(
+            userid='user@0001.com', name='User 0001')
 
         #   Log in as user
-        form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0001com'
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user@0001.com'
         response = form.submit().follow()
 
         #   Check that the join a team text is shown
@@ -75,9 +127,9 @@ class UserWebTest(WebTest):
         #   Check that the link in the nav is heading to the right place
         self.assertEquals(
             response.html.find(
-                'span', attrs={'data-slug': u.slug}
+                'span', attrs={'data-slug': user.slug}
             ).find('a').attrs['href'],
-            '/users/' + str(u.slug) + '/update-profile/teams'
+            '/users/' + str(user.slug) + '/update-profile/teams'
         )
 
         #   Make sure we *don't* have an alert summary heading
@@ -98,18 +150,15 @@ class UserWebTest(WebTest):
         o.save()
         t = Team(name='team0001', organisation=o)
         t.save()
-        u = User(
-            slug='user0001com',
-            original_slug='user@0001.com',
-            username='User 0001'
-        )
-        u.save()
-        u.teams.add(t)
-        u.save()
+
+        user = get_user_model().objects.create_user(
+            userid='user@0001.com', name='User 0001')
+        user.teams.add(t)
+        user.save()
 
         #   Log in as user
-        form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0001com'
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user@0001.com'
         response = form.submit().follow()
 
         #   Check that the add more details text is shown
@@ -141,12 +190,12 @@ class UserWebTest(WebTest):
     #   bar
     def test_slug_and_link_exists_in_nav(self):
         #   Create the user
-        User(slug='user0001com', original_slug='user@0001.com').save()
+        get_user_model().objects.create_user(userid='user@0001.com')
 
         #   Log in as user
-        form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0001com'
-        response = form.submit()
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user@0001.com'
+        response = form.submit().follow()
 
         #   Go to the profile page (any page would do)
         response = self.app.get(
@@ -172,16 +221,13 @@ class UserWebTest(WebTest):
     #   bar
     def test_username_and_link_exists_in_nav(self):
         #   Create the user
-        User(
-            slug='user0001com',
-            original_slug='user@0001.com',
-            username='User 0001'
-        ).save()
+        get_user_model().objects.create_user(
+            userid='user@0001.com', name='User 0001')
 
         #   Log in as user
-        form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0001com'
-        response = form.submit()
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user@0001.com'
+        response = form.submit().follow()
 
         #   Go to the profile page (any page would do)
         response = self.app.get(

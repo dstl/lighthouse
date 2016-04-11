@@ -1,0 +1,90 @@
+{# (c) Crown Owned Copyright, 2016. Dstl. #}
+{% extends "layout.html" %}
+
+{% block page_title %}{{user}} – Users{% endblock %}
+
+{% block grid_content %}
+
+<div class="grid-row">
+  <div class="column-two-thirds">
+
+    <h1 class="form-title heading-xlarge">
+      <span class="heading-secondary">User</span>
+      {{user}}
+    </h1>
+
+  </div>
+</div>
+
+<div class="grid-row">
+  <div class="column-two-thirds">
+
+    {% if user.best_way_to_find or user.best_way_to_contact or user.phone or user.email %}
+      <p class="lede">
+        Hey there, welcome to this users page. Here's some handy information should
+        you wish to contact them...
+      </p>
+
+      {% if user.phone or user.email %}
+        <p>
+          <h2 class="heading-medium">
+            {% if user.phone and user.email %}
+              Phone: <span class="not-strong">{{user.phone}}</span>, Email: <span class="not-strong"><a href="mailto:{{user.email}}">{{user.email}}</a></span>
+            {% else %}
+              {% if user.phone %}Phone: <span class="not-strong">{{user.phone}}</span>{% endif %}
+              {% if user.email %}Email: <span class="not-strong"><a href="mailto:{{user.email}}">{{user.email}}</a></span>{% endif %}
+            {% endif %}
+          </h2>
+        </p>
+      {% endif %}
+
+      {% if user.best_way_to_find %}
+        <h3 class="heading-medium">The best way to find this user is:</h3>
+        <div class="panel panel-border-wide">
+          <p>
+            {{user.best_way_to_find}}
+          </p>
+        </div>
+      {% endif %}
+
+      {% if user.best_way_to_contact %}
+        <h3 class="heading-medium">The best way to contact this user is:</h3>
+        <div class="panel panel-border-wide">
+          <p>
+            {{user.best_way_to_contact}}
+          </p>
+        </div>
+      {% endif %}
+
+    {% else %}
+      <p class="lede">
+        This user hasn't added any contact information yet. Maybe you should ask them to (if you know how to get hold of them).
+      </p>
+    {% endif %}
+
+    <h2 class="heading-large">Teams:</h2>
+    {% if user.teams.count %}
+      <p class="lede">
+        This user is a member of the following teams.
+      </p>
+      {% include "includes/team_list.html" with teams=user.teams.all show_organisation=True %}
+    {% else %}
+    <p class="lede">
+      This user is a not a member of any teams at this time.
+    </p>
+    {% endif %}
+
+    {% if request.user == user %}
+      <hr />
+      <a id="update_profile_link" href="{% url 'user-updateprofile' request.user.slug %}" class="button">Update your profile</a>
+      <a href="{% url 'user-update-teams' request.user.slug %}" class="button">Manage team membership</a>
+    {% endif %}
+
+  </div>
+
+  <div class="column-one-third">
+    {% include "includes/top_links_for_user.html" %}
+  </div>
+</div>
+
+{% endblock %}

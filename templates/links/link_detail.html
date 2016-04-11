@@ -45,7 +45,7 @@
                     <h3 class="heading-small">Users</h3>
                     <ul id="usage-by-users">
                         {% for user in link.top_users_thirty_days|slice:":5" %}
-                        <li class="usage-by-users-list-item"><a href="{% url "user-detail" user.slug %}">{{user.username|default:user.slug}}</a><span class="user-usage-count">{{user.link_usage_count}} time{{ user.link_usage_count|pluralize }}</span></li>
+                        <li class="usage-by-users-list-item"><a href="{% url "user-detail" user.slug %}">{{user}}</a><span class="user-usage-count">{{user.link_usage_count}} time{{ user.link_usage_count|pluralize }}</span></li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -84,12 +84,12 @@
         {% if link.is_external %}
         <span id="is_external" class="external is-external-label">External</span>
         <p id="link_owner">
-            {{link.name}} was added by <a href="{% url "user-detail" link.owner.slug %}">{{link.owner.username|default:link.owner.original_slug}}</a>.
+            {{link.name}} was added by <a href="{% url "user-detail" link.owner.slug %}">{{link.owner}}</a>.
         </p>
         {% else %}
         <span id="is_internal" class="internal is-internal-label">Internal</span>
         <p id="link_owner">
-            {{link.name}} was created by <a href="{% url "user-detail" link.owner.slug %}">{{link.owner.username|default:link.owner.original_slug}}</a>.
+            {{link.name}} was created by <a href="{% url "user-detail" link.owner.slug %}">{{link.owner}}</a>.
         </p>
         {% endif %}
         {% if user_owns_link %}

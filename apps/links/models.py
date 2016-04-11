@@ -4,18 +4,18 @@ from datetime import timedelta
 from dateutil.relativedelta import relativedelta, MO
 import json
 
+from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils import timezone
 
 from taggit.managers import TaggableManager
 
-from apps.users.models import User
-
 
 class LinkUsage(models.Model):
     link = models.ForeignKey('Link', related_name='usage')
-    user = models.ForeignKey(User, related_name='usage')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='usage')
     start = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -28,7 +28,7 @@ class Link(models.Model):
     destination = models.URLField(max_length=2000, unique=True)
     is_external = models.BooleanField(default=False, blank=False)
     owner = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         on_delete=models.PROTECT
     )
     categories = TaggableManager(blank=True)
@@ -76,7 +76,7 @@ class Link(models.Model):
     def top_users_thirty_days(self):
         today = timezone.now().replace(hour=0, minute=0, second=0)
         month_ago = today - timedelta(days=30)
-        return User.objects.filter(
+        return get_user_model().objects.filter(
             usage__link=self,
             usage__start__gt=month_ago
         ).annotate(

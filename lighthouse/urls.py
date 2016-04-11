@@ -32,13 +32,6 @@ from apps.links.views import (
     OverallLinkStatsCSV,
 )
 
-from apps.users.views import (
-    UserDetail,
-    UserUpdateProfile,
-    UserUpdateProfileTeams,
-    UserList,
-)
-
 from apps.organisations.views import (
     OrganisationCreate,
     OrganisationDetail,
@@ -52,13 +45,21 @@ from apps.teams.views import (
     TeamJoin,
     TeamLeave,
 )
-from apps.login.views import LoginRequest, LoginUser, Logout
 from apps.home.views import Home
 from apps.staticpages.views import StaticPageView, Status404View, Status500View
 from apps.search.views import (
     SearchStats,
     SearchStatsCSV
 )
+from apps.accounts.views import (
+    LoginView,
+    LogoutView,
+    UserDetail,
+    UserList,
+    UserUpdateProfile,
+    UserUpdateProfileTeams,
+)
+
 
 handler404 = Status404View.as_view()
 handler500 = Status500View.as_view()
@@ -66,13 +67,16 @@ handler500 = Status500View.as_view()
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
-    url(r'^login$', LoginRequest.as_view(), name="login-view"),
     url(
-        r'^login/(?P<slug>[\w-]+)$',
-        LoginUser.as_view(),
-        name="login-user"
+        r'^login/$',
+        LoginView.as_view(),
+        name='login',
     ),
-    url(r'^logout$', Logout.as_view(), name="logout"),
+    url(
+        r'^logout$',
+        LogoutView.as_view(),
+        name='logout',
+    ),
 
     url(r'^$', Home.as_view(), name="home"),
     url(

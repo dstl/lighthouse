@@ -1,11 +1,11 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
 
+from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 
 from apps.links.models import Link
 from apps.organisations.models import Organisation
 from apps.teams.models import Team
-from apps.users.models import User
 
 
 def generate_fake_links(owner, start=1, count=1, is_external=False):
@@ -26,24 +26,21 @@ def generate_fake_links(owner, start=1, count=1, is_external=False):
 
 
 def make_user(
-        original_slug='user@0001.com',
+        userid='user@0001.com',
         email='fake@dstl.gov.uk',
         name='Fake Fakerly'):
-    slug = original_slug.replace('@', '').replace('.', '')
-    user = User(
-        slug=slug,
-        original_slug=original_slug,
-        username=name,
+    user = get_user_model().objects.create_user(
+        userid=userid,
+        name=name,
         phone='555-2187',
         email=email)
-    user.save()
     return user
 
 
 def login_user(owner, user):
     #   Log in as user
-    form = owner.app.get(reverse('login-view')).form
-    form['slug'] = user.slug
+    form = owner.app.get(reverse('login')).form
+    form['userid'] = user.userid
     response = form.submit().follow()
 
     user_id = response.html.find(
@@ -65,14 +62,10 @@ def create_organisation(name, num_teams=0, num_members=0, usernames={}):
             else:
                 username = 'Team Member %d' % (y + 1)
 
-            u = User(
-                slug='teammember%d' % (y + 1)
+            u = get_user_model().objects.create_user(
+                userid='teammember%d' % (y + 1),
+                name=username,
             )
-
-            if username is not None:
-                u.username = username
-
-            u.save()
             u.teams.add(t)
             u.save()
             t.save()
@@ -92,15 +85,14 @@ def create_team(name, num_members=0, usernames={}):
         else:
             username = 'Team Member %d' % (x + 1)
 
-        u = User(
-            slug='teammember%d' % (x + 1),
-            original_slug='teammember%d' % (x + 1),
+        u = get_user_model().objects.create_user(
+            userid='teammember%d' % (x + 1),
+            name=username,
         )
 
-        if username is not None:
-            u.username = username
+        # if username is not None:
+        #     u.username = username
 
-        u.save()
         u.teams.add(t)
         u.save()
         t.save()

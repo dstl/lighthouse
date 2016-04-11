@@ -4,13 +4,9 @@
     <nav id="proposition-menu">
       <div id="user-details">
         {% if request.user.is_authenticated %}
-          {% if request.user.username %}
-            {% include "includes/navigation_user_link.html" with display_name=request.user.username no_username=False %}
-          {% else %}
-            {% include "includes/navigation_user_link.html" with display_name=request.user.original_slug no_username=True %}
-          {% endif %}
+          {% include "includes/navigation_user_link.html" %}
         {% else %}
-          <a href="{% url 'login-view' %}">Login</a>
+          <a href="{% url 'login' %}" class='login'>Login</a>
         {% endif %}
       </div>
 

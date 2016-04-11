@@ -1,21 +1,19 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
 
-import re
-
+from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 
 from django_webtest import WebTest
 
 from apps.organisations.models import Organisation
-from apps.users.models import User
 
 
 class TeamWebTest(WebTest):
     def test_cannot_create_nameless_team(self):
         #   Create and log in a user
-        User(slug='user0001com', original_slug='user@0001.com').save()
-        form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0001com'
+        get_user_model().objects.create_user(userid='user@0001.com')
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user0001com'
         form.submit().follow()
 
         form = self.app.get(reverse('team-create')).form
@@ -28,9 +26,9 @@ class TeamWebTest(WebTest):
 
     def test_cannot_create_organisationless_team(self):
         #   Create and log in a user
-        User(slug='user0001com', original_slug='user@0001.com').save()
-        form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0001com'
+        get_user_model().objects.create_user(userid='user@0001.com')
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user0001com'
         form.submit().follow()
 
         form = self.app.get(reverse('team-create')).form
@@ -51,9 +49,9 @@ class TeamWebTest(WebTest):
 
     def test_cannot_create_org_and_new_org_team(self):
         #   Create and log in a user
-        User(slug='user0001com', original_slug='user@0001.com').save()
-        form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0001com'
+        get_user_model().objects.create_user(userid='user@0001.com')
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user0001com'
         form.submit().follow()
 
         o = Organisation(name='New Org')
@@ -77,9 +75,9 @@ class TeamWebTest(WebTest):
 
     def test_can_create_team_with_existsing_org(self):
         #   Create and log in a user
-        User(slug='user0001com', original_slug='user@0001.com').save()
-        form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0001com'
+        get_user_model().objects.create_user(userid='user@0001.com')
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user0001com'
         form.submit().follow()
 
         o = Organisation(name='New Org')
@@ -96,9 +94,9 @@ class TeamWebTest(WebTest):
 
     def test_can_create_team_with_new_org(self):
         #   Create and log in a user
-        User(slug='user0001com', original_slug='user@0001.com').save()
-        form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0001com'
+        get_user_model().objects.create_user(userid='user@0001.com')
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user0001com'
         form.submit().follow()
 
         org_name = 'New Org'
@@ -118,9 +116,9 @@ class TeamWebTest(WebTest):
 
     def test_can_create_team_from_list_view(self):
         #   Create and log in a user
-        User(slug='user0001com', original_slug='user@0001.com').save()
-        form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0001com'
+        get_user_model().objects.create_user(userid='user@0001.com')
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user0001com'
         form.submit().follow()
 
         org_name = 'New Org'
@@ -136,7 +134,7 @@ class TeamWebTest(WebTest):
         response = self.app.get(reverse('team-list'))
         response = self.app.get(response.html.find(
                 'a',
-                text=re.compile(team_name + r'')
+                text=team_name
             ).attrs['href']
         )
         org_name = response.html.find(

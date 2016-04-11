@@ -1,21 +1,19 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
 
-import re
-
+from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 
 from django_webtest import WebTest
 
 from apps.organisations.models import Organisation
-from apps.users.models import User
 
 
 class OrganisationCreateWebTest(WebTest):
     def test_cannot_create_nameless_organisation(self):
         #   Create and log in a user
-        User(slug='user0001com', original_slug='user@0001.com').save()
-        form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0001com'
+        get_user_model().objects.create_user(userid='user@0001.com')
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user@0001.com'
         form.submit().follow()
 
         form = self.app.get(reverse('organisation-create')).form
@@ -28,9 +26,9 @@ class OrganisationCreateWebTest(WebTest):
 
     def test_create_new_organisation_from_list_view(self):
         #   Create and log in a user
-        User(slug='user0001com', original_slug='user@0001.com').save()
-        form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0001com'
+        get_user_model().objects.create_user(userid='user@0001.com')
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user@0001.com'
         form.submit().follow()
 
         form = self.app.get(reverse('organisation-list')).form
@@ -41,7 +39,7 @@ class OrganisationCreateWebTest(WebTest):
         response = self.app.get(reverse('organisation-list'))
         response = self.app.get(response.html.find(
                 'a',
-                text=re.compile(r'org0001')
+                text='org0001'
             ).attrs['href']
         )
         org_name = response.html.find(
@@ -52,9 +50,9 @@ class OrganisationCreateWebTest(WebTest):
 
     def test_cannot_create_duplicate_organisation(self):
         #   Create and log in a user
-        User(slug='user0001com', original_slug='user@0001.com').save()
-        form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0001com'
+        get_user_model().objects.create_user(userid='user@0001.com')
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user@0001.com'
         form.submit().follow()
 
         o = Organisation(name='alpha')

@@ -1,7 +1,6 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
 
-import re
-
+from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 
 from django_webtest import WebTest
@@ -9,15 +8,14 @@ from django_webtest import WebTest
 from testing.common import create_team
 from apps.organisations.models import Organisation
 from apps.teams.models import Team
-from apps.users.models import User
 
 
 class TeamWebTest(WebTest):
     def test_can_click_through_existing_team_link(self):
         #   Create and log in a user
-        User(slug='user0001com', original_slug='user@0001.com').save()
-        form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0001com'
+        get_user_model().objects.create_user(userid='user@0001.com')
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user0001com'
         form.submit().follow()
 
         o = Organisation(name='New Org')
@@ -28,7 +26,7 @@ class TeamWebTest(WebTest):
         response = self.app.get(reverse('team-list'))
         response = self.app.get(response.html.find(
                 'a',
-                text=re.compile(team_name + r'')
+                text=team_name
             ).attrs['href']
         )
         org_name = response.html.find(
@@ -39,9 +37,9 @@ class TeamWebTest(WebTest):
 
     def test_show_number_of_members_two(self):
         #   Create and log in a user
-        User(slug='user0001com', original_slug='user@0001.com').save()
-        form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0001com'
+        get_user_model().objects.create_user(userid='user@0001.com')
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user0001com'
         form.submit().follow()
 
         t = create_team(name='two members', num_members=2)
@@ -58,9 +56,9 @@ class TeamWebTest(WebTest):
 
     def test_show_number_of_members_none(self):
         #   Create and log in a user
-        User(slug='user0001com', original_slug='user@0001.com').save()
-        form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0001com'
+        get_user_model().objects.create_user(userid='user@0001.com')
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user0001com'
         form.submit().follow()
 
         t = create_team(name='no members', num_members=0)
@@ -77,9 +75,9 @@ class TeamWebTest(WebTest):
 
     def test_list_members(self):
         #   Create and log in a user
-        User(slug='user0001com', original_slug='user@0001.com').save()
-        form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0001com'
+        get_user_model().objects.create_user(userid='user@0001.com')
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user0001com'
         form.submit().follow()
 
         t = create_team(name='two members', num_members=2)
@@ -105,16 +103,16 @@ class TeamWebTest(WebTest):
             user_items[1].text
         )
 
-    def test_list_members_no_username(self):
+    def test_list_members_ordering(self):
         #   Create and log in a user
-        User(slug='user0001com', original_slug='user@0001.com').save()
-        form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0001com'
+        get_user_model().objects.create_user(userid='user@0001.com')
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user0001com'
         form.submit().follow()
 
         t = create_team(
             name='two members', num_members=2,
-            usernames={0: None, 1: 'steve'}
+            usernames={0: 'steve', 1: 'bob'}
         )
         response = self.app.get(reverse('team-detail', kwargs={"pk": t.pk}))
 
@@ -128,20 +126,20 @@ class TeamWebTest(WebTest):
             2
         )
         self.assertIn(
-            'steve',
+            'bob',
             user_items[0].text
         )
 
         self.assertIn(
-            'teammember1',
+            'steve',
             user_items[1].text
         )
 
     def test_list_members_names_link(self):
         #   Create and log in a user
-        User(slug='user0001com', original_slug='user@0001.com').save()
-        form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0001com'
+        get_user_model().objects.create_user(userid='user@0001.com')
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user0001com'
         form.submit().follow()
 
         t = create_team(

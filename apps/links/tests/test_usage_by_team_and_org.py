@@ -1,5 +1,6 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
 
+from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 
 from django_webtest import WebTest
@@ -7,7 +8,6 @@ from django_webtest import WebTest
 from apps.links.models import Link
 from apps.organisations.models import Organisation
 from apps.teams.models import Team
-from apps.users.models import User
 
 
 class LinkUsageByUserTest(WebTest):
@@ -38,17 +38,17 @@ class LinkUsageByUserTest(WebTest):
         t7.save()
 
         #   Now we need three users, and throw them into teams
-        u1 = User(slug='user0001', original_slug="user0001")
+        u1 = get_user_model().objects.create_user(userid='user0001')
         u1.save()
         u1.teams.add(t2, t3, t4)
         u1.save()
 
-        u2 = User(slug='user0002', original_slug="user0002")
+        u2 = get_user_model().objects.create_user(userid='user0002')
         u2.save()
         u2.teams.add(t5, t6)
         u2.save()
 
-        u3 = User(slug='user0003', original_slug="user0003")
+        u3 = get_user_model().objects.create_user(userid='user0003')
         u3.save()
         u3.teams.add(t3, t5, t6, t7)
         u3.save()
@@ -70,8 +70,8 @@ class LinkUsageByUserTest(WebTest):
         #   User 3, is going to use the tool 5 times.
 
         #   Login as the first user
-        form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0001'
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user0001'
         form.submit()
 
         interstitial_page_form = self.app.get(
@@ -82,8 +82,8 @@ class LinkUsageByUserTest(WebTest):
         interstitial_page_form.submit().follow()
 
         #   Login as the second user
-        form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0002'
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user0002'
         form.submit()
 
         interstitial_page_form = self.app.get(
@@ -92,8 +92,8 @@ class LinkUsageByUserTest(WebTest):
         interstitial_page_form.submit().follow()
 
         #   Login as the third user
-        form = self.app.get(reverse('login-view')).form
-        form['slug'] = 'user0003'
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user0003'
         form.submit()
 
         interstitial_page_form = self.app.get(

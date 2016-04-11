@@ -1,5 +1,6 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
 
+from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from django.db import models
 
@@ -24,9 +25,8 @@ class Organisation(models.Model):
 
     def top_links(self):
         from apps.links.models import Link
-        from apps.users.models import User
 
-        all_organisation_users = User.objects.filter(
+        all_organisation_users = get_user_model().objects.filter(
             teams__in=self.team_set.all()
         ).distinct()
 

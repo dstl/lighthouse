@@ -16,7 +16,7 @@ class LinkTest(WebTest):
     def setUp(self):
         self.logged_in_user = make_user()
         self.other_user = make_user(
-            original_slug='other_user',
+            userid='other_user',
             email='fake2@dstl.gov.uk',
             name='Fake2 Fakerly')
         self.assertTrue(login_user(self, self.logged_in_user))

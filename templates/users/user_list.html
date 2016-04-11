@@ -20,7 +20,7 @@
 
       <ul class="list list-bullet user-list">
         {% for user in object_list %}
-          <li><a class="main-list-item" href='{% url "user-detail" user.slug %}'>{{user.username|default:user.original_slug}}</a></li>
+          <li><a class="main-list-item" href='{% url "user-detail" user.slug %}'>{{user}}</a></li>
         {% endfor %}
       </ul>
 
@@ -35,7 +35,7 @@
           logged in and view this page.
         </p>
         <p>
-          Regarless of the impossible: <a href="{% url 'login-view' %}">go and create the first user</a>.
+          Regardless of the impossible: <a href="{% url 'login' %}">go and create the first user</a>.
         </p>
       </div>
     {% endif %}
