@@ -72,6 +72,8 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'apps.links.middleware.meta_usage_middleware.MetaUsageMiddleware',
 ]
 
 ROOT_URLCONF = 'lighthouse.urls'

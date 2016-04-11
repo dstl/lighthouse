@@ -26,7 +26,7 @@
       <th>Total usage</th>
     </tr>
     {% for link in object_list %}
-      <tr>
+      <tr id="stats-for-{{link.pk}}">
         <td><a href='{% url "link-detail" link.pk %}'>{{link.name}}</a></td>
         <td class='usage-thirty-days'>{{link.usage_past_thirty_days}}</td>
         <td class='usage-seven-days'>{{link.usage_past_seven_days}}</td>

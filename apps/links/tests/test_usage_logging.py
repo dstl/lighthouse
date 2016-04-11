@@ -231,6 +231,45 @@ class LinkUsageWebTest(WebTest):
         )
         self.now = now()
 
+    def test_overall_stats_page(self):
+        with mock.patch('django.utils.timezone.now') as mock_now:
+            # register usage eight days ago
+            mock_now.return_value = self.now - relativedelta(days=8)
+            self.link.register_usage(self.user)
+
+            # register usage thirty-eight days ago
+            mock_now.return_value = self.now - relativedelta(days=38)
+            self.link.register_usage(self.user)
+
+        self.link.register_usage(self.user)
+        self.other_link.register_usage(self.user)
+
+        stats_url = reverse('link-overall-stats')
+        response = self.app.get(stats_url)
+
+        link_stats = response.html.find('tr', id='stats-for-%d' % self.link.pk)
+        other_link_stats = response.html.find('tr', id='stats-for-%d' %
+                                              self.other_link.pk)
+
+        link_stats_cells = link_stats.findChildren('td')
+        other_link_stats_cells = other_link_stats.findChildren('td')
+
+        # Name
+        self.assertEquals(link_stats_cells[0].text, self.link.name)
+        self.assertEquals(other_link_stats_cells[0].text, self.other_link.name)
+
+        # Thirty
+        self.assertEquals(link_stats_cells[1].text, '2')
+        self.assertEquals(other_link_stats_cells[1].text, '1')
+
+        # Seven Days
+        self.assertEquals(link_stats_cells[2].text, '1')
+        self.assertEquals(other_link_stats_cells[2].text, '1')
+
+        # Total
+        self.assertEquals(link_stats_cells[3].text, '2')
+        self.assertEquals(other_link_stats_cells[3].text, '1')
+
     def test_internal_link_usage(self):
         detail_url = reverse('link-detail', kwargs={'pk': self.link.pk})
 
@@ -400,35 +439,6 @@ class LinkUsageWebTest(WebTest):
             'Date': '2016-03-01 11:15:00',
             'Tool': 'Link Linkerly',
         })
-
-    def test_overall_stats_page(self):
-        with mock.patch('django.utils.timezone.now') as mock_now:
-            # register usage thirty-eight days ago
-            mock_now.return_value = self.now - relativedelta(days=38)
-            self.link.register_usage(self.user)
-
-            # register usage eight days ago
-            mock_now.return_value = self.now - relativedelta(days=8)
-            self.link.register_usage(self.user)
-
-        # register usage now
-        self.link.register_usage(self.user)
-        self.other_link.register_usage(self.user)
-
-        stats_url = reverse('link-overall-stats')
-        response = self.app.get(stats_url)
-
-        seven = response.html.find_all('td', class_='usage-seven-days')
-        self.assertEquals(seven[0].text, '1')
-        self.assertEquals(seven[1].text, '1')
-
-        thirty = response.html.find_all('td', class_='usage-thirty-days')
-        self.assertEquals(thirty[0].text, '2')
-        self.assertEquals(thirty[1].text, '1')
-
-        total = response.html.find_all('td', class_='usage-total')
-        self.assertEquals(total[0].text, '3')
-        self.assertEquals(total[1].text, '1')
 
     def test_overall_stats_csv(self):
         with mock.patch('django.utils.timezone.now') as mock_now:
