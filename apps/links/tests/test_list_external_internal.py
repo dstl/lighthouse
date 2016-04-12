@@ -187,7 +187,7 @@ class ListLinksWithExternalityTest(WebTest):
 
         self.assertEquals(
             len(response.html.findAll('li', {'class': 'link-list-item'})),
-            3
+            4
         )
 
         self.assertIsNone(response.html.find('ol', {'class': 'pagination'}))
@@ -214,6 +214,14 @@ class ListLinksWithExternalityTest(WebTest):
                 'li',
                 {'class': 'link-list-item'}
             )[2].text,
+        )
+
+        self.assertIn(
+            'Lighthouse',
+            response.html.findAll(
+                'li',
+                {'class': 'link-list-item'}
+            )[3].text,
         )
 
         self.assertFalse(form.get('types', index=0).checked)

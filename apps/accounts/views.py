@@ -340,6 +340,7 @@ class UserUpdateProfile(LoginRequiredMixin, UpdateView):
 class UserList(LoginRequiredMixin, ListView):
     model = User
     paginate_by = 50
+    template_name = 'users/user_list.html'
 
     def get_context_data(self, **kwargs):
         context = super(UserList, self).get_context_data(**kwargs)
