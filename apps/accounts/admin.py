@@ -66,6 +66,11 @@ class UserChangeForm(forms.ModelForm):
             'is_active',
             'is_staff',
             'is_superuser',
+            'best_way_to_find',
+            'best_way_to_contact',
+            'phone',
+            'email',
+            'teams',
         )
 
     def clean_password(self):
@@ -87,7 +92,10 @@ class UserAdmin(BaseUserAdmin):
     list_filter = ('is_staff', 'is_superuser',)
     fieldsets = (
         (None, {'fields': ('userid', 'password')}),
-        ('Personal info', {'fields': ('name',)}),
+        ('Personal info', {'fields': (
+            'name', 'best_way_to_find', 'best_way_to_contact', 'email', 'phone'
+        )}),
+        ('Teams', {'fields': ('teams',)}),
         ('Permissions', {'fields': ('is_staff', 'is_superuser',)}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
