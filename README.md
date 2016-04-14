@@ -1,4 +1,6 @@
-# lighthouse Web application for finding useful tools, data and techniques
+# Lighthouse
+
+Web application for finding useful tools, data and techniques
 
 ## Install & run
 
