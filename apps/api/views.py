@@ -56,6 +56,18 @@ class LinkUsageAPI(SingleObjectMixin, APIBase):
         """ Return the usage stats as JSON """
         link = self.get_object()
         response = []
+
+        # TODO - fix in later v of django
+        # this try/except only exists because there is a bug in django
+        # https://code.djangoproject.com/ticket/25251
+        # which means tests will fail because the Link object doesn't exist
+        # after the first TransactionTestCase has happened
+        try:
+            lighthouse_api = Link.objects.get(pk=2)
+            lighthouse_api.register_usage(link.owner)
+        except Link.DoesNotExist:
+            pass
+
         for use in link.usage.all():
             response.append({
                 'user': use.user.userid,
@@ -81,4 +93,17 @@ class LinkUsageAPI(SingleObjectMixin, APIBase):
             return JsonResponse({'error': 'no such user'}, status=400)
 
         link.register_usage(user)
+
+        # register API usage too
+        # TODO - fix in later v of django
+        # this try/except only exists because there is a bug in django
+        # https://code.djangoproject.com/ticket/25251
+        # which means tests will fail because the Link object doesn't exist
+        # after the first TransactionTestCase has happened
+        try:
+            lighthouse_api = Link.objects.get(pk=2)
+            lighthouse_api.register_usage(link.owner)
+        except:
+            pass
+
         return JsonResponse({'status': 'ok'}, status=201)

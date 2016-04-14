@@ -1,7 +1,8 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
 
 from datetime import datetime
-from unittest import mock
+from os import getenv
+from unittest import mock, skipIf
 
 import requests
 
@@ -173,6 +174,35 @@ class LinkUsageAPITest(LiveServerTestCase):
             self.assertEqual(response.status_code, 201)
             self.assertEquals(self.link.usage_total(), 2)
             self.assertEquals(response.json(), expected_response)
+
+    # TODO - fix in later v of django
+    # this test is commented out because of a bug in django
+    # https://code.djangoproject.com/ticket/25251
+    # which means tests will fail because the Link object doesn't exist
+    # after the first TransactionTestCase has happened
+    @skipIf(
+        getenv('TEST_API_USAGE', None) is None,
+        'Skipping tests that has to be run in isolation because of django bug'
+    )
+    def test_update_usage_creates_api_usage(self):
+        api = Link.objects.get(pk=2)
+        self.assertEquals(self.link.usage_total(), 0)
+        self.assertEquals(api.usage_total(), 0)
+
+        link_api_url = '%s%s' % (
+            self.live_server_url,
+            reverse('api-link-usage', kwargs={'pk': self.link.pk}),
+        )
+
+        expected_response = {'status': 'ok'}
+        response = requests.post(
+            link_api_url, data={'user': self.user.slug})
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEquals(self.link.usage_total(), 1)
+        self.assertEquals(response.json(), expected_response)
+
+        self.assertEquals(api.usage_total(), 1)
 
     def test_cannot_update_usage_on_nonexistent_link(self):
         link_api_url = '%s%s' % (

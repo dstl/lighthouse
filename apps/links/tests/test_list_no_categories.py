@@ -115,7 +115,7 @@ class ListLinksWithNoCategoriesTest(WebTest):
 
         self.assertEquals(
             len(response.html.findAll('li', {'class': 'link-list-item'})),
-            2
+            3
         )
 
         self.assertIsNotNone(response.html.find('ol', {'class': 'pagination'}))

@@ -96,7 +96,7 @@ class LinkSearchResults(WebTest):
         self.assertIsNotNone(search_results_list)
         results = search_results_list.findAll('li')
         # Two because of Lighthouse
-        self.assertEquals(len(results), 2)
+        self.assertEquals(len(results), 3)
         self.assertIn('Google', search_results_list.text)
 
     def test_search_for_external_query_matches_on_categories(self):

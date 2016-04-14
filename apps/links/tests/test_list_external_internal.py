@@ -187,7 +187,7 @@ class ListLinksWithExternalityTest(WebTest):
 
         self.assertEquals(
             len(response.html.findAll('li', {'class': 'link-list-item'})),
-            4
+            5
         )
 
         self.assertIsNone(response.html.find('ol', {'class': 'pagination'}))
