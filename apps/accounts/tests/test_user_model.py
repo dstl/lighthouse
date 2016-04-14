@@ -57,3 +57,7 @@ class UserModelTest(TestCase):
 
         self.assertEqual(len(t1.user_set.all()), 1)
         self.assertEqual(len(t2.user_set.all()), 2)
+
+    def test_first_user_is_default_user(self):
+        user = get_user_model().objects.get(pk=1)
+        self.assertEqual(user.userid, 'lighthouseuser')

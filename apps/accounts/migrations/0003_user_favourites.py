@@ -9,8 +9,8 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('links', '0003_add_default_user_and_link'),
-        ('accounts', '0001_initial'),
+        ('links', '0004_add_lighthouse_api'),
+        ('accounts', '0002_default_user'),
     ]
 
     operations = [
