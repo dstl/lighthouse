@@ -20,7 +20,7 @@ class LighthouseUsageTest(WebTest):
         self.app.get(reverse('user-list'))
         self.app.get(reverse('link-list'))
 
-        lighthouse_link = Link.objects.get(id=1)
+        lighthouse_link = Link.objects.get(pk=1)
         self.assertEqual(lighthouse_link.name, 'Lighthouse')
 
         all_usage = LinkUsage.objects.all()

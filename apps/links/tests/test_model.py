@@ -16,7 +16,7 @@ class LinkModelTest(TestCase):
         user = make_user()
         (l1, l2) = generate_fake_links(owner=user, count=2)
 
-        first_link = Link.objects.get(id=1)
+        first_link = Link.objects.get(pk=1)
 
         all_links = Link.objects.all()
 
@@ -26,7 +26,7 @@ class LinkModelTest(TestCase):
         self.assertEqual(first_link.name, 'Lighthouse')
         self.assertEqual(first_link.description, description)
         self.assertEqual(first_link.destination, '/')
-        self.assertEqual(first_link.id, 1)
+        self.assertEqual(first_link.pk, 1)
         self.assertEqual(len(all_links), 3)
 
         self.assertEqual(first_link.owner.name, 'Lighthouse User')
