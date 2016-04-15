@@ -1,4 +1,6 @@
-# lighthouse Web application for finding useful tools, data and techniques
+# Lighthouse
+
+Web application for finding useful tools, data and techniques
 
 ## Install & run
 
@@ -99,3 +101,71 @@ backup file onto the database machine, and run:
 With both commands, if you have overridden the database name (using the
 `LIGHTHOUSE_DB` environment variable), you will need to replace `lighthouse`
 with that.
+
+## How to modify static assets
+
+Lighthouse contains some "static" content assets which are not generated at
+runtime in the sense that a user's detail page is generated at runtime. The
+types of static content are images and pages, and sometimes you'll need to
+change them.
+
+### Modifying images
+
+At the time of this writing there's onyl one image being used in Lighthouse, and
+that's the logo which appears in the top-left of the page. This logo is
+originally stored in the `lighthouse-secrets` repository in a folder called
+`<nameofenvironment>-assets` (for example `preview-assets`) as `logo.png`. If
+you want to change the image for any of the environments, find the appropriate
+folder in the `lighthouse-secrets` repo and replace the image. It should be
+updated when you next deploy.
+
+### Modifying pages
+
+At time of writing there are two pieces of static text content on the Lighthouse
+site: the "About" page and the "API Documentation" page.
+
+The About page is the most straightforward. In the `apps/staticpages/pages/`
+directory there's a file called `about.md`. This is a Markdown file. If you
+aren't familiar with it, Markdown is a simple text format which renders to HTML.
+It is inspired by 1990s plain-text email convention and in fact, even if you
+simply write plain text, Markdown will render nicely to HTML. Here's some
+Markdown:
+
+```
+# This is a header
+
+This is a paragraph.
+
+Another paragraph.
+
+## A smaller header.
+
+Another paragraph!
+```
+
+You get the picture. More information is available on the [Markdown Syntax
+Documentation Page](https://daringfireball.net/projects/markdown/syntax).
+
+The about page is located at /about because of the name of that Markdown file.
+If you put another one in that directory called `contact.md`, then the URL
+/contact would suddenly become whatever is in that file, rendered as HTML.
+
+The *API Documentation* pages are a little more complicated but still fairly
+straightforward to change. The directory `apps/api/documentation` contains some
+markdown files which become available in their HTML-rendered form at /api/docs/,
+where `index.md` is the file which appears when you use just that path. On the
+other hand, /api/docs/link-usage is generated from the `link-usage.md` file.
+
+So as you can probably tell, to create a new page such as /api/docs/user-usage,
+you'd create a new file called `user-usage.md` inside of
+`apps/api/documentation`.
+
+### Advanced static pages modification
+
+The files in `apps/staticpages/pages/` are turned into HTML pages by using the
+`StaticPageViewBase` class in `apps/staticpages/views.py`. The URLs are configured
+in `lighthouse/urls.py`.
+
+The API documentation pages merely extend the `StaticPageViewBase` class in
+`apps/api/views.py`, so you could do something like that to start serving static
+pages from a new directory if you like.
