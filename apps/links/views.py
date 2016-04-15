@@ -34,6 +34,13 @@ class LinkDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super(LinkDetail, self).get_context_data(**kwargs)
         context['user_owns_link'] = self.request.user == self.object.owner
+
+        if self.request.user.is_authenticated():
+            is_fav = self.request.user.favourites.filter(
+                id=self.object.id
+            ).exists()
+            context['favourite'] = is_fav
+
         return context
 
 

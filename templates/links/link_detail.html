@@ -96,7 +96,32 @@
         <p>
             Since you added it, you have permission to edit this tool.
         </p>
-        <a class="button" id="edit-button" href="{% url "link-edit" link.id %}">Edit this tool</a>
+        <div class="form-group">
+            <a class="button" id="edit-button" href="{% url "link-edit" link.id %}">Edit this tool</a>
+        </div>
+        {% endif %}
+        {% if favourite %}
+        <form method="post" action="{% url "user-favourites-remove" link.owner.slug %}">
+            {% csrf_token %}
+            <h3 class="heading-body" id="in-favourites-message">
+                This tool is in your favourites
+            </h3>
+            <input type="hidden" name="link_id" value="{{link.id}}">
+            <button class="button" id="remove-from-favourites" type="submit">
+                Remove from favourites
+            </button>
+        </form>
+        {% else %}
+        <form method="post" action="{% url "user-favourites-add" link.owner.slug %}">
+            {% csrf_token %}
+            <h3 class="heading-body" id="not-in-favourites-message">
+                This tool is not yet in your favourites
+            </h3>
+            <input type="hidden" name="link_id" value="{{link.id}}">
+            <button class="button" id="add-to-favourites" value="{{link.id}}">
+                Add to favourites
+            </button>
+        </form>
         {% endif %}
         <h2 class="heading-medium">Categories</h2>
         {% if link.categories.count %}

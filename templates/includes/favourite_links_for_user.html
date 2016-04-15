@@ -1,0 +1,17 @@
+{# (c) Crown Owned Copyright, 2016. Dstl. #}
+<h3 class="heading-medium">Favourite tools</h3>
+{% if user.favourites.count > 0 %}
+  <ul class="list list-bullet" id="favourites-list">
+    {% for link in user.favourites.all %}
+      <li><a class="main-list-item" href='{% url "link-detail" link.pk %}'>{{link.name}}</a></li>
+    {% endfor %}
+  </ul>
+{% else %}
+  {% if request.user == user %}
+  <p>You don't have any favourites yet. You can add favourites tools to your
+   profile by pressing the "Add to favourites" button on any Tool's page.
+   <a href="{% url "link-detail" 1 %}">Try it now by adding Lighthouse as one of your favourites</a>.</p>
+  {% else %}
+  <p>This user hasn't added any favourites yet.</p>
+  {% endif %}
+{% endif %}
