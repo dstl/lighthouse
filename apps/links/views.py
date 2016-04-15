@@ -41,6 +41,8 @@ class LinkDetail(DetailView):
             ).exists()
             context['favourite'] = is_fav
 
+        context['not_lighthouse_link'] = self.object.id != 1
+
         return context
 
 
