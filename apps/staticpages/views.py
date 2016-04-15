@@ -1,6 +1,9 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
 
 import codecs
+import logging
+import traceback
+import sys
 import os
 
 from django.conf import settings
@@ -58,4 +61,7 @@ class Status404View(View):
 
 class Status500View(View):
     def dispatch(self, request, *args, **kwargs):
+        _, _, tb = sys.exc_info()
+        logging.getLogger().info('500 error occured')
+        logging.getLogger().info('\n'.join(traceback.format_tb(tb)))
         return render(request, 'staticpages/500.html', status=500)
