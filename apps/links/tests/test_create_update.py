@@ -94,13 +94,6 @@ class LinkTest(WebTest):
             edit_button.get('href')
         )
 
-        self.assertTrue(login_user(self, self.other_user))
-
-        response = self.app.get(
-            reverse('link-detail', kwargs={'pk': existing_link.pk}))
-        edit_button = response.html.find(None, {"id": "edit-button"})
-        self.assertIsNone(edit_button)
-
     def test_update_link_external(self):
         existing_link = Link(
             name='Wikimapia',

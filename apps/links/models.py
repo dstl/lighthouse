@@ -33,6 +33,12 @@ class LinkUsage(models.Model):
         return 'Usage of %s by %s at %s' % (self.link, self.user, self.start)
 
 
+class LinkEdit(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    link = models.ForeignKey('Link', related_name='edits')
+    date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+
+
 class Link(models.Model):
     name = models.CharField(max_length=256)
     description = models.TextField(null=True, blank=True)
@@ -101,6 +107,13 @@ class Link(models.Model):
         ).annotate(
             link_usage_count=models.Count('usage')
         ).order_by('-link_usage_count', 'slug')
+
+    def most_recent_editor(self):
+        edit = self.edits.order_by('-date').first()
+        if edit is None:
+            return None
+
+        return edit.user
 
     #   A somewhat loopy method of getting the top team usage for tools in
     #   the last 30 days. *Because* a user can be a member of more than one
