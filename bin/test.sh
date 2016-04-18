@@ -8,6 +8,11 @@ result=0
 . ./bin/virtualenv.sh
 (( result+=$? ))
 
+# the test runner should pick a port at random, so there is less chance of
+# multiple test runs at once (common in CI) clashing over the port
+# TODO - remove this after django upgrade (default behaviour in >1.9)
+export DJANGO_LIVE_TEST_SERVER_ADDRESS='localhost:8081-8179'
+
 # Run the tests
 ./manage.py test
 (( result+=$? ))
