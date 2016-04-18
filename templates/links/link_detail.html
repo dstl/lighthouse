@@ -20,17 +20,19 @@
             {{link.description}}
           </p>
         </div>
+        {% if not_lighthouse_link %}
         <div class="text">
             <a id="link_follow_button" class="button button-start" href="{% url "link-redirect" link.pk %}" target="_blank">
                 Go to tool
             </a>
-            <div class="link-aside">
+            <div id="link_follow_url" class="link-aside">
                 <a href="{% url "link-redirect" link.pk %}" target="_blank">
                     {{link.destination}}
                 </a>
                 <span class="link-hint font-xsmall">(will open the tool in a new window)</span>
             </div>
         </div>
+        {% endif %}
 
         <h3 class="heading-medium">Who uses this tool?</h3>
         {% if link.top_users_thirty_days %}
