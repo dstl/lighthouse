@@ -29,9 +29,14 @@ at step **5** and the IP address in the end will be https://0.0.0.0:3000.
 
 ### Run the tests
 
-    pip install -r requirements_test.txt
+To run all of the tests:
 
-    ./manage.py test
+    ./bin/test.sh
+
+To run an individual test (or test class) in isolation, run:
+
+    # eg. just run all the Link model tests
+    ./manage.py test apps.links.tests.test_model
 
 ### Useful scripts in the `bin` directory
 
