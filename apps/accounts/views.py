@@ -306,13 +306,13 @@ class UserUpdateProfile(LoginRequiredMixin, UpdateView):
                 check_team = Team.objects.filter(name=team_name).exists()
 
                 if check_team is True:
-                    new_team = Team.objects.filter(name=team_name)
+                    new_team = Team.objects.filter(name=team_name).first()
                 else:
                     new_team = Team(
                         name=team_name,
                         organisation=new_organisation
                     )
-                    new_team.save()
+                new_team.save()
 
                 #   Now add the new team to the teams join on the user
                 user.teams.add(new_team.pk)
