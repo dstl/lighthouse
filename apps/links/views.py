@@ -118,12 +118,24 @@ class LinkCreate(LoginRequiredMixin, CategoriesFormMixin, CreateView):
         'name', 'description', 'destination', 'is_external', 'categories'
     ]
 
+    def get_context_data(self, **kwargs):
+        context = super(LinkCreate, self).get_context_data(**kwargs)
+        context['not_lighthouse_link'] = True
+
+        return context
+
 
 class LinkUpdate(LoginRequiredMixin, CategoriesFormMixin, UpdateView):
     model = Link
     fields = [
         'name', 'description', 'destination', 'is_external', 'categories'
     ]
+
+    def get_context_data(self, **kwargs):
+        context = super(LinkUpdate, self).get_context_data(**kwargs)
+        context['not_lighthouse_link'] = self.object.pk not in [1, 2]
+
+        return context
 
 
 class LinkList(ListView):
