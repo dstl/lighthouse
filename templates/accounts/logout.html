@@ -1,9 +1,27 @@
 {# (c) Crown Owned Copyright, 2016. Dstl. #}
 {% extends "layout.html" %}
 
+{% block page_title %}Log out{% endblock %}
+
 {% block grid_content %}
+
+<main id="content" role="main">
+
+  <h1 class="form-title heading-xlarge">
+    Log out of Lighthouse
+  </h1>
+
+<p>
+  Are you sure you want to log out of Lighthouse? If you've reached this page by
+  accident you can click the 'Back' button in your browser or return to
+  <a href="/">the Lighthouse homepage</a>. If you're sure, click "Log out" below.
+</p>
+<div class="form-group">
   <form method='post'>
     {% csrf_token %}
-    <button type='submit'>Logout</button>
+    <button class="button" type="submit">Log out</button>
   </form>
+</div>
+</main>
+
 {% endblock %}
