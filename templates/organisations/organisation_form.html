@@ -1,7 +1,13 @@
 {# (c) Crown Owned Copyright, 2016. Dstl. #}
 {% extends "layout.html" %}
 
-{% block page_title %}{{organisation.name}} – Organisations{% endblock %}
+{% block page_title %}
+{% if organisation %}
+  {{organisation.name}} – Organisations
+{% else %}
+  Create organisation – Organisations
+{% endif %}
+{% endblock %}
 
 {% block grid_content %}
 
@@ -32,14 +38,16 @@
 </div>
 {% endif %}
 
-<form id="organisation_form" method="post" action="">
+
+<form method="post" id="organisation_form" action="{% url 'organisation-create' %}">
   {% csrf_token %}
   <div class="form-group">
     <label class="form-label-bold" for="id_name">
-      Create new organisation.
+      What is the organisation called?
     </label>
     <p class="form-hint">
-      If an organisation isn't in the list above then you can add it here.
+      Enter the official name of the organisation in a way that members
+      would recognise.
     </p>
     <input class="form-control" id="id_name" maxlength="256" name="name" type="text" autofocus="true">
   </div>

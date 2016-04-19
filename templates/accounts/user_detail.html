@@ -5,26 +5,16 @@
 
 {% block grid_content %}
 
-<div class="grid-row">
-  <div class="column-two-thirds">
-
-    <h1 class="form-title heading-xlarge">
-      <span class="heading-secondary">User</span>
-      {{user}}
-    </h1>
-
-  </div>
-</div>
+<h1 class="form-title heading-xlarge">
+  <span class="heading-secondary">User</span>
+  {{user}}
+</h1>
 
 <div class="grid-row">
   <div class="column-two-thirds">
 
+    <h2 class="heading-large heading-snug-top">Contact information</h2>
     {% if user.best_way_to_find or user.best_way_to_contact or user.phone or user.email %}
-      <p class="lede">
-        Hey there, welcome to this users page. Here's some handy information should
-        you wish to contact them...
-      </p>
-
       {% if user.phone or user.email %}
         <p>
           <h2 class="heading-medium">
@@ -62,7 +52,7 @@
       </p>
     {% endif %}
 
-    <h2 class="heading-large">Teams:</h2>
+    <h2 class="heading-large">Teams and organisations</h2>
     {% if user.teams.count %}
       <p class="lede">
         This user is a member of the following teams.
@@ -70,7 +60,7 @@
       {% include "includes/team_list.html" with teams=user.teams.all show_organisation=True %}
     {% else %}
     <p class="lede">
-      This user is a not a member of any teams at this time.
+      This user is a not yet a member of any teams.
     </p>
     {% endif %}
 

@@ -8,10 +8,12 @@
   </ul>
 {% else %}
   {% if request.user == user %}
-  <p>You don't have any favourites yet. You can add favourites tools to your
-   profile by pressing the "Add to favourites" button on any Tool's page.
-   <a href="{% url "link-detail" 1 %}">Try it now by adding Lighthouse as one of your favourites</a>.</p>
+    <p>
+      You don't have any favourites yet. You can add favourite tools to your
+      profile by pressing the "Add to favourites" button on any tool's page.
+      <a href="{% url "link-detail" 1 %}">Try it now by adding Lighthouse as one of your favourites</a>.
+    </p>
   {% else %}
-  <p>This user hasn't added any favourites yet.</p>
+    <p>This user hasn't added any favourites yet.</p>
   {% endif %}
 {% endif %}
