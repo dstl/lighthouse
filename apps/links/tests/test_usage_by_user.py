@@ -8,8 +8,7 @@ from django.utils.timezone import now
 
 from django_webtest import WebTest
 
-from testing.common import create_organisation
-from testing.common import generate_fake_links
+from testing.common import create_organisation, generate_fake_links, login_user
 
 
 def register_link_usage_for_user(link, user, num_usage):
@@ -43,6 +42,8 @@ class LinkUsageByUserTest(WebTest):
         register_link_usage_for_user(self.used_link, self.top_user_5, 7)
         register_link_usage_for_user(self.used_link, self.top_user_6, 5)
         register_link_usage_for_user(self.used_link, self.owner_user, 4)
+
+        login_user(self, self.owner_user)
 
         # We need this for time mocking.
         self.now = now()

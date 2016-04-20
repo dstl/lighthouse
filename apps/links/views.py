@@ -28,7 +28,7 @@ from haystack.query import SearchQuerySet
 from apps.search.models import SearchQuery, SearchTerm
 
 
-class LinkDetail(DetailView):
+class LinkDetail(LoginRequiredMixin, DetailView):
     model = Link
 
     def get_context_data(self, **kwargs):
@@ -45,7 +45,7 @@ class LinkDetail(DetailView):
         return context
 
 
-class LinkRedirect(DetailView):
+class LinkRedirect(LoginRequiredMixin, DetailView):
     model = Link
 
     def get(self, request, *args, **kwargs):
@@ -61,7 +61,7 @@ class LinkRedirect(DetailView):
         return redirect(self.object.destination)
 
 
-class LinkInterstitial(DetailView):
+class LinkInterstitial(LoginRequiredMixin, DetailView):
     model = Link
     template_name_suffix = '_interstitial'
 
@@ -152,7 +152,7 @@ class LinkUpdate(LoginRequiredMixin, CategoriesFormMixin, UpdateView):
         return form_valid
 
 
-class LinkList(ListView):
+class LinkList(LoginRequiredMixin, ListView):
     model = Link
     paginate_by = 5
     template_name = 'links/link_list.html'
@@ -266,12 +266,12 @@ class LinkList(ListView):
         return context
 
 
-class LinkStats(DetailView):
+class LinkStats(LoginRequiredMixin, DetailView):
     model = Link
     template_name_suffix = '_stats'
 
 
-class LinkStatsCSV(DetailView):
+class LinkStatsCSV(LoginRequiredMixin, DetailView):
     model = Link
 
     def get(self, request, *args, **kwargs):
@@ -297,7 +297,7 @@ class LinkStatsCSV(DetailView):
         return response
 
 
-class OverallLinkStats(ListView):
+class OverallLinkStats(LoginRequiredMixin, ListView):
     template_name = 'links/link_overall_stats.html'
 
     def get_queryset(self):
@@ -308,7 +308,7 @@ class OverallLinkStats(ListView):
         )
 
 
-class OverallLinkStatsCSV(View):
+class OverallLinkStatsCSV(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         date = timezone.now().strftime('%Y_%m_%d')
         response = HttpResponse(content_type='text/csv')
