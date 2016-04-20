@@ -60,7 +60,7 @@
       {% endfor %}
     </ul>
     {% endif %}
-    <input class="form-control" id="{{ form.name.id_for_label }}" value="{{ form.name.value|default_if_none:"" }}" maxlength="256" name="name" type="text"{% if highlight_field ==  form.name.id_for_label %} tabindex="1" autofocus="true"{% endif %} />
+    <input class="form-control" id="{{ form.name.id_for_label }}" value="{{ form.name.value|default_if_none:"" }}" maxlength="256" name="name" type="text"{% if highlight_field ==  form.name.id_for_label %} autofocus="true"{% endif %} />
 
   </div>
 

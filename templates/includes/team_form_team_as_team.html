@@ -11,6 +11,6 @@
     {% endfor %}
   </ul>
   {% endif %}
-  <input class="form-control" id="{{ form.name.id_for_label }}" maxlength="256" name="name" type="text" value="{{ form.name.value|default_if_none:"" }}">
+  <input class="form-control" id="{{ form.name.id_for_label }}" maxlength="256" name="name" type="text" autofocus="true" value="{{ form.name.value|default_if_none:"" }}">
 </div>
 
