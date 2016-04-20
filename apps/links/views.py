@@ -19,7 +19,7 @@ from django.views.generic import (
 
 from taggit.models import Tag
 
-from .models import Link, LinkUsage
+from .models import Link, LinkUsage, LinkEdit
 from apps.access import LoginRequiredMixin
 
 from haystack.inputs import AutoQuery
@@ -33,7 +33,6 @@ class LinkDetail(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(LinkDetail, self).get_context_data(**kwargs)
-        context['user_owns_link'] = self.request.user == self.object.owner
 
         if self.request.user.is_authenticated():
             is_fav = self.request.user.favourites.filter(
@@ -136,6 +135,21 @@ class LinkUpdate(LoginRequiredMixin, CategoriesFormMixin, UpdateView):
         context['not_lighthouse_link'] = self.object.pk not in [1, 2]
 
         return context
+
+    def form_valid(self, form):
+        original_link = self.get_object()
+        form_valid = super(LinkUpdate, self).form_valid(form)
+
+        if form_valid:
+            link = self.get_object()
+            link.owner = original_link.owner
+            link.save()
+            LinkEdit.objects.create(
+                link=self.object,
+                user=self.request.user
+            )
+
+        return form_valid
 
 
 class LinkList(ListView):
