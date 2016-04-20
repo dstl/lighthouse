@@ -106,7 +106,7 @@ class LoginView(FormView):
         return super(LoginView, self).get(request, *args, **kwargs)
 
 
-class LogoutView(TemplateView):
+class LogoutView(LoginRequiredMixin, TemplateView):
     template_name = 'accounts/logout.html'
 
     def get_next_url(self):
