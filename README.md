@@ -83,6 +83,13 @@ dependencies, and will also return the location of that environment's `activate`
 binary. So in order to quickly get into a virtual environment you can type
 `source ./bin/virtualenv.sh`.
 
+### How does it look?
+
+It should look a little bit like this:
+
+![A screenshot of Lighthouse](../blob/master/readme.png?raw=true)
+
+
 ### API
 
 Lighthouse provides a (very) limited RESTful API. The documentation can be
