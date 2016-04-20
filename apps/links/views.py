@@ -302,7 +302,7 @@ class OverallLinkStats(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return sorted(
-            Link.objects.annotate(Count('usage')),
+            Link.objects.exclude(id=2).annotate(Count('usage')),
             key=lambda o: (o.usage_past_thirty_days()),
             reverse=True
         )
