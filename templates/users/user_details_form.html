@@ -11,9 +11,8 @@
 </h1>
 
 <p class="lede">
-  Anytime you need to update your information you can do that here.
+  Here you can update contact information about yourself.
 </p>
-
 
 {% if show_name_alert %}
 <div class="error-summary" role="group">
@@ -41,7 +40,7 @@
 
   <div class="form-group {% if show_name_alert %}error{% endif %}">
     <label class="form-label-bold" for="{{ form.name.id_for_label }}">
-      Name
+      What is your full name?
     </label>
 
     {% if show_name_alert %}
@@ -51,7 +50,7 @@
     {% endif %}
 
     <p class="form-hint">
-      Generally how other people would recognise your name in the system.
+      Provide a form of your name that most people would recognise as being you.
     </p>
     {% if form.name.errors %}
     <ul id="{{ form.name.id_for_label }}_error_list">
@@ -65,10 +64,6 @@
   </div>
 
   <div class="form-group {% if show_extra_details_alert %}alert{% endif %}">
-    <label class="form-label-bold">Additional contact information</label>
-    <p class="form-hint">
-      Quick details about how you'd like other people to get hold of you.
-    </p>
 
     {% if show_extra_details_alert %}
       <span class="alert-message">
@@ -78,8 +73,11 @@
 
     <div class="form-group">
       <label class="form-label-bold" for="{{ form.best_way_to_find.id_for_label }}">
-        Best way to find you.
+        What is the best way to find you?
       </label>
+      <p class="form-hint">
+        For example, the name of room in which you normally work.
+      </p>
       {% if form.best_way_to_find.errors %}
       <ul id="{{ form.best_way_to_find.id_for_label }}_error_list">
         {% for error in form.best_way_to_find.errors %}
@@ -92,8 +90,11 @@
 
     <div class="form-group">
       <label class="form-label-bold" for="{{ form.best_way_to_contact.id_for_label }}">
-        Best way to contact you.
+        What is the best way to contact you?
       </label>
+      <p class="form-hint">
+        For example, do you prefer to be called on your phone, or sent an email?
+      </p>
       {% if form.best_way_to_contact.errors %}
       <ul id="{{ form.best_way_to_contact.id_for_label }}_error_list">
         {% for error in form.best_way_to_contact.errors %}
@@ -106,7 +107,7 @@
 
     <div class="form-group">
       <label class="form-label-bold" for="{{ form.phone.id_for_label }}">
-        Phone
+        What is your telephone number?
       </label>
       {% if form.phone.errors %}
       <ul id="{{ form.phone.id_for_label }}_error_list">
@@ -120,7 +121,7 @@
 
     <div class="form-group">
       <label class="form-label-bold" for="{{ form.email.id_for_label }}">
-        Email
+        What is your email address?
       </label>
       {% if form.email.errors %}
       <ul id="{{ form.email.id_for_label }}_error_list">

@@ -18,6 +18,10 @@
         <p class="lede">
           These are the organisations currently registered with the system. Click on an organisation to view the teams in that organisation.
         </p>
+        <p class="lede">
+          If you can't find an organisation which should exist, you may create a new one
+          using the <a href="#organisation_form">form below</a>.
+        </p>
 
         <ul class="list list-bullet organisation-list">
           {% for organisation in object_list %}
@@ -51,12 +55,14 @@
 
       <form method="post" id="organisation_form" action="{% url 'organisation-create' %}">
         {% csrf_token %}
+        <h3 class="form-title heading-large" for="id_name">Create a new organisation</h3>
         <div class="form-group">
           <label class="form-label-bold" for="id_name">
-            Create new organisation.
+            What is the organisation called?
           </label>
           <p class="form-hint">
-            If an organisation isn't in the list above then you can add it here.
+            Enter the official name of the organisation in a way that members
+            would recognise.
           </p>
           <input class="form-control" id="id_name" maxlength="256" name="name" type="text"  />
         </div>
