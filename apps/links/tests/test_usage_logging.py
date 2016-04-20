@@ -270,6 +270,17 @@ class LinkUsageWebTest(WebTest):
         self.assertEquals(link_stats_cells[3].text, '2')
         self.assertEquals(other_link_stats_cells[3].text, '1')
 
+    def test_link_stats_page_excludes_api(self):
+        lighthouse_api_link = Link.objects.get(id=2)
+        lighthouse_api_link.register_usage(self.user)
+
+        stats_url = reverse('link-overall-stats')
+        response = self.app.get(stats_url)
+
+        api_stats = response.html.find('tr', id='stats-for-2')
+
+        self.assertIsNone(api_stats)
+
     def test_internal_link_usage(self):
         detail_url = reverse('link-detail', kwargs={'pk': self.link.pk})
 
