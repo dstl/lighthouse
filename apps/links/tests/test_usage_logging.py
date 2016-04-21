@@ -255,8 +255,14 @@ class LinkUsageWebTest(WebTest):
         other_link_stats_cells = other_link_stats.findChildren('td')
 
         # Name
-        self.assertEquals(link_stats_cells[0].text, self.link.name)
-        self.assertEquals(other_link_stats_cells[0].text, self.other_link.name)
+        self.assertEquals(
+            link_stats_cells[0].get_text(strip=True),
+            self.link.name
+        )
+        self.assertEquals(
+            other_link_stats_cells[0].get_text(strip=True),
+            '%sExternal' % self.other_link.name,
+        )
 
         # Thirty
         self.assertEquals(link_stats_cells[1].text, '2')
@@ -478,6 +484,7 @@ class LinkUsageWebTest(WebTest):
             'Duration': '0',
             'Date': '2016-03-01 10:00:00',
             'Tool': 'Link Linkerly',
+            'External?': '',
         })
 
         row = next(reader)
@@ -486,6 +493,7 @@ class LinkUsageWebTest(WebTest):
             'Duration': '60',
             'Date': '2016-03-01 11:15:00',
             'Tool': 'Other Link',
+            'External?': 'External',
         })
 
         row = next(reader)
@@ -494,6 +502,7 @@ class LinkUsageWebTest(WebTest):
             'Duration': '0',
             'Date': '2016-03-01 13:00:00',
             'Tool': 'Link Linkerly',
+            'External?': '',
         })
 
     def test_usage_detail_page_three_periods(self):
