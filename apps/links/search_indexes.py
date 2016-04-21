@@ -30,6 +30,7 @@ class VariationCharField(indexes.CharField):
 
 
 class LinkIndex(indexes.SearchIndex, indexes.Indexable):
+    key = indexes.CharField(indexed=True, model_attr='pk')
     name = indexes.CharField(model_attr='name')
     categories = indexes.MultiValueField(indexed=True, stored=True)
     text = VariationCharField(document=True, use_template=True)
