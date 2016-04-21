@@ -27,7 +27,12 @@
     </tr>
     {% for link in object_list %}
       <tr id="stats-for-{{link.pk}}">
-        <td><a href='{% url "link-detail" link.pk %}'>{{link.name}}</a></td>
+        <td>
+          <a href='{% url "link-detail" link.pk %}'>{{link.name}}</a>
+          {% if link.is_external %}
+            <span class='is-external-label'>External</span>
+          {% endif %}
+        </td>
         <td class='usage-thirty-days'>{{link.usage_past_thirty_days}}</td>
         <td class='usage-seven-days'>{{link.usage_past_seven_days}}</td>
         <td class='usage-total'>{{link.usage.count}}</td>

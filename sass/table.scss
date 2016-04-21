@@ -14,5 +14,9 @@ table.stats_table {
   th.usage-seven-days {
     background: #ffffdd;
   }
+  .is-external-label {
+    font-size: 0.8em;
+    float: right;
+  }
   margin-bottom:$gutter;
 }

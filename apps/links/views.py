@@ -316,13 +316,17 @@ class OverallLinkStatsCSV(LoginRequiredMixin, View):
             'attachment; filename="lighthouse_full_%s.csv"' % date
 
         writer = csv.writer(response)
-        writer.writerow(['Date', 'Duration', 'User', 'Tool'])
+        writer.writerow(['Date', 'Duration', 'User', 'Tool', 'External?'])
         for usage in LinkUsage.objects.all():
+            external = ''
+            if usage.link.is_external:
+                external = 'External'
             writer.writerow([
                 usage.start.strftime("%Y-%m-%d %H:%M:%S"),
                 usage.duration,
                 usage.user.userid,
-                usage.link
+                usage.link,
+                external,
             ])
 
         return response
