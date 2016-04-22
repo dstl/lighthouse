@@ -1,5 +1,13 @@
 // (c) Crown Owned Copyright, 2016. Dstl.
+
 $(document).ready(function() {
+  try {
+    $('#categories-filter input[type=checkbox]').on('change', function () {
+      $form = $(this).closest('form');
+      $form.submit();
+    });
+    $('#categories-filter input[type=submit]').parent().hide();
+  } catch (e) {}
 
   // Turn off jQuery animation
   jQuery.fx.off = true;
