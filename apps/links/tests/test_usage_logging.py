@@ -255,9 +255,9 @@ class LinkUsageWebTest(WebTest):
         other_link_stats_cells = other_link_stats.findChildren('td')
 
         # Name
-        self.assertEquals(
-            link_stats_cells[0].get_text(strip=True),
-            self.link.name
+        self.assertIn(
+            self.link.name,
+            link_stats_cells[0].get_text(strip=True)
         )
         self.assertEquals(
             other_link_stats_cells[0].get_text(strip=True),

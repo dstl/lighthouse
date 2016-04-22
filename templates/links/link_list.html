@@ -20,6 +20,13 @@
       <input type="submit" value="Filter using selections below" class="button" />
     </div>
     <div class="form-group">
+      <div class="form-group">
+        {# Favourites filters #}
+        <label for="filter-favourites" class="block-label block-label-small">
+          <h3>My favourites</h3>
+          <input type="checkbox" id="filter-favourites" value="true" name="favourites" {% if favourites_filtered %}checked="checked"{% endif %} />
+        </label>
+      </div>
       {% for category in categories %}
       <label for="categories-filter-{{ category.name }}" class="block-label block-label-small">
         <h3>{{ category.name|capfirst }}</h3>

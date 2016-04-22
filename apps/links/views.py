@@ -163,6 +163,10 @@ class LinkList(LoginRequiredMixin, ListView):
     def has_categories(self):
         return 'categories' in self.request.GET
 
+    def has_favourites(self):
+        has_favs = 'favourites' in self.request.GET
+        return has_favs and self.request.GET.get('favourites') == 'true'
+
     def external_only(self):
         types = self.request.GET.getlist('types', [])
         if type(types) == str:
@@ -187,6 +191,17 @@ class LinkList(LoginRequiredMixin, ListView):
             ).filter_or(
                 network_location=AutoQuery(self.request.GET['q'])
             )
+
+        if self.has_favourites():
+            fav_pks = [l.pk for l in self.request.user.favourites.all()]
+            if self.has_query():
+                queryset = queryset.models(Link).filter(
+                    key__in=fav_pks
+                )
+            else:
+                queryset = queryset.filter(
+                    id__in=fav_pks
+                ).distinct()
 
         if self.has_categories():
             categories_to_filter = dict(self.request.GET)['categories']
@@ -260,6 +275,7 @@ class LinkList(LoginRequiredMixin, ListView):
         context['filtered_categories'] = categories_to_filter
         context['filtered_types'] = types_to_filter
         context['total_links_in_db'] = Link.objects.count()
+        context['favourites_filtered'] = self.has_favourites()
 
         context['extra_query_strings'] = '&'.join(querystrings)
 
