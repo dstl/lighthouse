@@ -87,7 +87,7 @@ binary. So in order to quickly get into a virtual environment you can type
 
 It should look a little bit like this:
 
-![A screenshot of Lighthouse](../blob/master/readme.png?raw=true)
+![A screenshot of Lighthouse](../master/readme.png?raw=true)
 
 
 ### API
