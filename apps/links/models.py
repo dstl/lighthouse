@@ -3,12 +3,14 @@
 from datetime import timedelta
 from dateutil.relativedelta import relativedelta, MO
 import json
+import markdown
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils import timezone
+from django.utils.html import strip_tags
 
 from taggit.managers import TaggableManager
 
@@ -53,6 +55,18 @@ class Link(models.Model):
 
     def get_absolute_url(self):
         return reverse('link-detail', kwargs={'pk': self.pk})
+
+    @property
+    def description_summary(self):
+        lines = self.description.split('\n')
+        if len(lines) > 0:
+            first_html = markdown.markdown(lines[0])
+            first_line = strip_tags(first_html).strip()
+            if len(first_line) > 140:
+                first_line = first_line[:140] + '...'
+            return first_line
+        else:
+            return ''
 
     def register_usage(self, user, force_new=False):
         an_hour_ago = timezone.now() - timedelta(hours=1)

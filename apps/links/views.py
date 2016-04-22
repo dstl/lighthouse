@@ -27,6 +27,8 @@ from haystack.query import SearchQuerySet
 
 from apps.search.models import SearchQuery, SearchTerm
 
+import markdown
+
 
 class LinkDetail(LoginRequiredMixin, DetailView):
     model = Link
@@ -41,6 +43,12 @@ class LinkDetail(LoginRequiredMixin, DetailView):
             context['favourite'] = is_fav
 
         context['not_lighthouse_link'] = self.object.id not in [1, 2]
+
+        if self.object.description is not None:
+            html = markdown.markdown(self.object.description)
+            context['html_description'] = html
+        else:
+            context['html_description'] = ''
 
         return context
 

@@ -57,7 +57,7 @@
         {% for link in object_list %}
           <li class="link-list-item">
             <h3 class="inline"><a href='{% url "link-detail" link.pk %}'>{{ link.name }}</a></h3>
-            <p>{{ link.description }}</p>
+            <p>{{ link.description_summary }}</p>
             <span class="categories">
               {% if link.is_external %}
               <a id="link_{{link.id}}_external" href="?types=external" class="external is-external-label">External</a>
