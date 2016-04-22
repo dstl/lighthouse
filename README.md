@@ -1,6 +1,6 @@
 # Lighthouse
 
-Web application for finding useful tools, data and techniques
+Lighthouse is a web application for finding tools and sharing data about how those tools are used. You can use it to manage a searchable and collaboratively curated catalog of internal (eg intranet) and/or external (eg internet) links to useful tools. It also helps you see which people, teams and organisations are using which tools.
 
 ## Install & run
 
@@ -87,7 +87,7 @@ binary. So in order to quickly get into a virtual environment you can type
 
 It should look a little bit like this:
 
-![A screenshot of Lighthouse](../blob/master/readme.png?raw=true)
+![A screenshot of Lighthouse](../master/readme.png?raw=true)
 
 
 ### API
