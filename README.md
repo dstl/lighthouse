@@ -1,6 +1,6 @@
 # Lighthouse
 
-Lighthouse is a web application for finding tools and sharing data about how those tools are used. You can use it to manage a searchable and collaboratively curated catalog of internal (eg intranet) and/or external (eg intranet) links to useful tools. It also helps you see which people, teams and organisations are using which tools.
+Lighthouse is a web application for finding tools and sharing data about how those tools are used. You can use it to manage a searchable and collaboratively curated catalog of internal (eg intranet) and/or external (eg internet) links to useful tools. It also helps you see which people, teams and organisations are using which tools.
 
 ## Install & run
 
