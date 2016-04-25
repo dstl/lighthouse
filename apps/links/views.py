@@ -20,6 +20,7 @@ from django.views.generic import (
 from taggit.models import Tag
 
 from .models import Link, LinkUsage, LinkEdit
+from .forms import LinkUpdateForm
 from apps.access import LoginRequiredMixin
 
 from haystack.inputs import AutoQuery
@@ -134,9 +135,7 @@ class LinkCreate(LoginRequiredMixin, CategoriesFormMixin, CreateView):
 
 class LinkUpdate(LoginRequiredMixin, CategoriesFormMixin, UpdateView):
     model = Link
-    fields = [
-        'name', 'description', 'destination', 'is_external', 'categories'
-    ]
+    form_class = LinkUpdateForm
 
     def get_context_data(self, **kwargs):
         context = super(LinkUpdate, self).get_context_data(**kwargs)

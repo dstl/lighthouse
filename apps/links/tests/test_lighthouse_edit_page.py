@@ -32,6 +32,28 @@ class LighthouseGoToTest(WebTest):
 
         self.assertEqual(dest_input.attrs['type'], 'hidden')
 
+    def test_lighthouse_api_edit_page_can_submit(self):
+        self.logged_in_user = make_user()
+        self.app.get(reverse('login'))
+
+        self.assertTrue(login_user(self, self.logged_in_user))
+
+        response = self.app.get(reverse('link-edit', kwargs={'pk': 2}))
+        form = response.form
+
+        new_desc = 'I love the Lighthouse API'
+        form['description'] = new_desc
+
+        response = form.submit().follow()
+
+        error_summary = response.html.find('div', {"class": "error-summary"})
+        self.assertIsNone(error_summary)
+
+        description = response.html.find(
+            'div', {"class": "markdown-content"})
+
+        self.assertIn(new_desc, description.text)
+
     def test_normal_edit_page_has_destination_box(self):
         self.logged_in_user = make_user()
         self.app.get(reverse('login'))
