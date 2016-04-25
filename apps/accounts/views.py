@@ -1,5 +1,8 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
 
+import os
+from django.contrib.auth import get_user_model
+
 from django.contrib.auth import REDIRECT_FIELD_NAME, login, logout
 from django.core.exceptions import NON_FIELD_ERRORS
 from django.core.urlresolvers import reverse
@@ -57,6 +60,11 @@ class LoginView(FormView):
             return HttpResponseRedirect('/admin/')
         return super(LoginView, self).form_invalid(form)
 
+    def get_initial(self):
+        initial = super(LoginView, self).get_initial()
+        initial['userid'] = os.getenv('REMOTE_USER')
+        return initial
+
     def get_success_url(self):
         # Explicit "next" page overrides prompts for more user info
         if 'next' in self.request.GET:
@@ -102,8 +110,20 @@ class LoginView(FormView):
         Same as django.views.generic.edit.ProcessFormView.get(),
         but adds test cookie stuff
         """
-        self.set_test_cookie()
-        return super(LoginView, self).get(request, *args, **kwargs)
+        userid = os.getenv('REMOTE_USER')
+        if userid:
+            try:
+                user = get_user_model().objects.get(userid=userid)
+            except:
+                user = get_user_model().objects.create_user(
+                    userid=userid, is_active=True)
+            user.backend = 'django.contrib.auth.backends.ModelBackend'
+            login(self.request, user)
+            self.user = user
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            self.set_test_cookie()
+            return super(LoginView, self).get(request, *args, **kwargs)
 
 
 class LogoutView(LoginRequiredMixin, TemplateView):
