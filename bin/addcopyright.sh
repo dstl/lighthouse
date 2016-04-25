@@ -29,6 +29,7 @@ function findRelevantFiles
 	find . -not \( -path ./apps/govuk_template -prune \) \
 		-not \( -path ./apps/govuk_frontend_toolkit -prune \) \
 		-not \( -path ./apps/govuk_elements -prune \) \
+		-not \( -path ./static/vendor -prune \) \
 		-not \( -path ./.git -prune \) \
 		"$@"
 }
