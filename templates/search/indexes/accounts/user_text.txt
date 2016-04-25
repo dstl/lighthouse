@@ -1,0 +1,4 @@
+{{object.name}}
+{{object.userid}}
+{{object.slug}}
+{{object.email}}

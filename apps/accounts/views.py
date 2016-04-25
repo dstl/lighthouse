@@ -16,6 +16,9 @@ from django.views.generic import (
 )
 from django.views.generic.edit import FormView
 
+from haystack.inputs import AutoQuery
+from haystack.query import SearchQuerySet
+
 from .forms import AuthenticationForm
 from .models import User
 from apps.access import LoginRequiredMixin
@@ -351,7 +354,24 @@ class UserList(LoginRequiredMixin, ListView):
         context['top_organisations'] = Organisation.with_most_teams()
         context['total_users_in_db'] = User.objects.count()
 
+        if self.has_query():
+            context['query'] = self.request.GET['q']
+            context['results_length'] = len(context['object_list'])
+
         return context
+
+    def has_query(self):
+        return 'q' in self.request.GET and len(self.request.GET['q']) > 0
+
+    def get_queryset(self):
+        if self.has_query():
+            queryset = SearchQuerySet().filter(
+                content=AutoQuery(self.request.GET['q']),
+            ).models(User)
+        else:
+            queryset = super(UserList, self).get_queryset()
+
+        return queryset
 
 
 class UserFavouritesAdd(LoginRequiredMixin, View):
