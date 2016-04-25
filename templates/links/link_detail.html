@@ -15,10 +15,8 @@
 
     <div class="grid-row">
       <div class="column-two-thirds">
-        <div class="text">
-          <p class="lede">
-            {{link.description}}
-          </p>
+        <div class="lede markdown-content">
+        {{html_description|safe}}
         </div>
         {% if not_lighthouse_link %}
         <div class="text">

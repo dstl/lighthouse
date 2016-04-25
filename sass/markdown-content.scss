@@ -13,7 +13,35 @@
 		@extend .heading-small;
 	}
 
+	&.lede {
+		h1, h2, h3, h4 {
+			&:first-child {
+				margin-top:0;
+			}
+		}
+	}
+
 	strong {
 		font-weight: bold;
 	}
+
+	ul, ol {
+		text-indent:initial;
+
+		li {
+			list-style-type:initial;
+			margin:initial;
+			padding:initial;
+			text-indent:initial;
+			margin-left:4rem
+		}
+	}
+
+	ol {
+		li {
+			list-style-type:decimal;
+		}
+	}
+
+	margin-bottom:$gutter;
 }
