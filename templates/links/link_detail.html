@@ -105,7 +105,7 @@
         <form method="post" action="{% url "user-favourites-remove" link.owner.slug %}">
             {% csrf_token %}
             <h3 class="heading-body" id="in-favourites-message">
-                This tool is in your favourites
+                This tool is in <a href="{% url "link-list" %}?favourites=true">your favourites</a>.
             </h3>
             <input type="hidden" name="link_id" value="{{link.id}}">
             <button class="button" id="remove-from-favourites" type="submit">
@@ -116,7 +116,7 @@
         <form method="post" action="{% url "user-favourites-add" link.owner.slug %}">
             {% csrf_token %}
             <h3 class="heading-body" id="not-in-favourites-message">
-                This tool is not yet in your favourites
+                This tool is not yet in <a href="{% url "link-list" %}?favourites=true">your favourites</a>.
             </h3>
             <input type="hidden" name="link_id" value="{{link.id}}">
             <button class="button" id="add-to-favourites" value="{{link.id}}">
