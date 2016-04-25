@@ -88,6 +88,10 @@ class User(PermissionsMixin, AbstractBaseUser):
     class Meta:
         ordering = ['name', 'userid']
 
+    @property
+    def full_name(self):
+        return self.get_full_name()
+
     def get_full_name(self):
         return self.name or self.userid
 

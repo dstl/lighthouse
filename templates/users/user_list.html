@@ -13,14 +13,26 @@
 
 <div class="grid-row">
   <div class="column-two-thirds">
+    <form class="form-group two-thirds-inline-search-form" action="" method="get">
+      <div class="form-group two-thirds-inline-search-form">
+        <input class="form-control search-box" type='text' name='q' id='q' autofocus="true" value="{{query|default_if_none:''}}" />
+        <button class="button search-button" type="submit">Search</button>
+      </div>
+    </form>
     {% if total_users_in_db > 0 %}
+      {% if query %}
       <p class="lede">
-        These are the users currently registered with the system. Click on a user to view more information.
+        Your search returned {{object_list|length}} user{{object_list|length|pluralize}}.
       </p>
+      {% else %}
+      <p class="lede">
+        These are the users currently registered with the system. Click on a user to view more information, or enter a search term above to find a user that you're looking for.
+      </p>
+      {% endif %}
 
-      <ul class="list list-bullet user-list">
+      <ul class="list list-bullet user-list" id="user-list">
         {% for user in object_list %}
-          <li><a class="main-list-item" href='{% url "user-detail" user.slug %}'>{{user}}</a></li>
+          <li><a class="main-list-item" href='{% url "user-detail" user.slug %}'>{{user.full_name}}</a></li>
         {% endfor %}
       </ul>
 
