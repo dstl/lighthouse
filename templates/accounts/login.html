@@ -15,6 +15,10 @@
         Please use your normal system ID to log in here.
       </p>
       <input class="form-control" id="id_userid" maxlength="256" name="userid" type="text" autofocus="true">
+      {% if has_js %}
+      {% else %}
+      <input type="hidden" id="jsinput" value="true">
+      {% endif %}
     </div>
     <input type="submit" method="POST" value="Login" class="button button-start">
   </form>

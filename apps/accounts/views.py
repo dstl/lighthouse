@@ -38,6 +38,16 @@ class LoginView(FormView):
     def dispatch(self, *args, **kwargs):
         return super(LoginView, self).dispatch(*args, **kwargs)
 
+    def has_js(self):
+        js_qs = self.request.POST.get('js', None)
+        if js_qs == 'false':
+            return False
+        elif js_qs == 'true':
+            js_qs = True
+
+        js_session = self.request.session.get('has_js', False) is True
+        return js_qs or js_session
+
     def form_valid(self, form):
         """
         The user has provided valid credentials (this was checked in
@@ -107,6 +117,19 @@ class LoginView(FormView):
         """
         self.set_test_cookie()
         return super(LoginView, self).get(request, *args, **kwargs)
+
+    def post(self, request):
+        """
+        Just need to save whether JS is available in the session
+        """
+        result = super(LoginView, self).post(request)
+
+        if self.has_js():
+            self.request.session['has_js'] = True
+        else:
+            self.request.session['has_js'] = False
+
+        return result
 
 
 class LogoutView(LoginRequiredMixin, TemplateView):
