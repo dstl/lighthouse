@@ -16,7 +16,7 @@
   <div id="categories-filter" class="column-third">
     <h2 class="filter-controls-header heading-medium heading-snug-top">Tool categories</h2>
     {# Category filters #}
-    <div class="form-group">
+    <div class="form-group{% if has_js %} hidden{% endif %}">
       <input type="submit" value="Filter using selections below" class="button" />
     </div>
     <div class="form-group">
@@ -45,7 +45,7 @@
           <input type="checkbox" id="types-filter-internal" value="internal" name="types" {% if 'internal' in filtered_types %}checked="checked"{% endif %} />
         </label>
       </div>
-      <div class="form-group">
+      <div class="form-group{% if has_js %} hidden{% endif %}">
         <input type="submit" value="Filter" class="button" />
       </div>
     </div>

@@ -283,6 +283,7 @@ class LinkList(LoginRequiredMixin, ListView):
         context['filtered_types'] = types_to_filter
         context['total_links_in_db'] = Link.objects.count()
         context['favourites_filtered'] = self.has_favourites()
+        context['has_js'] = self.request.session.get('has_js', False)
 
         context['extra_query_strings'] = '&'.join(querystrings)
 

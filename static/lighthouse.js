@@ -16,4 +16,9 @@ $(document).ready(function() {
   // and focused states for block labels
   var $blockLabels = $(".block-label input[type='radio'], .block-label input[type='checkbox']");
   new GOVUK.SelectionButtons($blockLabels);
+
+  $('#jsinput').attr('name', 'js');
+  if ($('#jsinput').val() !== 'false') {
+    $('#jsinput').val('true')
+  }
 });
