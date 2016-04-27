@@ -32,7 +32,8 @@ class LinkModelTest(TestCase):
         self.assertEqual(lighthouse_api.destination, '/api/')
 
         exp = 'The API for this application.\n\n'
-        exp += 'Documentation for using the API can be found at [/api](/api).'
+        exp += 'Documentation for using the API can '
+        exp += 'be found at [/api/](/api/).'
 
         self.assertEqual(
             lighthouse_api.description,
