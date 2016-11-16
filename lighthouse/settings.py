@@ -98,9 +98,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'lighthouse.wsgi.application'
 
-# WARNING: This is probably too much for production
-COMPRESS_REBUILD_TIMEOUT = 2
-
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
@@ -191,6 +188,7 @@ STATICFILES_FINDERS = [
 COMPRESS_ROOT = os.path.join(BASE_DIR, "sass")
 
 COMPRESS_ENABLED = True
+COMPRESS_OFFLINE = True
 
 # SASS
 COMPRESS_PRECOMPILERS = (
