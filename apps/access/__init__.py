@@ -19,7 +19,7 @@ class LoginUsingEnvironmentMixin(object):
     in the environment.
     """
     def dispatch(self, request, *args, **kwargs):
-        user = getenv('REMOTE_USER')
+        user = getenv('KEYCLOAK_USERNAME')
         if user and user != request.user.userid:
             return self.handle_no_permission()
         return super(LoginUsingEnvironmentMixin, self).dispatch(

@@ -62,7 +62,7 @@ class LoginView(FormView):
 
     def get_initial(self):
         initial = super(LoginView, self).get_initial()
-        initial['userid'] = os.getenv('REMOTE_USER')
+        initial['userid'] = os.getenv('KEYCLOAK_USERNAME')
         return initial
 
     def get_success_url(self):
@@ -110,7 +110,7 @@ class LoginView(FormView):
         Same as django.views.generic.edit.ProcessFormView.get(),
         but adds test cookie stuff
         """
-        userid = os.getenv('REMOTE_USER')
+        userid = os.getenv('KEYCLOAK_USERNAME')
         if userid:
             try:
                 user = get_user_model().objects.get(userid=userid)

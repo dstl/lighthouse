@@ -253,7 +253,7 @@ class UserWebTest(WebTest):
 
 class EnvironmentLoginTest(WebTest):
     def test_auto_login(self):
-        os.environ['REMOTE_USER'] = 'user@0001.com'
+        os.environ['KEYCLOAK_USERNAME'] = 'user@0001.com'
 
         response = self.app.get(reverse('login'))
         self.assertEqual(
@@ -261,12 +261,12 @@ class EnvironmentLoginTest(WebTest):
             response.location
         )
 
-        os.environ.pop('REMOTE_USER')
+        os.environ.pop('KEYCLOAK_USERNAME')
 
     def test_auto_login_for_admin(self):
         get_user_model().objects.create_user(
             userid='admin@0001.com', password='password')
-        os.environ['REMOTE_USER'] = 'admin@0001.com'
+        os.environ['KEYCLOAK_USERNAME'] = 'admin@0001.com'
 
         response = self.app.get(reverse('login'))
         self.assertEqual(
@@ -274,4 +274,4 @@ class EnvironmentLoginTest(WebTest):
             response.location
         )
 
-        os.environ.pop('REMOTE_USER')
+        os.environ.pop('KEYCLOAK_USERNAME')
