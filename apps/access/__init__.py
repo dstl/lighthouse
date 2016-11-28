@@ -4,11 +4,26 @@
 # - haystack supports django 1.9
 # - haystack is no longer a dependency
 
+from os import getenv
+
 from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.views import redirect_to_login
 from django.core.exceptions import ImproperlyConfigured, PermissionDenied
 from django.utils.encoding import force_text
+
+
+class LoginUsingEnvironmentMixin(object):
+    """
+    Verify that the current logged-in user matches the user passed
+    in the environment.
+    """
+    def dispatch(self, request, *args, **kwargs):
+        user = getenv('KEYCLOAK_USERNAME')
+        if user and user != request.user.userid:
+            return self.handle_no_permission()
+        return super(LoginUsingEnvironmentMixin, self).dispatch(
+            request, *args, **kwargs)
 
 
 class AccessMixin(object):
@@ -57,7 +72,7 @@ class AccessMixin(object):
         )
 
 
-class LoginRequiredMixin(AccessMixin):
+class LoginRequiredMixin(LoginUsingEnvironmentMixin, AccessMixin):
     """
     CBV mixin which verifies that the current user is authenticated.
     """

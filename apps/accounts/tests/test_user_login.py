@@ -1,5 +1,7 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
 
+import os
+
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 
@@ -247,3 +249,29 @@ class UserWebTest(WebTest):
         self.assertTrue(slug_link)
         slug_text = slug_link.text
         self.assertIn('User 0001', slug_text)
+
+
+class EnvironmentLoginTest(WebTest):
+    def test_auto_login(self):
+        os.environ['KEYCLOAK_USERNAME'] = 'user@0001.com'
+
+        response = self.app.get(reverse('login'))
+        self.assertEqual(
+            'http://localhost:80/users/user0001com/update-profile',
+            response.location
+        )
+
+        os.environ.pop('KEYCLOAK_USERNAME')
+
+    def test_auto_login_for_admin(self):
+        get_user_model().objects.create_user(
+            userid='admin@0001.com', password='password')
+        os.environ['KEYCLOAK_USERNAME'] = 'admin@0001.com'
+
+        response = self.app.get(reverse('login'))
+        self.assertEqual(
+            'http://localhost:80/users/admin0001com/update-profile',
+            response.location
+        )
+
+        os.environ.pop('KEYCLOAK_USERNAME')
