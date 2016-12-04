@@ -38,6 +38,8 @@ class APIHome(APIDocView):
 
 
 class APIDocHomeRedirect(RedirectView):
+    permanent = True
+
     def get_redirect_url(self, *args, **kwargs):
         # implemented as method not as `url` instance
         # variable to avoid circular import problem
