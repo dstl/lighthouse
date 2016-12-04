@@ -114,6 +114,33 @@ With both commands, if you have overridden the database name (using the
 `LIGHTHOUSE_DB` environment variable), you will need to replace `lighthouse`
 with that.
 
+### Rebuild the Whoosh index
+
+Once restored you will need to rebuild the search index, so that searching 
+yields results that aren't out of date.
+
+The easiest way to do this to trigger the `Deploy Lighthouse` job on Jenkins, 
+as rebuilding the index is a standard part of deployment.
+
+To do this manually:
+
+1. SSH in to the lighthouse box
+
+        > ssh ec2-user@www.lighthouse.pw
+
+2. Become the `lighthouse` user
+
+        ec2-user@~ > sudo su - lighthouse
+
+3. Activate the virtualenv that contains lighthouses dependencies
+
+        lighthouse@~ > cd /opt/lighthouse/app
+        lighthouse@app > source /opt/lighthouse/virtualenv/activate
+
+4. Run the `rebuild_index` command
+
+        lighthouse@app > python manage.py rebuild_index
+
 ## How to modify static assets
 
 Lighthouse contains some "static" content assets which are not generated at
