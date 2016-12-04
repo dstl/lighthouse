@@ -2,7 +2,7 @@
 
 import csv
 from datetime import datetime, timedelta
-from dateutil.relativedelta import relativedelta, SU
+from dateutil.relativedelta import relativedelta
 from unittest import mock
 
 from django.core.urlresolvers import reverse
@@ -157,8 +157,8 @@ class LinkUsageModelTest(TestCase):
         self.assertEquals(self.other_link.usage_total(), 0)
 
         with mock.patch('django.utils.timezone.now') as mock_now:
-            # register usage on last Sunday (doesn't count as "this week")
-            mock_now.return_value = self.now + relativedelta(weekday=SU(-1))
+            # register usage seven days ago
+            mock_now.return_value = self.now - timedelta(days=7)
             self.link.register_usage(self.user)
 
         self.assertEquals(self.link.usage_today(), 0)
