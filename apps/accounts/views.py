@@ -1,6 +1,5 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
 
-import os
 from django.contrib.auth import get_user_model
 
 from django.contrib.auth import REDIRECT_FIELD_NAME, login, logout
@@ -75,7 +74,7 @@ class LoginView(FormView):
 
     def get_initial(self):
         initial = super(LoginView, self).get_initial()
-        initial['userid'] = os.getenv('KEYCLOAK_USERNAME')
+        initial['userid'] = self.request.META.get('HTTP_KEYCLOAKUSERNAME')
         return initial
 
     def get_success_url(self):
@@ -123,7 +122,9 @@ class LoginView(FormView):
         Same as django.views.generic.edit.ProcessFormView.get(),
         but adds test cookie stuff
         """
-        userid = os.getenv('KEYCLOAK_USERNAME')
+        # Get the username from a keycloak set header
+        userid = request.META.get('HTTP_KEYCLOAKUSERNAME')
+
         if userid:
             try:
                 user = get_user_model().objects.get(userid=userid)
