@@ -1,6 +1,5 @@
 # (c) Crown Owned Copyright, 2016. Dstl.
 
-from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 
 from django_webtest import WebTest
