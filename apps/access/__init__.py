@@ -70,7 +70,7 @@ class AccessMixin(object):
         )
 
 
-class LoginRequiredMixin(LoginUsingEnvironmentMixin, AccessMixin):
+class LoginRequiredMixin(LoginUsingHeaderMixin, AccessMixin):
     """
     CBV mixin which verifies that the current user is authenticated.
     """
