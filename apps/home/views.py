@@ -3,7 +3,7 @@
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.views.generic.base import View
-
+from django.contrib.auth import login
 
 class Home(View):
 
@@ -12,11 +12,18 @@ class Home(View):
     #   then we bounce them to the login page.
     #   Otherwise (for the moment) we take them to the list of links.
     def get(self, request, *args, **kwargs):
+        userid = request.META.get('HTTP_KEYCLOAK_USERNAME')
+        if userid:
+            try:
+                user = get_user_model().objects.get(userid=userid)
+            except:
+                user = get_user_model().objects.create_user(
+                    userid=userid, is_active=True)
+            user.backend = 'django.contrib.auth.backends.ModelBackend'
+            login(self.request, user)
+            self.user = user
+            return redirect(reverse('link-list'))
         try:
-            print ('*'*30) 
-            print (request.META.get('HTTP_KEYCLOAK_USERNAME'))
-            print (request.user.slug)
-            print ('*'*30)
             u = request.user.slug
             if (u is not None and u is not ''):
                 return redirect(reverse('link-list'))
