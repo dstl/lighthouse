@@ -123,9 +123,7 @@ class LoginView(FormView):
         but adds test cookie stuff
         """
         # Get the username from a keycloak set header
-        userid = request.META.get('HTTP_KEYCLOAKUSERNAME')
-        for header in request.META:
-            print (header)
+        userid = request.META.get('HTTP_KEYCLOAK_USERNAME')
 
         if userid:
             try:

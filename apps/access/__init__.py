@@ -17,7 +17,7 @@ class LoginUsingHeaderMixin(object):
     in request headers.
     """
     def dispatch(self, request, *args, **kwargs):
-        user = request.META.get('HTTP_KEYCLOAKUSERNAME')
+        user = request.META.get('HTTP_KEYCLOAK_USERNAME')
         if user and user != request.user.userid:
             return self.handle_no_permission()
         return super(LoginUsingHeaderMixin, self).dispatch(
