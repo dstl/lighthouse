@@ -6,12 +6,12 @@ from django.views.generic.base import View
 from django.contrib.auth import login
 from django.contrib.auth import get_user_model
 
+
 class Home(View):
 
-    #   Get the homepage. If the user isn't logged in, (we can find no trace
-    #   of the user) or they are logged in but somehow don't have a valid slug
-    #   then we bounce them to the login page.
-    #   Otherwise (for the moment) we take them to the list of links.
+    #   Get the homepage. If we find the keycloak username header, then log them
+    #   in and direct to the list of tools. If not, then check for the slug
+    #   and either send them to the list of tools or bounce them to login. 
     def get(self, request, *args, **kwargs):
         userid = request.META.get('HTTP_KEYCLOAK_USERNAME')
         if userid:
