@@ -74,7 +74,7 @@ class LoginView(FormView):
 
     def get_initial(self):
         initial = super(LoginView, self).get_initial()
-        initial['userid'] = self.request.META.get('HTTP_KEYCLOAKUSERNAME')
+        initial['userid'] = self.request.META.get('HTTP_KEYCLOAK_USERNAME')
         return initial
 
     def get_success_url(self):
@@ -124,7 +124,6 @@ class LoginView(FormView):
         """
         # Get the username from a keycloak set header
         userid = request.META.get('HTTP_KEYCLOAK_USERNAME')
-
         if userid:
             try:
                 user = get_user_model().objects.get(userid=userid)
