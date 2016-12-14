@@ -263,7 +263,7 @@ class KeycloakHeaderLoginTest(WebTest):
         get_user_model().objects.create_user(
             userid='admin@0001.com', password='password')
         
-        headers = { 'KEYCLOAK_USERNAME' : 'user@0001.com' }
+        headers = { 'KEYCLOAK_USERNAME' : 'admin@0001.com' }
         response = self.app.get(reverse('login'), headers=headers)
         self.assertEqual(
             'http://localhost:80/users/admin0001com/update-profile',
