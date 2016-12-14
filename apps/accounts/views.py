@@ -29,6 +29,7 @@ from apps.organisations.models import Organisation
 from apps.teams.models import Team
 from apps.links.models import Link
 
+
 class LoginView(FormView):
     form_class = AuthenticationForm
     redirect_field_name = REDIRECT_FIELD_NAME
