@@ -252,7 +252,7 @@ class UserWebTest(WebTest):
 
 class KeycloakHeaderLoginTest(WebTest):
     def test_auto_login(self):
-        headers = {'KEYCLOAK_USERNAME':'user@0001.com'}
+        headers = {'KEYCLOAK_USERNAME': 'user@0001.com'}
         response = self.app.get(reverse('login'), headers=headers)
         self.assertEqual(
             'http://localhost:80/users/user0001com/update-profile',
@@ -261,11 +261,10 @@ class KeycloakHeaderLoginTest(WebTest):
 
     def test_auto_login_for_admin(self):
         get_user_model().objects.create_user(
-            userid='admin@0001.com', password='password')  
-        headers = {'KEYCLOAK_USERNAME':'admin@0001.com'}
+            userid='admin@0001.com', password='password')
+        headers = {'KEYCLOAK_USERNAME': 'admin@0001.com'}
         response = self.app.get(reverse('login'), headers=headers)
         self.assertEqual(
             'http://localhost:80/users/admin0001com/update-profile',
             response.location
         )
-        
