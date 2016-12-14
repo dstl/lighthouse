@@ -125,7 +125,7 @@ class LoginView(FormView):
         # Get the username from a keycloak set header
         userid = request.META.get('HTTP_KEYCLOAKUSERNAME')
         for header in request.META:
-            print header
+            print (header)
 
         if userid:
             try:
