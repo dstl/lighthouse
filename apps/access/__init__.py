@@ -9,7 +9,7 @@ from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.views import redirect_to_login
 from django.core.exceptions import ImproperlyConfigured, PermissionDenied
 from django.utils.encoding import force_text
-
+from django.conf import settings
 
 class LoginUsingHeaderMixin(object):
     """
@@ -17,7 +17,7 @@ class LoginUsingHeaderMixin(object):
     in request headers.
     """
     def dispatch(self, request, *args, **kwargs):
-        user = request.META.get('HTTP_KEYCLOAK_USERNAME')
+        user = request.META.get(settings.KEYCLOAK_USERNAME_HEADER)
         if user and user != request.user.userid:
             return self.handle_no_permission()
         return super(LoginUsingHeaderMixin, self).dispatch(

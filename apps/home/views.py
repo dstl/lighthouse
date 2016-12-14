@@ -5,7 +5,7 @@ from django.shortcuts import redirect
 from django.views.generic.base import View
 from django.contrib.auth import login
 from django.contrib.auth import get_user_model
-
+from django.conf import settings
 
 class Home(View):
 
@@ -13,7 +13,7 @@ class Home(View):
     #   in and direct to the list of tools. If not, then check for the slug
     #   and either send them to the list of tools or bounce them to login. 
     def get(self, request, *args, **kwargs):
-        userid = request.META.get('HTTP_KEYCLOAK_USERNAME')
+        userid = request.META.get(settings.KEYCLOAK_USERNAME_HEADER)
         if userid:
             try:
                 user = get_user_model().objects.get(userid=userid)

@@ -17,6 +17,7 @@ from django.views.generic import (
     View,
 )
 from django.views.generic.edit import FormView
+from django.conf import settings
 
 from haystack.inputs import AutoQuery
 from haystack.query import SearchQuerySet
@@ -27,7 +28,6 @@ from apps.access import LoginRequiredMixin
 from apps.organisations.models import Organisation
 from apps.teams.models import Team
 from apps.links.models import Link
-
 
 class LoginView(FormView):
     form_class = AuthenticationForm
@@ -74,7 +74,7 @@ class LoginView(FormView):
 
     def get_initial(self):
         initial = super(LoginView, self).get_initial()
-        initial['userid'] = self.request.META.get('HTTP_KEYCLOAK_USERNAME')
+        initial['userid'] = self.request.META.get(settings.KEYCLOAK_USERNAME_HEADER)
         return initial
 
     def get_success_url(self):
@@ -123,7 +123,7 @@ class LoginView(FormView):
         but adds test cookie stuff
         """
         # Get the username from a keycloak set header
-        userid = request.META.get('HTTP_KEYCLOAK_USERNAME')
+        userid = request.META.get(settings.KEYCLOAK_USERNAME_HEADER)
         if userid:
             try:
                 user = get_user_model().objects.get(userid=userid)
