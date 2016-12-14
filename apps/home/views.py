@@ -10,9 +10,9 @@ from django.conf import settings
 
 class Home(View):
 
-    #   Get the homepage. If we find the keycloak username header, 
+    #   Get the homepage. If we find the keycloak username header,
     #   then log them in and direct to the list of tools. If not, then
-    #   check for the slug and either send them to the list of tools 
+    #   check for the slug and either send them to the list of tools
     #   or bounce them to login.
     def get(self, request, *args, **kwargs):
         userid = \
