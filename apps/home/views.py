@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.views.generic.base import View
 from django.contrib.auth import login
+from django.contrib.auth import get_user_model
 
 class Home(View):
 
