@@ -75,7 +75,8 @@ class LoginView(FormView):
 
     def get_initial(self):
         initial = super(LoginView, self).get_initial()
-        initial['userid'] = self.request.META.get(settings.KEYCLOAK_USERNAME_HEADER)
+        initial['userid'] = \
+            self.request.META.get(settings.KEYCLOAK_USERNAME_HEADER)
         return initial
 
     def get_success_url(self):
