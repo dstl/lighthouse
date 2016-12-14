@@ -16,7 +16,7 @@ class Home(View):
             print ('*'*30) 
             print (request.META.get('HTTP_KEYCLOAK_USERNAME'))
             print (request.user.slug)
-            print '*'*30
+            print ('*'*30)
             u = request.user.slug
             if (u is not None and u is not ''):
                 return redirect(reverse('link-list'))
