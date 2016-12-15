@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.views.generic.base import View
 
+
 class Home(View):
 
     #   Get the homepage. If we find the keycloak username header,
