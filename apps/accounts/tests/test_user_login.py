@@ -187,6 +187,33 @@ class UserWebTest(WebTest):
             'Please add additional information'
         )
 
+    def test_user_with_full_profile_goes_to_links(self):
+        #   This user has a username and teams
+        o = Organisation(name='org0001')
+        o.save()
+        t = Team(name='team0001', organisation=o)
+        t.save()
+
+        user = get_user_model().objects.create_user(
+            userid='user@0001.com',
+            name='User 0001',
+            best_way_to_find='In the kitchen',
+            best_way_to_contact='By email',
+            phone='00000000',
+            email='user@0001.com',
+        )
+        user.teams.add(t)
+        user.save()
+
+        #   Log in as user
+        form = self.app.get(reverse('login')).form
+        form['userid'] = 'user@0001.com'
+        response = form.submit().follow()
+        self.assertIn(
+            'All tools',
+            response.html.find('h1').text
+        )
+
     #   Check that a link showing the user's slug appears in the top nav
     #   bar
     def test_slug_and_link_exists_in_nav(self):
@@ -266,5 +293,30 @@ class KeycloakHeaderLoginTest(WebTest):
         response = self.app.get(reverse('login'), headers=headers)
         self.assertEqual(
             'http://localhost:80/users/admin0001com/update-profile',
+            response.location
+        )
+
+    def test_auto_login_for_complete_profile_goes_to_links(self):
+        #   This user has a username and teams
+        o = Organisation(name='org0001')
+        o.save()
+        t = Team(name='team0001', organisation=o)
+        t.save()
+
+        user = get_user_model().objects.create_user(
+            userid='user@0001.com',
+            name='User 0001',
+            best_way_to_find='In the kitchen',
+            best_way_to_contact='By email',
+            phone='00000000',
+            email='user@0001.com',
+        )
+        user.teams.add(t)
+        user.save()
+
+        headers = {'KEYCLOAK_USERNAME': 'user@0001.com'}
+        response = self.app.get(reverse('login'), headers=headers)
+        self.assertEqual(
+            'http://localhost:80/links',
             response.location
         )

@@ -108,7 +108,8 @@ class LoginView(FormView):
                 kwargs={'slug': self.user.slug}
             )
 
-        return reverse('user-detail', kwargs={'slug': self.user.slug})
+        # Full profile means go to the list of links
+        return reverse('link-list')
 
     def set_test_cookie(self):
         self.request.session.set_test_cookie()
