@@ -2,6 +2,10 @@
 
 Lighthouse is a web application for finding tools and sharing data about how those tools are used. You can use it to manage a searchable and collaboratively curated catalog of internal (eg intranet) and/or external (eg internet) links to useful tools. It also helps you see which people, teams and organisations are using which tools.
 
+## Notes
+
+Please note that the version of jQuery that this was built against ("jquery": "~1.11.3") has known vulnerabilities; this code has not been tested with the newer versions of JQuery – but it is recomended that users should update ./apps/govuk_frontend_toolkit/package.json  to "jquery" : "~> 3.0.0" and to log an issue in the event of any problems.
+
 ## Install & run
 
 ### On a Virtual Machine (recommended)
